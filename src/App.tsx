@@ -7,6 +7,7 @@ import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { GlassFilter } from './components/LiquidGlass'
 import { Bento } from './components/Bento'
+import { Websites } from './components/Websites'
 import { Services } from './components/Services'
 import { Work } from './components/Work'
 import { work } from './content'
@@ -60,6 +61,7 @@ function Home() {
       <About />
       <Services />
       <Bento />
+      <Websites />
     </>
   )
 }

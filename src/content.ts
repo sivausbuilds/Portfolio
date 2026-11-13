@@ -111,3 +111,21 @@ export const services = {
     },
   ] as { icon: 'interface' | 'compass' | 'system' | 'code' | 'research' | 'spark'; title: string; body: string; proof: string[] }[],
 }
+
+/*
+  Websites built — the 3D ring. Clicking a site opens it in a new tab.
+  Add `image: '/sites/<name>.jpg'` (a 16:10 screenshot in /public/sites) to replace the generated cover.
+*/
+export type Site = { name: string; url: string; tag: string; note: string; tone: [string, string]; image?: string; video?: string }
+export const websites = {
+  title: 'Stores I *designed & built*',
+  intro: '14 Shopify stores, designed and developed end to end, for brands in India, UAE, UK and Australia. Three are password protected and shown on request.',
+  items: [
+    { name: 'Varak Edible Luxury', url: 'https://varakedibleluxury.com', tag: 'Shopify · UAE', note: 'Gifting, bakery and a custom cart.', tone: ['#123a30', '#c9a77a'], video: '/work/varak/upsell.mp4' },
+    { name: 'OffNorth', url: 'https://offnorth.com', tag: 'Shopify · India', note: 'Supima polos, proof on every page.', tone: ['#2a2622', '#e7d9c3'], video: '/work/offnorth/after.mp4' },
+    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Shopify · Design & build', note: 'Design and build, end to end.', tone: ['#3a2430', '#f2c6d4'] },
+    { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Shopify · Denim', note: 'Design and build, end to end.', tone: ['#1b2a44', '#9fb7e8'] },
+    { name: 'Cordori', url: 'https://cordori.com.au', tag: 'Shopify · Australia', note: 'Design and build, end to end.', tone: ['#3b3223', '#e8cf9a'] },
+    { name: 'The Staple', url: 'https://thestaple.in', tag: 'Shopify · India', note: 'Design and build, end to end.', tone: ['#1f2b26', '#b9d3c4'] },
+  ] as Site[],
+}
