@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import type { CaseStudy } from '../data/work'
 import { lockScroll, scrollTo } from '../lib/smooth'
 import { Arrow } from './Header'
+import { plain } from './Rich'
 import { LiquidGlass } from './LiquidGlass'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -76,7 +77,7 @@ export function CaseBar({ item, active, visible }: { item: CaseStudy; active: st
               role="dialog"
               aria-label={`${item.name} key facts`}
             >
-              <LiquidGlass className="cs-bar__panel-glass" interactive={false}>
+              <LiquidGlass className="cs-bar__panel-glass" interactive={false} refract={false}>
                 <div className="facts">
                   {[
                     ['The problem', item.facts.problem],
@@ -113,7 +114,7 @@ export function CaseBar({ item, active, visible }: { item: CaseStudy; active: st
           )}
         </AnimatePresence>
 
-        <LiquidGlass className="cs-bar__glass">
+        <LiquidGlass className="cs-bar__glass" refract={false}>
           <div className="cs-bar__where">
             <svg className="cs-bar__ring" viewBox="0 0 36 36" aria-hidden>
               <circle cx="18" cy="18" r="15.9" pathLength="100" className="cs-bar__ring-bg" />
@@ -165,5 +166,5 @@ export function CaseBar({ item, active, visible }: { item: CaseStudy; active: st
 
 /** Chapter label for tight spaces: kicker if it is descriptive, else the title. */
 function shortTitle(c: { kicker: string; title: string }) {
-  return /^Chapter \d+/.test(c.kicker) ? c.title.replace(/\.$/, '') : c.kicker
+  return /^Chapter \d+/.test(c.kicker) ? plain(c.title).replace(/\.$/, '') : c.kicker
 }

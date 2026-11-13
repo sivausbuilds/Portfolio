@@ -1426,7 +1426,7 @@ button {
 .cs-toc a.is-active::before { transform: scaleY(1); }
 .cs-content { display: grid; gap: clamp(96px, 11vw, 160px); min-width: 0; }
 .cs-content--solo { grid-column: 1 / -1; max-width: 860px; }
-.cs-chapter { display: grid; gap: 28px; scroll-margin-top: 100px; max-width: 760px; }
+.cs-chapter { display: grid; gap: 28px; scroll-margin-top: 150px; max-width: 760px; }
 .cs-chapter > .cs-wide { max-width: none; width: min(100%, 980px); }
 .cs-chapter:has(.cs-wide) { max-width: 980px; }
 .cs-chapter__head { display: grid; gap: 12px; margin-bottom: 8px; }
@@ -1449,14 +1449,25 @@ button {
   max-width: 20ch;
 }
 .cs-p { margin: 0; font-size: clamp(16.5px, 1.3vw, 19.5px); line-height: 1.72; color: var(--ink-2); max-width: 62ch; letter-spacing: -0.003em; }
-/* key phrases: what a reviewer must not miss */
+/* key phrases: what a reviewer must not miss — gradient underline that draws in */
 .hl {
   color: var(--ink);
   font-weight: 500;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 70%, #fff), #b9d3c4) 0 100% / 100% 0.12em no-repeat;
-  padding-bottom: 0.04em;
+  background-image: linear-gradient(90deg, var(--accent), #6f9e88 45%, #b9d3c4);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 0.12em;
+  padding-bottom: 0.1em;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 1.2s var(--ease), color 0.3s;
 }
+.hl.is-drawn { background-size: 100% 0.12em; }
+.hl.is-drawn:hover { background-size: 100% 0.22em; }
 /* inside serif callouts the key phrase turns into italic gradient type */
+.cs-callout__text .hl.is-drawn,
+.cs-glance__card .hl.is-drawn { background-size: 220% 100%; }
 .cs-callout__text .hl,
 .cs-callout__text strong,
 .cs-glance__card .hl {
@@ -2111,3 +2122,21 @@ button {
 .brand:focus-visible,
 .btn:focus-visible,
 .nav__link:focus-visible { outline-offset: 4px; border-radius: 999px; }
+
+
+/* Titles: balanced line breaks, no orphaned words */
+h1, h2, h3,
+.cs-chapter__title, .cs-hero__title, .cs-next__title, .card__title,
+.journey__q, .feature__title, .cs-callout__text, .cs-glance__card p, .work__title {
+  text-wrap: balance;
+}
+.cs-p, .cs-glance__card p, .hx-lead__text, .about-note__text { text-wrap: pretty; }
+.cs-chapter__title .em-fancy .gtext__fill { padding-right: 0.08em; }
+
+/* Glass over moving content needs more body so text behind never competes */
+.header.is-scrolled .glass__tint { background: linear-gradient(140deg, rgba(255, 255, 255, 0.88), rgba(250, 250, 249, 0.78)); }
+.cs-bar__glass .glass__tint { background: linear-gradient(160deg, rgba(253, 253, 252, 0.92), rgba(247, 248, 246, 0.86)); }
+.cs-bar__panel-glass .glass__tint { background: linear-gradient(160deg, rgba(253, 253, 252, 0.97), rgba(248, 249, 247, 0.95)); }
+.cs-bar__glass .glass__refract,
+.cs-bar__panel-glass .glass__refract,
+.header .glass__refract { backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%); }

@@ -111,7 +111,7 @@ export const work: CaseStudy[] = [
       {
         id: 'problem',
         kicker: 'Chapter 1',
-        title: 'The problem',
+        title: 'The *problem*',
         blocks: [
           {
             type: 'p',
@@ -123,7 +123,7 @@ export const work: CaseStudy[] = [
       {
         id: 'journey',
         kicker: 'Chapter 2',
-        title: 'Where the shopper hesitates',
+        title: 'Where the shopper *hesitates*',
         blocks: [
           { type: 'p', text: 'I mapped the path from product card to payment and put ==one custom feature on each point of friction==.' },
           {
@@ -141,7 +141,7 @@ export const work: CaseStudy[] = [
       {
         id: 'upsell',
         kicker: 'Chapter 3',
-        title: 'Pick a size on the card, then see what goes with it',
+        title: 'Pick a size on the card, then see *what goes with it*',
         blocks: [
           {
             type: 'p',
@@ -164,7 +164,7 @@ export const work: CaseStudy[] = [
       {
         id: 'jar-box',
         kicker: 'Chapter 4',
-        title: 'Build your own jar box',
+        title: 'Build your own *jar box*',
         blocks: [
           {
             type: 'p',
@@ -186,7 +186,7 @@ export const work: CaseStudy[] = [
       {
         id: 'cart',
         kicker: 'Chapter 5',
-        title: 'A cart drawer that understands gifts',
+        title: 'A cart drawer that *understands gifts*',
         blocks: [
           {
             type: 'p',
@@ -209,7 +209,7 @@ export const work: CaseStudy[] = [
       {
         id: 'reviews',
         kicker: 'Chapter 6',
-        title: 'Reviews that move',
+        title: 'Reviews that *move*',
         blocks: [
           {
             type: 'p',
@@ -227,7 +227,7 @@ export const work: CaseStudy[] = [
       {
         id: 'results',
         kicker: 'Chapter 7',
-        title: 'Results',
+        title: '*Results*',
         blocks: [
           { type: 'p', text: 'Store totals from Shopify Analytics, **1 Jan to 3 Nov 2026**. These are whole-store numbers. They are not split by feature.' },
           {
@@ -285,7 +285,7 @@ export const work: CaseStudy[] = [
       {
         id: 'problem',
         kicker: 'The problem',
-        title: 'A good product, a store that did not say so.',
+        title: 'A good product, a store that *did not say so.*',
         blocks: [
           {
             type: 'p',
@@ -297,7 +297,7 @@ export const work: CaseStudy[] = [
       {
         id: 'before-after',
         kicker: 'Before and after',
-        title: 'Same store, two experiences.',
+        title: 'Same store, *two experiences.*',
         blocks: [
           { type: 'p', text: 'Screen recordings of the live store, scrolling the home page, a collection and a product page.' },
           {
@@ -311,7 +311,7 @@ export const work: CaseStudy[] = [
       {
         id: 'changes',
         kicker: 'What changed',
-        title: 'Page by page.',
+        title: 'Page by *page.*',
         blocks: [
           {
             type: 'tabs',
@@ -368,7 +368,7 @@ export const work: CaseStudy[] = [
       {
         id: 'results',
         kicker: 'Results',
-        title: 'Store performance, Apr 2024 to Oct 2025.',
+        title: 'Store performance, *Apr 2024 to Oct 2025.*',
         blocks: [
           { type: 'p', text: 'Shopify Analytics for the whole store over 18 months. This is lifetime store data. It does not isolate the redesign.' },
           {
@@ -430,7 +430,7 @@ export const work: CaseStudy[] = [
       {
         id: 'problem',
         kicker: 'The problem',
-        title: 'Designs start on guesswork, and the client says no.',
+        title: 'Designs start on guesswork, and *the client says no.*',
         blocks: [
           {
             type: 'p',
@@ -461,7 +461,7 @@ export const work: CaseStudy[] = [
       {
         id: 'insight',
         kicker: 'The insight',
-        title: 'It is an information problem, not a skill problem.',
+        title: 'It is an information problem, *not a skill problem.*',
         blocks: [
           {
             type: 'stats',
@@ -476,7 +476,7 @@ export const work: CaseStudy[] = [
       {
         id: 'build',
         kicker: 'The build',
-        title: 'A RAG-powered design context assistant.',
+        title: 'A RAG-powered *design context assistant.*',
         blocks: [
           {
             type: 'p',
@@ -497,7 +497,7 @@ export const work: CaseStudy[] = [
       {
         id: 'outcome',
         kicker: 'The outcome',
-        title: 'A confirmed brief to work from, not a memory of a call.',
+        title: 'A confirmed brief to work from, *not a memory of a call.*',
         blocks: [
           {
             type: 'p',
@@ -509,7 +509,7 @@ export const work: CaseStudy[] = [
       {
         id: 'resources',
         kicker: 'See it yourself',
-        title: 'Everything behind Theliv.',
+        title: 'Everything *behind Theliv.*',
         blocks: [
           {
             type: 'links',
@@ -556,7 +556,7 @@ export const work: CaseStudy[] = [
       {
         id: 'problem',
         kicker: 'The problem',
-        title: 'People commit first and see the cost later.',
+        title: 'People commit first and *see the cost later.*',
         blocks: [
           { type: 'p', text: 'Professionals make spending choices without seeing what those choices do to the rest of the month and to the years ahead. ==Clarity arrives after the decision.==' },
           {
@@ -600,7 +600,7 @@ export const work: CaseStudy[] = [
       {
         id: 'problem',
         kicker: 'The problem',
-        title: 'Short answers, weak decisions.',
+        title: 'Short answers, *weak decisions.*',
         blocks: [
           {
             type: 'p',
@@ -640,7 +640,7 @@ export const work: CaseStudy[] = [
       {
         id: 'story',
         kicker: 'The story',
-        title: 'From accidental traffic to a loop that compounds.',
+        title: 'From accidental traffic to *a loop that compounds.*',
         blocks: [
           {
             type: 'p',
@@ -680,7 +680,7 @@ export const work: CaseStudy[] = [
       {
         id: 'insight',
         kicker: 'The insight',
-        title: 'The reminder disappears at the moment you read.',
+        title: 'The reminder disappears *at the moment you read.*',
         blocks: [
           {
             type: 'p',

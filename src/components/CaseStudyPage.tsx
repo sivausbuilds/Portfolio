@@ -49,6 +49,12 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
           onToggle: (self) => self.isActive && setActive(c.id),
         })
       })
+      // key-phrase underlines draw in as they enter the viewport
+      ScrollTrigger.batch('.cs .hl', {
+        start: 'top 88%',
+        once: true,
+        onEnter: (els) => els.forEach((el, i) => setTimeout(() => el.classList.add('is-drawn'), i * 120)),
+      })
       // bar shows once the summary strip has scrolled by, hides at the end of the story
       ScrollTrigger.create({
         trigger: '.cs-glance',
@@ -221,7 +227,7 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
                     }}
                   >
                     <span className="label">{String(i + 1).padStart(2, '0')}</span>
-                    {/^Chapter/.test(c.kicker) ? c.title : c.kicker}
+                    {/^Chapter/.test(c.kicker) ? plain(c.title) : c.kicker}
                   </a>
                 </li>
               ))}
@@ -243,7 +249,9 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
                   <GradientText text={String(ci + 1).padStart(2, '0')} shimmer={false} />
                 </span>
                 {!/^Chapter \d+/.test(c.kicker) && <p className="label">{c.kicker}</p>}
-                <h2 className="cs-chapter__title">{c.title}</h2>
+                <h2 className="cs-chapter__title">
+                  <Rich text={c.title} fancy />
+                </h2>
               </motion.header>
               {c.blocks.map((b, k) => (
                 <BlockView key={k} block={b} item={item} />

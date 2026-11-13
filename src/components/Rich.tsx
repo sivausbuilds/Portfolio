@@ -17,7 +17,15 @@ export function Rich({ text, fancy = false }: { text: string; fancy?: boolean })
         if (p.startsWith('*') && p.length > 2)
           return fancy ? (
             <em key={i} className="em-fancy">
-              <GradientText text={p.slice(1, -1)} delay={3.5} />
+              {p
+                .slice(1, -1)
+                .split(' ')
+                .map((w, k, arr) => (
+                  <Fragment key={k}>
+                    <GradientText text={w} delay={3.5 + k * 0.18} />
+                    {k < arr.length - 1 ? ' ' : ''}
+                  </Fragment>
+                ))}
             </em>
           ) : (
             <em key={i}>{p.slice(1, -1)}</em>
