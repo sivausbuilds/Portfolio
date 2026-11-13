@@ -6,6 +6,7 @@ import { CaseStudyPage } from './components/CaseStudyPage'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { GlassFilter } from './components/LiquidGlass'
+import { Bento } from './components/Bento'
 import { Services } from './components/Services'
 import { Work } from './components/Work'
 import { work } from './content'
@@ -58,6 +59,7 @@ function Home() {
       <Work />
       <About />
       <Services />
+      <Bento />
     </>
   )
 }
