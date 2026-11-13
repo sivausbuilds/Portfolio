@@ -39,7 +39,6 @@ export const site = {
 export type AboutToken = string | { text: string; icon: 'avatar' | 'spark' | 'bag' | 'grid' | 'chart'; title: string; body: string }
 
 export const about = {
-  photo: '/about/me.png',
   paragraph: [
     'Hi, I’m',
     { text: 'Sivadarshan', icon: 'avatar', title: 'Product Designer', body: 'Designing with a PM mindset — I own the why as much as the how.' },

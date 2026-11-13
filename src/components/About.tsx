@@ -132,7 +132,7 @@ function Icon({ kind }: { kind: Exclude<AboutToken, string>['icon'] }) {
   if (kind === 'avatar')
     return (
       <span className="pill__icon pill__icon--avatar" aria-hidden>
-        {about.photo ? <img src={about.photo} alt="" /> : site.name[0]}
+        {site.name[0]}
       </span>
     )
   const paths: Record<string, string> = {

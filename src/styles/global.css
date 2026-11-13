@@ -473,7 +473,6 @@ button {
 }
 .hx-top__who { display: inline-flex; align-items: center; gap: 12px; }
 .hx-top__who strong { font-weight: 500; color: var(--ink); }
-.hx-top__avatar { display: none; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; filter: grayscale(1) contrast(1.05); }
 .hx-clock__time { color: var(--ink); font-variant-numeric: tabular-nums; }
 
 .hx-title {
@@ -493,24 +492,15 @@ button {
 .hx-title [data-split] > span,
 .hx-title [data-split] span[style] { padding-bottom: 0.06em; }
 
-/* slow gradient text */
+/* "PM mindset." — italic; the moving shine comes from ReactBits ShinyText */
 .hx-grad {
   display: inline-block;
   font-style: italic;
   letter-spacing: -0.03em;
   padding: 0 0.06em 0.12em 0.02em;
   margin-bottom: -0.12em;
-  background: linear-gradient(100deg, #0f2b25 0%, #0f2b25 18%, #2f6b56 32%, #8fb3a0 44%, #c9a77a 52%, #2f6b56 64%, #0f2b25 80%, #0f2b25 100%);
-  background-size: 260% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: grad-sweep 11s ease-in-out infinite alternate;
 }
-@keyframes grad-sweep {
-  from { background-position: 100% 50%; }
-  to { background-position: 0% 50%; }
-}
+.hx-grad .shiny-text { padding: 0 0.08em 0.1em 0; }
 
 .hx-lead {
   grid-area: lead;
@@ -585,60 +575,36 @@ button {
 }
 .btn--glass { --h: 52px; }
 
-/* portrait */
-.hx-portrait {
-  grid-area: portrait;
-  align-self: center;
-  margin: 0;
-  perspective: 1000px;
-}
-.hx-portrait__card {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  border-radius: 28px;
-  overflow: hidden;
-  isolation: isolate;
-  background: #0a0d0c;
-  transform-style: preserve-3d;
-  box-shadow: 0 50px 80px -40px rgba(15, 43, 37, 0.55), 0 0 0 1px rgba(15, 43, 37, 0.08);
-}
-.hx-portrait__card > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 30%;
-  filter: grayscale(1) brightness(1.04);
-  transform: scale(1.04);
-}
-/* duotone: blacks become deep green, whites stay paper */
-.hx-portrait__tone {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(160deg, #2f6b56, #1e4c3f 70%);
-  mix-blend-mode: color;
-  opacity: 0.55;
-}
-.hx-portrait__glare { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; }
-.hx-portrait__chip { position: absolute; top: 14px; left: 14px; z-index: 2; }
-.hx-portrait__chip > .glass__content { display: block; padding: 7px 12px; }
-.hx-portrait__chip .status { font-size: 12px; color: var(--ink); }
-.hx-portrait__cap {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 60px 20px 18px;
+/* latest case study card */
+.hx-feat { grid-area: portrait; align-self: center; perspective: 1000px; }
+.hx-feat__card { display: block; transform-style: preserve-3d; }
+.hx-feat__glass { --r: 26px; }
+.hx-feat__glass > .glass__content { display: grid; gap: 14px; padding: 16px 16px 18px; }
+.hx-feat__head { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 0; }
+.hx-feat__go {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ink);
   color: #f5f5f7;
-  background: linear-gradient(to top, rgba(10, 30, 25, 0.7), transparent);
+  transition: transform 0.6s var(--ease);
 }
-.hx-portrait__cap .label { color: rgba(245, 245, 247, 0.75); }
-.hx-portrait__name { font-family: var(--serif); font-size: 22px; letter-spacing: -0.01em; }
+.hx-feat__card:hover .hx-feat__go { transform: rotate(45deg); }
+.hx-feat__media {
+  display: block;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f3efe6;
+  box-shadow: 0 0 0 1px rgba(15, 43, 37, 0.08), 0 20px 40px -24px rgba(15, 43, 37, 0.45);
+}
+.hx-feat__media video { display: block; width: 100%; aspect-ratio: 1920 / 1048; object-fit: cover; transition: scale 1.2s var(--ease); }
+.hx-feat__card:hover .hx-feat__media video { scale: 1.04; }
+.hx-feat__title { padding: 4px 4px 0; font-family: var(--serif); font-size: 26px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; }
+.hx-feat__meta { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 0 4px; font-size: 13px; color: var(--ink-2); }
+.hx-feat__meta strong { font-weight: 500; color: var(--ink); }
+.hx-feat__glare { position: absolute; inset: 0; z-index: 4; pointer-events: none; mix-blend-mode: soft-light; border-radius: inherit; }
 
 /* brand marquee */
 .hx-foot {
@@ -1829,7 +1795,7 @@ button {
     grid-template-rows: auto 1fr auto auto;
   }
   .hx-title { font-size: clamp(48px, 11vw, 120px); }
-  .hx-portrait { align-self: end; margin-bottom: clamp(40px, 6vh, 72px); }
+  .hx-feat { align-self: end; margin-bottom: clamp(40px, 6vh, 72px); }
   .nav { display: none; }
   .header__actions .status { display: none; }
   .menu-btn { display: inline-block; }
@@ -1843,8 +1809,7 @@ button {
     grid-template-areas: 'top' 'title' 'lead' 'foot';
     padding-top: calc(var(--header-h) + 36px);
   }
-  .hx-portrait { display: none; }
-  .hx-top__avatar { display: block; }
+  .hx-feat { display: none; }
   .hx-top__muted { display: none; }
   .hx-title { font-size: clamp(44px, 13vw, 96px); margin-top: clamp(40px, 10vh, 96px); line-height: 1.02; }
   .hx-ctas .btn { flex: 1 1 auto; }

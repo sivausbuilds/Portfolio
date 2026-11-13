@@ -1,3 +1,19 @@
+/* Newsreader (SIL Open Font License, see /fonts/Newsreader-OFL.txt), self-hosted, Latin subset */
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/Newsreader-Variable.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/Newsreader-Italic-Variable.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+
 /*
   Self-hosted licensed fonts. Put files in /public/fonts and uncomment.
 

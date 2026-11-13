@@ -5,7 +5,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { about, site } from '../content'
+import { site, work } from '../content'
+import { navigate } from '../lib/router'
+import { AutoVideo } from './Media'
+import ShinyText from './ShinyText'
 import { prefersReducedMotion, scrollTo } from '../lib/smooth'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
@@ -58,7 +61,7 @@ export function Hero() {
       if (reduced) return
       const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true }
       gsap.to('.hx-title', { yPercent: -14, opacity: 0.2, ease: 'none', scrollTrigger: st })
-      gsap.to('.hx-portrait', { yPercent: -18, ease: 'none', scrollTrigger: st })
+      gsap.to('.hx-feat', { yPercent: -18, ease: 'none', scrollTrigger: st })
       gsap.to('.hx-mesh', { scale: 1.15, yPercent: 10, ease: 'none', scrollTrigger: st })
       gsap.to('.hx-foot', { opacity: 0, y: -40, ease: 'none', scrollTrigger: { ...st, start: '15% top', end: '65% top' } })
     },
@@ -83,7 +86,6 @@ export function Hero() {
       <div className="hx-inner container">
         <motion.div className="hx-top" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease, delay: D }}>
           <span className="hx-top__who">
-            <img className="hx-top__avatar" src={about.photo} alt="" />
             <span>
               <strong>Sivadarshan U S</strong>
               <span className="hx-top__muted"> · Product Designer &amp; builder</span>
@@ -98,11 +100,13 @@ export function Hero() {
           </span>
           <span className="hx-line" aria-hidden>
             <span data-split>with a </span>
-            <em className="hx-grad">PM mindset.</em>
+            <em className="hx-grad">
+              <ShinyText text="PM mindset." color="#0f2b25" shineColor="#9cc2ad" speed={3.2} delay={2.4} shineWidth={34} softness={0.9} angle={110} />
+            </em>
           </span>
         </h1>
 
-        <Portrait />
+        <Featured />
 
         <motion.div className="hx-lead" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease, delay: D + 1.1 }}>
           <p className="hx-lead__text">{site.hero.intro}</p>
@@ -162,21 +166,25 @@ export function Hero() {
   )
 }
 
-/** Portrait with a duotone treatment and a soft 3D tilt that follows the pointer. */
-function Portrait() {
+/** Latest case study, playing — real work in place of a decorative card. Tilts gently toward the pointer. */
+function Featured() {
+  const item = work[0]
   const mx = useMotionValue(0)
   const my = useMotionValue(0)
-  const rx = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 140, damping: 18 })
-  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 140, damping: 18 })
-  const gx = useTransform(mx, [-0.5, 0.5], ['20%', '80%'])
-  const gy = useTransform(my, [-0.5, 0.5], ['10%', '70%'])
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [5, -5]), { stiffness: 140, damping: 18 })
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-7, 7]), { stiffness: 140, damping: 18 })
+  const glare = useTransform([mx, my], ([x, y]) => `radial-gradient(380px circle at ${(Number(x) + 0.5) * 100}% ${(Number(y) + 0.5) * 100}%, rgba(255,255,255,.5), transparent 60%)`)
+  const open = (e: React.MouseEvent) => {
+    e.preventDefault()
+    navigate(`/work/${item.slug}`)
+  }
 
   return (
-    <motion.figure
-      className="hx-portrait"
+    <motion.div
+      className="hx-feat"
       initial={{ opacity: 0, y: 50, scale: 0.94, filter: 'blur(10px)' }}
       animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-      transition={{ duration: 1.6, ease, delay: D + 0.5 }}
+      transition={{ duration: 1.6, ease, delay: D + 0.6 }}
       onPointerMove={(e) => {
         if (e.pointerType !== 'mouse') return
         const r = e.currentTarget.getBoundingClientRect()
@@ -188,26 +196,29 @@ function Portrait() {
         my.set(0)
       }}
     >
-      <motion.div className="hx-portrait__card" style={{ rotateX: rx, rotateY: ry }}>
-        <img src={about.photo} alt="Portrait of Sivadarshan" />
-        <span className="hx-portrait__tone" aria-hidden />
-        <motion.span
-          className="hx-portrait__glare"
-          aria-hidden
-          style={{ background: useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x} ${y}, rgba(255,255,255,.28), transparent 60%)`) }}
-        />
-        <LiquidGlass className="hx-portrait__chip" interactive={false}>
-          <span className="status">
-            <span className="status__dot" aria-hidden />
-            {site.status}
+      <motion.a href={`/work/${item.slug}`} onClick={open} className="hx-feat__card" style={{ rotateX: rx, rotateY: ry }}>
+        <LiquidGlass className="hx-feat__glass" interactive={false}>
+          <span className="hx-feat__head">
+            <span className="label">Latest case study</span>
+            <span className="hx-feat__go" aria-hidden>
+              <Arrow />
+            </span>
           </span>
+          <span className="hx-feat__media">
+            {item.cover?.kind === 'video' && <AutoVideo src={item.cover.src} />}
+          </span>
+          <span className="hx-feat__title">{item.name}</span>
+          <span className="hx-feat__meta">
+            {item.facts.highlights.slice(0, 2).map((h) => (
+              <span key={h.label}>
+                <strong>{h.value}</strong> {h.label}
+              </span>
+            ))}
+          </span>
+          <motion.span className="hx-feat__glare" aria-hidden style={{ background: glare }} />
         </LiquidGlass>
-        <figcaption className="hx-portrait__cap">
-          <span className="hx-portrait__name">Sivadarshan</span>
-          <span className="label">Bengaluru, India</span>
-        </figcaption>
-      </motion.div>
-    </motion.figure>
+      </motion.a>
+    </motion.div>
   )
 }
 
