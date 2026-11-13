@@ -137,6 +137,8 @@ function Stack({ items }: { items: CaseStudy[] }) {
         scrollTrigger: {
           trigger: '.stack__pin',
           start: 'top top',
+          // refresh before the About pin below, so a remount (filter change) can't leave About measuring stale positions
+          refreshPriority: 1,
           end: () => `+=${steps * window.innerHeight * 0.85}`,
           pin: true,
           scrub: 0.8,
@@ -171,7 +173,10 @@ function Stack({ items }: { items: CaseStudy[] }) {
         })
       })
 
-      requestAnimationFrame(() => ScrollTrigger.refresh())
+      requestAnimationFrame(() => {
+        ScrollTrigger.sort()
+        ScrollTrigger.refresh()
+      })
       return () => gsap.ticker.remove(decay)
     },
     { scope: root, dependencies: [items] },

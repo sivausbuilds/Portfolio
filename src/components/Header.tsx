@@ -4,6 +4,7 @@ import { site } from '../content'
 import { navigate } from '../lib/router'
 import { lockScroll, scrollTo } from '../lib/smooth'
 import { LiquidGlass } from './LiquidGlass'
+import ShinyText from './ShinyText'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -47,9 +48,11 @@ export function Header() {
     >
       <LiquidGlass className="header__bar">
         <a href="#top" className="brand" onClick={go('#top')} aria-label={`${site.name} — home`}>
-          <span className="brand__mark">{site.name}</span>
-          <span className="brand__sep" aria-hidden />
-          <span className="brand__role">{site.role}</span>
+          <Monogram />
+          <span className="brand__text">
+            <ShinyText className="brand__word" text={site.name} color="#0f2b25" shineColor="#9cc7ae" speed={2.4} delay={7} shineWidth={26} softness={0.9} angle={115} />
+            <span className="brand__role">{site.role}</span>
+          </span>
         </a>
 
         <nav className="nav" aria-label="Primary">
@@ -140,5 +143,32 @@ export function Arrow() {
     <svg className="arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
       <path d="M3.5 10.5l7-7M5 3.5h5.5V9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  )
+}
+
+/** "S" monogram: deep-green lacquered disc, hairline ring, italic serif initial and a periodic light sweep. */
+function Monogram() {
+  return (
+    <span className="brand__mono" aria-hidden>
+      <svg viewBox="0 0 40 40" width="36" height="36">
+        <defs>
+          <linearGradient id="mono-fill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#2c6250" />
+            <stop offset="0.55" stopColor="#163a31" />
+            <stop offset="1" stopColor="#0a211c" />
+          </linearGradient>
+          <radialGradient id="mono-gloss" cx="0.3" cy="0.18" r="0.75">
+            <stop offset="0" stopColor="#fff" stopOpacity="0.38" />
+            <stop offset="0.6" stopColor="#fff" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="20" cy="20" r="19.5" fill="url(#mono-fill)" />
+        <circle cx="20" cy="20" r="19.5" fill="url(#mono-gloss)" />
+        <circle className="brand__ring" cx="20" cy="20" r="16" fill="none" stroke="rgba(236,244,239,0.32)" strokeWidth="0.6" strokeDasharray="1.2 2.2" />
+        <text x="20.6" y="27.4" textAnchor="middle" fontFamily="Newsreader, Georgia, serif" fontStyle="italic" fontSize="22" fontWeight="400" fill="#f3f6f2">
+          S
+        </text>
+      </svg>
+    </span>
   )
 }

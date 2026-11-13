@@ -105,12 +105,6 @@ export function Hero() {
 
       <div className="hx-inner container">
         <motion.div className="hx-top" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease, delay: D }}>
-          <span className="hx-top__who">
-            <span>
-              <strong>Sivadarshan U S</strong>
-              <span className="hx-top__muted"> · Product Designer &amp; builder</span>
-            </span>
-          </span>
           <Clock />
         </motion.div>
 
