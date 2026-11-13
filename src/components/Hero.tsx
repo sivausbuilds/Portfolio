@@ -1,6 +1,6 @@
 import { useGSAP } from '@gsap/react'
 import { MeshGradient } from '@paper-design/shaders-react'
-import { animate, splitText, stagger } from 'animejs'
+import { animate, stagger } from 'animejs'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
@@ -12,7 +12,6 @@ import ShinyText from './ShinyText'
 import { prefersReducedMotion, scrollTo } from '../lib/smooth'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
-import { Magnetic } from './Magnetic'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -26,44 +25,64 @@ export function Hero() {
   const root = useRef<HTMLElement>(null)
   const reduced = typeof window !== 'undefined' && prefersReducedMotion()
 
-  // Headline: anime.js splits the first line and "with a" into characters that rise out of a clip;
-  // the gradient phrase arrives as one piece so its colour sweep stays continuous.
+  // Headline: each line rises out of a soft clip with a blur, one after the other (anime.js).
   useEffect(() => {
     const el = root.current
     if (!el || reduced) return
-    const split = splitText(el.querySelectorAll('[data-split]'), { chars: { wrap: 'clip' } })
-    const chars = split.chars
-    const a1 = animate(chars, {
-      y: ['110%', '0%'],
-      rotate: [6, 0],
-      duration: 1300,
-      delay: stagger(26, { start: D * 1000 + 150 }),
-      ease: 'outExpo',
-    })
-    const a2 = animate(el.querySelectorAll('.hx-grad'), {
+    const a = animate(el.querySelectorAll('.hx-line__inner'), {
+      y: ['112%', '0%'],
+      rotate: [2.5, 0],
       opacity: [0, 1],
-      y: ['30%', '0%'],
-      filter: ['blur(14px)', 'blur(0px)'],
-      duration: 1600,
-      delay: D * 1000 + 150 + chars.length * 26,
+      filter: ['blur(12px)', 'blur(0px)'],
+      duration: 1800,
+      delay: stagger(160, { start: D * 1000 + 100 }),
       ease: 'outExpo',
     })
     return () => {
-      a1.revert()
-      a2.revert()
-      split.revert()
+      a.revert()
     }
   }, [reduced])
 
-  // Scroll: headline lifts and softens, portrait drifts, mesh slowly zooms
+  // Mesh only animates while the hero is on screen
+  const [meshOn, setMeshOn] = useState(true)
+  useEffect(() => {
+    const el = root.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setMeshOn(e.isIntersecting), { threshold: 0 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  // Scroll: headline lifts, the case card drifts, mesh slowly zooms. The brand row stays put.
+  // The brand marquee runs on GSAP so scrolling speeds it up, then it eases back.
   useGSAP(
     () => {
-      if (reduced) return
+      const track = root.current?.querySelector('.hx-marquee__track')
+      const loop = track ? gsap.to(track, { xPercent: -50, duration: 46, ease: 'none', repeat: -1 }) : null
+      if (reduced) {
+        loop?.pause()
+        return
+      }
       const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true }
-      gsap.to('.hx-title', { yPercent: -14, opacity: 0.2, ease: 'none', scrollTrigger: st })
-      gsap.to('.hx-feat', { yPercent: -18, ease: 'none', scrollTrigger: st })
-      gsap.to('.hx-mesh', { scale: 1.15, yPercent: 10, ease: 'none', scrollTrigger: st })
-      gsap.to('.hx-foot', { opacity: 0, y: -40, ease: 'none', scrollTrigger: { ...st, start: '15% top', end: '65% top' } })
+      gsap.to('.hx-title', { yPercent: -10, ease: 'none', scrollTrigger: st })
+      gsap.to('.hx-feat', { yPercent: -14, ease: 'none', scrollTrigger: st })
+      gsap.to('.hx-mesh', { scale: 1.12, yPercent: 8, ease: 'none', scrollTrigger: st })
+
+      let boost = 1
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: 'top top',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          boost = Math.min(4, 1 + Math.abs(self.getVelocity()) / 600)
+        },
+      })
+      const decay = () => {
+        boost += (1 - boost) * 0.05
+        loop?.timeScale(boost)
+      }
+      gsap.ticker.add(decay)
+      return () => gsap.ticker.remove(decay)
     },
     { scope: root },
   )
@@ -76,9 +95,10 @@ export function Hero() {
           colors={['#f5f5f7', '#e3ede6', '#b9cfc1', '#f1e9dc', '#f5f5f7', '#93b5a3']}
           distortion={0.8}
           swirl={0.15}
-          speed={reduced ? 0 : 0.12}
+          speed={reduced || !meshOn ? 0 : 0.12}
           grainOverlay={0.06}
-          maxPixelCount={1920 * 1080}
+          minPixelRatio={1}
+          maxPixelCount={1440 * 900}
         />
         <span className="hx-bg__fade" />
       </div>
@@ -95,15 +115,24 @@ export function Hero() {
         </motion.div>
 
         <h1 className="hx-title" aria-label="Product Designer with a PM mindset.">
-          <span className="hx-line" data-split aria-hidden>
-            Product Designer
-          </span>
-          <span className="hx-line" aria-hidden>
-            <span data-split>with a </span>
-            <em className="hx-grad">
-              <ShinyText text="PM mindset." color="#0f2b25" shineColor="#9cc2ad" speed={3.2} delay={2.4} shineWidth={34} softness={0.9} angle={110} />
-            </em>
-          </span>
+          {['Product Designer', 'with a PM mindset.'].map((line, i) => (
+            <span className={`hx-line hx-line--${i}`} key={line} aria-hidden>
+              <span className="hx-line__inner">
+                <span className="hx-gt">{line}</span>
+                <ShinyText
+                  className="hx-shine"
+                  text={line}
+                  color="rgba(255, 255, 255, 0)"
+                  shineColor="rgba(222, 240, 229, 0.95)"
+                  speed={3.4}
+                  delay={3.2}
+                  shineWidth={18}
+                  softness={0.95}
+                  angle={112}
+                />
+              </span>
+            </span>
+          ))}
         </h1>
 
         <Featured />
@@ -111,7 +140,6 @@ export function Hero() {
         <motion.div className="hx-lead" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease, delay: D + 1.1 }}>
           <p className="hx-lead__text">{site.hero.intro}</p>
           <div className="hx-ctas">
-            <Magnetic>
               <a
                 href="#work"
                 className="btn btn--shimmer"
@@ -125,8 +153,6 @@ export function Hero() {
                   View selected work <Arrow />
                 </span>
               </a>
-            </Magnetic>
-            <Magnetic>
               <LiquidGlass
                 as="a"
                 href="#about"
@@ -138,7 +164,6 @@ export function Hero() {
               >
                 About me
               </LiquidGlass>
-            </Magnetic>
           </div>
         </motion.div>
 

@@ -181,7 +181,7 @@ button {
   font-weight: 500;
   letter-spacing: -0.005em;
   white-space: nowrap;
-  transition: transform 0.5s var(--ease), background 0.3s, box-shadow 0.4s var(--ease);
+  transition: transform 0.6s var(--ease), background 0.3s, box-shadow 0.6s var(--ease);
 }
 .btn--sm {
   --h: 40px;
@@ -198,6 +198,9 @@ button {
 .btn--ink:hover {
   background: #163a32;
 }
+.btn-wrap { display: inline-flex; }
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0) scale(0.985); }
 .btn .arrow {
   transition: transform 0.5s var(--ease);
 }
@@ -486,21 +489,42 @@ button {
   letter-spacing: -0.04em;
   color: var(--ink);
 }
-.hx-line { display: block; white-space: nowrap; }
-.hx-line + .hx-line { margin-top: 0.02em; }
-/* anime.js clip wrappers: leave room for descenders and italics */
-.hx-title [data-split] > span,
-.hx-title [data-split] span[style] { padding-bottom: 0.06em; }
-
-/* "PM mindset." — italic; the moving shine comes from ReactBits ShinyText */
-.hx-grad {
-  display: inline-block;
-  font-style: italic;
-  letter-spacing: -0.03em;
-  padding: 0 0.06em 0.12em 0.02em;
-  margin-bottom: -0.12em;
+/* Whole headline: italic, slow-moving gradient, with a ShinyText highlight layered on top */
+.hx-title { font-style: italic; letter-spacing: -0.035em; }
+.hx-line {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  /* room for italic overhang and descenders inside the reveal clip */
+  padding: 0 0.14em 0.16em 0.02em;
+  margin: 0 -0.14em -0.16em -0.02em;
 }
-.hx-grad .shiny-text { padding: 0 0.08em 0.1em 0; }
+.hx-line + .hx-line { margin-top: calc(0.02em - 0.16em); }
+.hx-line__inner { position: relative; display: inline-block; transform-origin: 0 100%; will-change: transform; }
+.hx-gt {
+  display: inline-block;
+  padding-right: 0.08em;
+  background: linear-gradient(100deg, #0d2621 0%, #173f35 22%, #2f6b56 42%, #5f917b 52%, #2f6b56 62%, #173f35 80%, #0d2621 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: grad-sweep 16s ease-in-out infinite alternate;
+}
+.hx-line--1 .hx-gt { animation-delay: -8s; }
+.hx-shine {
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  padding-right: 0.08em;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+@keyframes grad-sweep {
+  from { background-position: 100% 50%; }
+  to { background-position: 0% 50%; }
+}
 
 .hx-lead {
   grid-area: lead;
@@ -538,7 +562,7 @@ button {
   z-index: -2;
   border-radius: inherit;
   background: conic-gradient(from var(--shimmer-angle), transparent 0 70%, rgba(214, 238, 224, 0.95) 82%, transparent 92%);
-  animation: shimmer-spin 3.6s linear infinite;
+  animation: shimmer-spin 5s linear infinite;
 }
 .btn--shimmer::after {
   content: '';
@@ -564,10 +588,10 @@ button {
   width: 40%;
   background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.22), transparent);
   transform: skewX(-20deg);
-  animation: shimmer-sweep 3.6s var(--ease) infinite;
+  animation: shimmer-sweep 5s var(--ease) infinite;
 }
 .btn--shimmer__label { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 10px; }
-.btn--shimmer:hover { background: var(--ink); }
+.btn--shimmer:hover { background: var(--ink); box-shadow: 0 18px 36px -14px rgba(15, 43, 37, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.16); }
 @keyframes shimmer-spin { to { --shimmer-angle: 360deg; } }
 @keyframes shimmer-sweep {
   0%, 55% { left: -40%; }
@@ -622,8 +646,7 @@ button {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
 }
-.hx-marquee__track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
-.hx-marquee:hover .hx-marquee__track { animation-play-state: paused; }
+.hx-marquee__track { display: flex; width: max-content; will-change: transform; }
 .hx-marquee__set { display: flex; }
 .hx-marquee__item {
   display: inline-flex;

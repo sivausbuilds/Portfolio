@@ -11,7 +11,6 @@ import { BlockView } from './CaseBlocks'
 import { Cover } from './Cover'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
-import { Magnetic } from './Magnetic'
 import { AutoVideo, BrowserFrame } from './Media'
 import { plain, Rich } from './Rich'
 
@@ -229,11 +228,11 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
           <span className="cs-next__title">
             <Rich text={next.title} />
           </span>
-          <Magnetic>
+          <span className="btn-wrap">
             <span className="btn btn--ink">
               View case <Arrow />
             </span>
-          </Magnetic>
+          </span>
         </a>
       </div>
 

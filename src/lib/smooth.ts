@@ -12,8 +12,9 @@ export const prefersReducedMotion = () =>
 export function initSmoothScroll() {
   if (lenis || prefersReducedMotion()) return () => {}
   lenis = new Lenis({
-    duration: 1.15,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    lerp: 0.075, // lower = silkier glide
+    wheelMultiplier: 0.95,
+    touchMultiplier: 1.1,
     smoothWheel: true,
   })
   lenis.on('scroll', ScrollTrigger.update)

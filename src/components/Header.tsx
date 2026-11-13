@@ -4,7 +4,6 @@ import { site } from '../content'
 import { navigate } from '../lib/router'
 import { lockScroll, scrollTo } from '../lib/smooth'
 import { LiquidGlass } from './LiquidGlass'
-import { Magnetic } from './Magnetic'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -68,12 +67,12 @@ export function Header() {
             <span className="status__dot" aria-hidden />
             {site.status}
           </span>
-          <Magnetic>
+          <span className="btn-wrap">
             <a href="#contact" onClick={go('#contact')} className="btn btn--ink btn--sm">
               Let’s talk
               <Arrow />
             </a>
-          </Magnetic>
+          </span>
           <button
             className="menu-btn"
             aria-label={open ? 'Close menu' : 'Open menu'}
