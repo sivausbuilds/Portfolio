@@ -42,10 +42,6 @@ export function Statement() {
           ))}
         </p>
       </div>
-      <div id="work" className="container next">
-        <span className="rule rule--static" />
-        <p className="label">(02) — Selected work · next section</p>
-      </div>
     </section>
   )
 }

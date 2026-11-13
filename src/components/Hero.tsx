@@ -25,7 +25,7 @@ export function Hero() {
       // Headline drifts up & softens as you leave the hero
       gsap.to('.hero__title', { yPercent: -18, opacity: 0.15, filter: 'blur(4px)', ease: 'none', scrollTrigger: st })
       gsap.to('.hero__aside', { yPercent: -40, ease: 'none', scrollTrigger: st })
-      gsap.to('.hero__foot', { yPercent: 30, opacity: 0, ease: 'none', scrollTrigger: { ...st, end: '60% top' } })
+      gsap.to('.hero__foot', { y: -60, opacity: 0, ease: 'none', scrollTrigger: { ...st, start: '10% top', end: '70% top' } })
 
       // Aurora parallax — each blob at its own depth
       gsap.utils.toArray<HTMLElement>('.aurora__blob').forEach((el, i) => {

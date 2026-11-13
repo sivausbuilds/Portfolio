@@ -3,6 +3,7 @@ import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { GlassFilter } from './components/LiquidGlass'
 import { Statement } from './components/Statement'
+import { Work } from './components/Work'
 import { initSmoothScroll } from './lib/smooth'
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <main>
         <Hero />
         <Statement />
+        <Work />
       </main>
     </>
   )

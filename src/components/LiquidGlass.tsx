@@ -20,6 +20,8 @@ type Props = {
   children?: ReactNode
   /** follow the pointer with a specular highlight */
   interactive?: boolean
+  /** lens distortion on the backdrop; off for small or nested surfaces */
+  refract?: boolean
 } & Record<string, unknown>
 
 /**
@@ -28,7 +30,7 @@ type Props = {
  *  tint    → milky body
  *  shine   → rim light, inner bevel and a pointer-driven specular
  */
-export function LiquidGlass({ as: Tag = 'div', className = '', style, children, interactive = true, ...rest }: Props) {
+export function LiquidGlass({ as: Tag = 'div', className = '', style, children, interactive = true, refract = true, ...rest }: Props) {
   const ref = useRef<HTMLElement>(null)
 
   const onMove = (e: PointerEvent<HTMLElement>) => {
@@ -39,7 +41,7 @@ export function LiquidGlass({ as: Tag = 'div', className = '', style, children, 
   }
 
   return (
-    <Tag ref={ref} className={`glass ${className}`} style={style} onPointerMove={onMove} {...rest}>
+    <Tag ref={ref} className={`glass ${refract ? '' : 'glass--flat'} ${className}`} style={style} onPointerMove={onMove} {...rest}>
       <span className="glass__refract" aria-hidden />
       <span className="glass__tint" aria-hidden />
       <span className="glass__shine" aria-hidden />
