@@ -37,3 +37,8 @@ export const lockScroll = (lock: boolean) => {
   if (lenis) lock ? lenis.stop() : lenis.start()
   document.documentElement.style.overflow = lock ? 'hidden' : ''
 }
+
+export function resetScroll() {
+  if (lenis) lenis.scrollTo(0, { immediate: true, force: true })
+  window.scrollTo(0, 0)
+}

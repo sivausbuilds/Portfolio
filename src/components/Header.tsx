@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { site } from '../content'
+import { navigate } from '../lib/router'
 import { lockScroll, scrollTo } from '../lib/smooth'
 import { LiquidGlass } from './LiquidGlass'
 import { Magnetic } from './Magnetic'
@@ -29,6 +30,11 @@ export function Header() {
   const go = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault()
     setOpen(false)
+    if (window.location.pathname !== '/') return navigate('/', href === '#top' ? undefined : href)
+    if (!document.querySelector(href)) {
+      if (href === '#contact') window.location.href = `mailto:${site.email}`
+      return
+    }
     // let the sheet close before scrolling
     setTimeout(() => scrollTo(href), open ? 350 : 0)
   }
