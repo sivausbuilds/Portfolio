@@ -36,25 +36,26 @@ export const site = {
   About — the paragraph reveals word by word on scroll.
   Plain strings are text; objects become interactive pills with a hover/tap card.
 */
-export type AboutToken = string | { text: string; icon: 'avatar' | 'spark' | 'bag' | 'grid' | 'chart'; title: string; body: string }
+/** Plain strings are text. `{ text, note }` is a highlighted term with a numbered side note; `{ text, accent }` is just emphasised. */
+export type AboutToken = string | { text: string; accent?: true; note?: { title: string; body: string } }
 
 export const about = {
   paragraph: [
-    'Hi, I’m',
-    { text: 'Sivadarshan', icon: 'avatar', title: 'Product Designer', body: 'Designing with a PM mindset — I own the why as much as the how.' },
-    '— a product designer who thinks in outcomes, not screens. Over',
-    { text: '3 years', icon: 'spark', title: 'Experience', body: 'Three years of end-to-end product work, from discovery to post-launch.' },
+    'I’m',
+    { text: 'Sivadarshan', accent: true },
+    '— a product designer who thinks in outcomes, not screens. For',
+    { text: '3 years', note: { title: 'Experience', body: 'End-to-end product work, from the first discovery call to what happens after launch.' } },
     'I’ve shipped',
-    { text: '20+ products', icon: 'grid', title: 'Shipped', body: 'Stores, custom Shopify sections and my own products like Theliv and Finly — designed and built by me.' },
+    { text: '20+ products', note: { title: 'Shipped', body: 'Stores, custom Shopify sections and my own products like Theliv and Finly, designed and built by me.' } },
     'across',
-    { text: 'e-commerce', icon: 'bag', title: 'E-commerce', body: '14 Shopify stores designed and built end to end, for brands in India, UAE, UK and Australia.' },
-    'and digital products — framing the problem, aligning the team, and following the work to',
-    { text: 'the metric after launch.', icon: 'chart', title: 'Measured', body: 'I find where people hesitate, design and build the fix, then check the numbers.' },
+    { text: 'e-commerce', note: { title: 'E-commerce', body: '14 Shopify stores built end to end for brands in India, UAE, UK and Australia.' } },
+    'and digital products: framing the problem, aligning the team, and following the work all the way to',
+    { text: 'the metric after launch.', note: { title: 'Measured', body: 'I find where people hesitate, design and build the fix, then check the numbers.' } },
   ] as AboutToken[],
   stats: [
     { value: 20, suffix: '+', label: 'Brands' },
     { value: 14, suffix: '', label: 'Stores built end to end' },
-    { value: 4, suffix: '', label: 'Countries: India, UAE, UK, Australia' },
+    { value: 4, suffix: '', label: 'Countries' },
   ],
   principles: [
     { title: 'Discover — find the real problem', body: 'I start with the person who is stuck: calls, recordings, store data and where they drop off. For Theliv that was the revision cycles behind every discovery call.' },
