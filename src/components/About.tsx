@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { about, type AboutToken } from '../content'
 import { prefersReducedMotion } from '../lib/smooth'
 import { LiquidGlass } from './LiquidGlass'
-import ShinyText from './ShinyText'
+import { GradientText } from './GradientText'
 
 gsap.registerPlugin(ScrollTrigger)
 const ease = [0.22, 1, 0.36, 1] as const
@@ -87,7 +87,7 @@ export function About() {
                 <Term key={i} text={t.text} idx={t.idx as number} note={t.note!} active={hover === t.idx} setHover={setHover} />
               ) : (
                 <span key={i} className="w accent">
-                  <Gradient text={t.text} delay={5} />{' '}
+                  <GradientText text={t.text} delay={5} />{' '}
                 </span>
               ),
             )}
@@ -100,26 +100,6 @@ export function About() {
         <Principles />
       </div>
     </section>
-  )
-}
-
-/** Gradient text with a ReactBits ShinyText highlight passing over it. */
-function Gradient({ text, delay }: { text: string; delay: number }) {
-  return (
-    <span className="gtext">
-      <span className="gtext__fill">{text}</span>
-      <ShinyText
-        className="gtext__shine"
-        text={text}
-        color="rgba(255, 255, 255, 0)"
-        shineColor="rgba(226, 243, 233, 0.95)"
-        speed={2.8}
-        delay={delay}
-        shineWidth={26}
-        softness={0.95}
-        angle={112}
-      />
-    </span>
   )
 }
 
@@ -182,7 +162,7 @@ function Term({
       onFocus={(e) => e.currentTarget.matches(':focus-visible') && show()}
       onBlur={hide}
     >
-      <Gradient text={text} delay={4 + idx * 0.7} />
+      <GradientText text={text} delay={4 + idx * 0.7} />
       <sup className="term__num">{num}</sup>
       <AnimatePresence>
         {open && (

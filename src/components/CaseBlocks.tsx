@@ -5,6 +5,7 @@ import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 import { AutoVideo, BrowserFrame, PhoneFrame } from './Media'
 import { Rich } from './Rich'
+import { GradientText } from './GradientText'
 
 const ease = [0.22, 1, 0.36, 1] as const
 const reveal = {
@@ -23,7 +24,7 @@ export function BlockView({ block, item }: { block: Block; item: CaseStudy }) {
         </motion.p>
       )
     case 'goal':
-      return <Callout label="Goal" text={block.text} tone="goal" />
+      return <Callout label="The goal" text={block.text} tone="goal" />
     case 'why':
       return <Callout label="Why this design" text={block.text} tone="why" />
     case 'journey':
@@ -385,7 +386,7 @@ function CountUp({ value }: { value: string }) {
 
   return (
     <span ref={ref} className="kpi__value">
-      {text}
+      <GradientText text={text} delay={3} />
     </span>
   )
 }

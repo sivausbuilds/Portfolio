@@ -13,6 +13,7 @@ import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 import { AutoVideo, BrowserFrame } from './Media'
 import { plain, Rich } from './Rich'
+import { GradientText } from './GradientText'
 
 gsap.registerPlugin(ScrollTrigger)
 const ease = [0.22, 1, 0.36, 1] as const
@@ -26,6 +27,9 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
   const coverY = useTransform(scrollYProgress, [0, 1], ['-5%', '5%'])
   const coverScale = useTransform(scrollYProgress, [0, 0.5], [0.94, 1])
   const [active, setActive] = useState(item.chapters[0].id)
+  const words = JSON.stringify(item.chapters).replace(/[^a-zA-Z ]/g, ' ').split(/\s+/).length
+  const readMins = Math.max(1, Math.round(words / 220))
+  const results = item.chapters.find((c) => /result|outcome/.test(c.id))
   const [barVisible, setBarVisible] = useState(false)
 
   useEffect(() => {
@@ -83,13 +87,13 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
         </div>
 
         <motion.p className="label cs-hero__eyebrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.8 }}>
-          {item.kicker} · {item.year}
+          {item.kicker} · {item.year} · {readMins} min read
         </motion.p>
 
         <h1 className="cs-hero__title">
           <span className="line">
             <motion.span className="line__inner" initial={{ y: '105%' }} animate={{ y: '0%' }} transition={{ duration: 1.3, ease, delay: 0.3 }}>
-              <Rich text={item.title} />
+              <Rich text={item.title} fancy />
             </motion.span>
           </span>
         </h1>
@@ -102,6 +106,28 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
                 <li key={t}>{t}</li>
               ))}
             </ul>
+            <div className="cs-actions">
+              {results && (
+                <a
+                  href={`#cs-${results.id}`}
+                  className="btn btn--shimmer"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    scrollTo(`#cs-${results.id}`)
+                  }}
+                >
+                  <span className="btn--shimmer__sweep" aria-hidden />
+                  <span className="btn--shimmer__label">
+                    Skip to results <span className="cs-actions__down" aria-hidden>↓</span>
+                  </span>
+                </a>
+              )}
+              {item.facts.primary && (
+                <LiquidGlass as="a" href={item.facts.primary.href} target="_blank" rel="noopener noreferrer" className="btn btn--glass">
+                  {item.facts.primary.label} <Arrow />
+                </LiquidGlass>
+              )}
+            </div>
           </motion.div>
           <dl className="meta">
             {item.meta.map((m, i) => (
@@ -112,6 +138,27 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
             ))}
           </dl>
         </div>
+
+        {/* Impact first: the numbers a reviewer is looking for */}
+        <motion.div
+          className="cs-impact"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease, delay: 0.85 }}
+          aria-label="Impact"
+        >
+          <span className="label cs-impact__label">Impact at a glance</span>
+          <div className="cs-impact__row">
+            {item.facts.highlights.map((h, i) => (
+              <div key={h.label} className="cs-impact__item">
+                <span className="cs-impact__value">
+                  <GradientText text={h.value} delay={2.5 + i * 0.5} />
+                </span>
+                <span className="cs-impact__desc">{h.label}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </header>
 
       <motion.div ref={coverRef} className="cs-cover container" initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, ease, delay: 0.6 }}>
@@ -132,41 +179,30 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
         </motion.div>
       </motion.div>
 
-      {/* At a glance — the parts nobody should miss */}
+      {/* The story in three steps — the outcome card carries the most weight */}
       <section className="cs-glance container" aria-label="At a glance">
-        {[
-          ['01', 'The problem', item.facts.problem],
-          ['02', 'What I built', item.facts.built],
-          ['03', 'The outcome', item.facts.outcome],
-        ].map(([n, k, v], i) => (
-          <motion.div
-            key={k}
-            className="cs-glance__col"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{ duration: 1, ease, delay: i * 0.1 }}
-          >
-            <span className="label">
-              {n} — {k}
-            </span>
-            <p>{v}</p>
-          </motion.div>
-        ))}
-        <motion.div
-          className="cs-glance__hl"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          {item.facts.highlights.map((h) => (
-            <div key={h.label}>
-              <strong>{h.value}</strong>
-              <span className="label">{h.label}</span>
-            </div>
+        <p className="label cs-glance__label">The short version</p>
+        <div className="cs-glance__row">
+          {[
+            ['01', 'The problem', item.facts.problem],
+            ['02', 'What I built', item.facts.built],
+            ['03', 'The outcome', item.facts.outcome],
+          ].map(([n, k, v], i) => (
+            <motion.div
+              key={k}
+              className={`cs-glance__card ${i === 2 ? 'is-key' : ''}`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-10% 0px' }}
+              transition={{ duration: 1, ease, delay: i * 0.12 }}
+            >
+              <span className="cs-glance__num">{n}</span>
+              <span className="label">{k}</span>
+              <p>{v}</p>
+              {i < 2 && <span className="cs-glance__arrow" aria-hidden>→</span>}
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       <div className="cs-body container">
@@ -194,7 +230,7 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
         )}
 
         <div className={`cs-content ${item.chapters.length > 1 ? '' : 'cs-content--solo'}`}>
-          {item.chapters.map((c) => (
+          {item.chapters.map((c, ci) => (
             <section key={c.id} id={`cs-${c.id}`} className="cs-chapter">
               <motion.header
                 className="cs-chapter__head"
@@ -203,7 +239,10 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
                 viewport={{ once: true, margin: '-10% 0px' }}
                 transition={{ duration: 1, ease }}
               >
-                <p className="label">{c.kicker}</p>
+                <span className="cs-chapter__idx" aria-hidden>
+                  <GradientText text={String(ci + 1).padStart(2, '0')} shimmer={false} />
+                </span>
+                {!/^Chapter \d+/.test(c.kicker) && <p className="label">{c.kicker}</p>}
                 <h2 className="cs-chapter__title">{c.title}</h2>
               </motion.header>
               {c.blocks.map((b, k) => (
@@ -226,7 +265,7 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
         >
           <span className="label">Next case study · {next.kicker}</span>
           <span className="cs-next__title">
-            <Rich text={next.title} />
+            <Rich text={next.title} fancy />
           </span>
           <span className="btn-wrap">
             <span className="btn btn--ink">
