@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import { useRef, type ReactNode } from 'react'
 
 export function Magnetic({ children, strength = 0.28 }: { children: ReactNode; strength?: number }) {

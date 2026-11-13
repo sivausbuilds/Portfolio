@@ -1,4 +1,4 @@
-import { AnimatePresence, LayoutGroup, motion, useInView, animate } from 'framer-motion'
+import { AnimatePresence, LayoutGroup, motion, useInView, animate } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import type { Block, CaseStudy, FlowNode } from '../data/work'
 import { Arrow } from './Header'

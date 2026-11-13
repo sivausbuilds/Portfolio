@@ -1,5 +1,5 @@
 import { useGSAP } from '@gsap/react'
-import { AnimatePresence, LayoutGroup, motion, useMotionValue, useSpring } from 'framer-motion'
+import { AnimatePresence, LayoutGroup, motion, useMotionValue, useSpring } from 'motion/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useMemo, useRef, useState } from 'react'

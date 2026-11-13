@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { site } from '../content'
 import { navigate } from '../lib/router'

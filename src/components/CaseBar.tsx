@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'motion/react'
 import { useEffect, useState } from 'react'
 import type { CaseStudy } from '../data/work'
 import { lockScroll, scrollTo } from '../lib/smooth'

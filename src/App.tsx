@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useLayoutEffect } from 'react'
 import { About } from './components/About'

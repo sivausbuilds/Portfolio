@@ -1,9 +1,11 @@
 import { useGSAP } from '@gsap/react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { MeshGradient } from '@paper-design/shaders-react'
+import { animate, splitText, stagger } from 'animejs'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { site } from '../content'
+import { about, site } from '../content'
 import { prefersReducedMotion, scrollTo } from '../lib/smooth'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
@@ -12,197 +14,215 @@ import { Magnetic } from './Magnetic'
 gsap.registerPlugin(ScrollTrigger)
 
 const ease = [0.22, 1, 0.36, 1] as const
-const D = 0.35 // global intro delay
+const D = 0.3 // intro delay (s)
+
+/** Client brands from the work so far (own products like Theliv and Finly are left out). */
+const BRANDS = ['Varak', 'OffNorth', 'Panache', 'ANiiVEXX', 'Tarama Jeans', 'SuperGlamourous', 'Barqat Elixirs', 'Cordori', 'The Staple', 'Kalbeliya']
 
 export function Hero() {
   const root = useRef<HTMLElement>(null)
+  const reduced = typeof window !== 'undefined' && prefersReducedMotion()
 
+  // Headline: anime.js splits the first line and "with a" into characters that rise out of a clip;
+  // the gradient phrase arrives as one piece so its colour sweep stays continuous.
+  useEffect(() => {
+    const el = root.current
+    if (!el || reduced) return
+    const split = splitText(el.querySelectorAll('[data-split]'), { chars: { wrap: 'clip' } })
+    const chars = split.chars
+    const a1 = animate(chars, {
+      y: ['110%', '0%'],
+      rotate: [6, 0],
+      duration: 1300,
+      delay: stagger(26, { start: D * 1000 + 150 }),
+      ease: 'outExpo',
+    })
+    const a2 = animate(el.querySelectorAll('.hx-grad'), {
+      opacity: [0, 1],
+      y: ['30%', '0%'],
+      filter: ['blur(14px)', 'blur(0px)'],
+      duration: 1600,
+      delay: D * 1000 + 150 + chars.length * 26,
+      ease: 'outExpo',
+    })
+    return () => {
+      a1.revert()
+      a2.revert()
+      split.revert()
+    }
+  }, [reduced])
+
+  // Scroll: headline lifts and softens, portrait drifts, mesh slowly zooms
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return
+      if (reduced) return
       const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true }
-
-      // Headline drifts up & softens as you leave the hero
-      gsap.to('.hero__title', { yPercent: -18, opacity: 0.15, filter: 'blur(4px)', ease: 'none', scrollTrigger: st })
-      gsap.to('.hero__aside', { yPercent: -40, ease: 'none', scrollTrigger: st })
-      gsap.to('.hero__foot', { y: -60, opacity: 0, ease: 'none', scrollTrigger: { ...st, start: '10% top', end: '70% top' } })
-
-      // Aurora parallax — each blob at its own depth
-      gsap.utils.toArray<HTMLElement>('.aurora__blob').forEach((el, i) => {
-        gsap.to(el, { yPercent: (i + 1) * 22, scale: 1 + i * 0.08, ease: 'none', scrollTrigger: st })
-      })
-
-      // Pointer parallax on desktop
-      const mm = gsap.matchMedia()
-      mm.add('(pointer: fine)', () => {
-        const qx = gsap.quickTo('.aurora', 'x', { duration: 1.6, ease: 'power3' })
-        const qy = gsap.quickTo('.aurora', 'y', { duration: 1.6, ease: 'power3' })
-        const cx = gsap.quickTo('.hero__card', 'x', { duration: 1.2, ease: 'power3' })
-        const cy = gsap.quickTo('.hero__card', 'y', { duration: 1.2, ease: 'power3' })
-        const onMove = (e: PointerEvent) => {
-          const nx = e.clientX / innerWidth - 0.5
-          const ny = e.clientY / innerHeight - 0.5
-          qx(nx * -40); qy(ny * -30); cx(nx * 14); cy(ny * 10)
-        }
-        window.addEventListener('pointermove', onMove)
-        return () => window.removeEventListener('pointermove', onMove)
-      })
+      gsap.to('.hx-title', { yPercent: -14, opacity: 0.2, ease: 'none', scrollTrigger: st })
+      gsap.to('.hx-portrait', { yPercent: -18, ease: 'none', scrollTrigger: st })
+      gsap.to('.hx-mesh', { scale: 1.15, yPercent: 10, ease: 'none', scrollTrigger: st })
+      gsap.to('.hx-foot', { opacity: 0, y: -40, ease: 'none', scrollTrigger: { ...st, start: '15% top', end: '65% top' } })
     },
     { scope: root },
   )
 
   return (
-    <section ref={root} id="top" className="hero">
-      <Aurora />
+    <section ref={root} id="top" className="hx">
+      <div className="hx-bg" aria-hidden>
+        <MeshGradient
+          className="hx-mesh"
+          colors={['#f5f5f7', '#e3ede6', '#b9cfc1', '#f1e9dc', '#f5f5f7', '#93b5a3']}
+          distortion={0.8}
+          swirl={0.15}
+          speed={reduced ? 0 : 0.12}
+          grainOverlay={0.06}
+          maxPixelCount={1920 * 1080}
+        />
+        <span className="hx-bg__fade" />
+      </div>
 
-      <div className="hero__inner container">
-        <motion.div
-          className="hero__eyebrow label"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: D }}
-        >
-          <span>{site.hero.eyebrow}</span>
-          <span className="hero__eyebrow-rule" aria-hidden />
-          <span>©{site.year}</span>
+      <div className="hx-inner container">
+        <motion.div className="hx-top" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease, delay: D }}>
+          <span className="hx-top__who">
+            <img className="hx-top__avatar" src={about.photo} alt="" />
+            <span>
+              <strong>Sivadarshan U S</strong>
+              <span className="hx-top__muted"> · Product Designer &amp; builder</span>
+            </span>
+          </span>
+          <Clock />
         </motion.div>
 
-        <h1 className="hero__title" aria-label={site.hero.lines.map((l) => l.map((p) => p.t).join('')).join(' ')}>
-          {site.hero.lines.map((line, i) => (
-            <span className="line" key={i} aria-hidden>
-              <motion.span
-                className="line__inner"
-                initial={{ y: '105%', rotate: 2.5 }}
-                animate={{ y: '0%', rotate: 0 }}
-                transition={{ duration: 1.3, ease, delay: D + 0.15 + i * 0.12 }}
-              >
-                {line.map((p, j) => (p.italic ? <em key={j}>{p.t}</em> : <span key={j}>{p.t}</span>))}
-              </motion.span>
-            </span>
-          ))}
+        <h1 className="hx-title" aria-label="Product Designer with a PM mindset.">
+          <span className="hx-line" data-split aria-hidden>
+            Product Designer
+          </span>
+          <span className="hx-line" aria-hidden>
+            <span data-split>with a </span>
+            <em className="hx-grad">PM mindset.</em>
+          </span>
         </h1>
 
-        <div className="hero__aside">
-          <motion.div
-            className="hero__card-wrap"
-            initial={{ opacity: 0, y: 40, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.4, ease, delay: D + 0.6 }}
-          >
-            <MindsetCard />
-          </motion.div>
-        </div>
+        <Portrait />
 
-        <div className="hero__foot">
-          <motion.span
-            className="rule"
-            aria-hidden
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1.6, ease, delay: D + 0.5 }}
-          />
-          <div className="hero__grid">
-            <motion.div
-              className="hero__lead"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease, delay: D + 0.75 }}
-            >
-              <p className="label">Introduction</p>
-              <p className="body-lg">{site.hero.intro}</p>
-              <div className="hero__ctas">
-                <Magnetic>
-                  <a href="#work" className="btn btn--ink" onClick={(e) => { e.preventDefault(); scrollTo('#work') }}>
-                    View selected work <Arrow />
-                  </a>
-                </Magnetic>
-                <Magnetic>
-                  <LiquidGlass as="a" href="#about" className="btn btn--glass" onClick={(e: React.MouseEvent) => { e.preventDefault(); scrollTo('#about') }}>
-                    About me
-                  </LiquidGlass>
-                </Magnetic>
-              </div>
-            </motion.div>
-
-            <dl className="meta">
-              {site.hero.meta.map((m, i) => (
-                <motion.div
-                  className="meta__row"
-                  key={m.label}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.9, ease, delay: D + 0.85 + i * 0.08 }}
-                >
-                  <dt className="label">{m.label}</dt>
-                  <dd>{m.value}</dd>
-                </motion.div>
-              ))}
-            </dl>
+        <motion.div className="hx-lead" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease, delay: D + 1.1 }}>
+          <p className="hx-lead__text">{site.hero.intro}</p>
+          <div className="hx-ctas">
+            <Magnetic>
+              <a
+                href="#work"
+                className="btn btn--shimmer"
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollTo('#work')
+                }}
+              >
+                <span className="btn--shimmer__sweep" aria-hidden />
+                <span className="btn--shimmer__label">
+                  View selected work <Arrow />
+                </span>
+              </a>
+            </Magnetic>
+            <Magnetic>
+              <LiquidGlass
+                as="a"
+                href="#about"
+                className="btn btn--glass"
+                onClick={(e: React.MouseEvent) => {
+                  e.preventDefault()
+                  scrollTo('#about')
+                }}
+              >
+                About me
+              </LiquidGlass>
+            </Magnetic>
           </div>
-        </div>
+        </motion.div>
 
-        <motion.button
-          className="scroll-cue"
-          onClick={() => scrollTo('#about')}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: D + 1.4, duration: 1 }}
-          aria-label="Scroll to content"
-        >
-          <span className="scroll-cue__track"><span className="scroll-cue__thumb" /></span>
-          <span className="label">Scroll</span>
-        </motion.button>
+        <motion.div className="hx-foot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, delay: D + 1.4 }}>
+          <p className="label hx-foot__label">
+            Trusted by 20+ brands
+            <span> across India, UAE, UK and Australia</span>
+          </p>
+          <div className="hx-marquee" aria-label={`Brands: ${BRANDS.join(', ')}`}>
+            <div className="hx-marquee__track" aria-hidden>
+              {[0, 1].map((k) => (
+                <span key={k} className="hx-marquee__set">
+                  {BRANDS.map((b) => (
+                    <span key={b} className="hx-marquee__item">
+                      {b}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )
 }
 
-function Aurora() {
+/** Portrait with a duotone treatment and a soft 3D tilt that follows the pointer. */
+function Portrait() {
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 140, damping: 18 })
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 140, damping: 18 })
+  const gx = useTransform(mx, [-0.5, 0.5], ['20%', '80%'])
+  const gy = useTransform(my, [-0.5, 0.5], ['10%', '70%'])
+
   return (
-    <div className="aurora" aria-hidden>
-      <span className="aurora__blob b1" />
-      <span className="aurora__blob b2" />
-      <span className="aurora__blob b3" />
-      <span className="aurora__blob b4" />
-      <span className="grain" />
-    </div>
+    <motion.figure
+      className="hx-portrait"
+      initial={{ opacity: 0, y: 50, scale: 0.94, filter: 'blur(10px)' }}
+      animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      transition={{ duration: 1.6, ease, delay: D + 0.5 }}
+      onPointerMove={(e) => {
+        if (e.pointerType !== 'mouse') return
+        const r = e.currentTarget.getBoundingClientRect()
+        mx.set((e.clientX - r.left) / r.width - 0.5)
+        my.set((e.clientY - r.top) / r.height - 0.5)
+      }}
+      onPointerLeave={() => {
+        mx.set(0)
+        my.set(0)
+      }}
+    >
+      <motion.div className="hx-portrait__card" style={{ rotateX: rx, rotateY: ry }}>
+        <img src={about.photo} alt="Portrait of Sivadarshan" />
+        <span className="hx-portrait__tone" aria-hidden />
+        <motion.span
+          className="hx-portrait__glare"
+          aria-hidden
+          style={{ background: useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x} ${y}, rgba(255,255,255,.28), transparent 60%)`) }}
+        />
+        <LiquidGlass className="hx-portrait__chip" interactive={false}>
+          <span className="status">
+            <span className="status__dot" aria-hidden />
+            {site.status}
+          </span>
+        </LiquidGlass>
+        <figcaption className="hx-portrait__cap">
+          <span className="hx-portrait__name">Sivadarshan</span>
+          <span className="label">Bengaluru, India</span>
+        </figcaption>
+      </motion.div>
+    </motion.figure>
   )
 }
 
-function MindsetCard() {
-  const words = site.hero.mindset
-  const [i, setI] = useState(0)
+/** Local time in Bengaluru — a small human detail. */
+function Clock() {
+  const fmt = () =>
+    new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }).format(new Date())
+  const [t, setT] = useState(fmt)
   useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % words.length), 2400)
+    const id = setInterval(() => setT(fmt()), 15000)
     return () => clearInterval(id)
-  }, [words.length])
-
+  }, [])
   return (
-    <LiquidGlass className="hero__card">
-      <div className="card__top">
-        <span className="label">Design × Product</span>
-        <span className="card__count label">
-          0{i + 1}<span>/0{words.length}</span>
-        </span>
-      </div>
-      <div className="card__word" aria-live="polite">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={words[i]}
-            initial={{ y: '100%', opacity: 0, filter: 'blur(6px)' }}
-            animate={{ y: '0%', opacity: 1, filter: 'blur(0px)' }}
-            exit={{ y: '-100%', opacity: 0, filter: 'blur(6px)' }}
-            transition={{ duration: 0.8, ease }}
-          >
-            {words[i]}
-          </motion.span>
-        </AnimatePresence>
-      </div>
-      <div className="card__progress">
-        {words.map((w, k) => (
-          <span key={w} className={k === i ? 'is-active' : k < i ? 'is-done' : ''} />
-        ))}
-      </div>
-    </LiquidGlass>
+    <span className="hx-clock label">
+      Bengaluru <span className="hx-clock__time">{t}</span> IST
+    </span>
   )
 }
