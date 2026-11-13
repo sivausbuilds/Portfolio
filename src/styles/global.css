@@ -1089,22 +1089,43 @@ button {
   --line: 1;
   position: relative;
   font-style: italic;
-  color: var(--ink);
   cursor: default;
   outline: none;
-  transition: color 0.4s;
 }
-/* hand-drawn underline that draws in as the term is revealed */
+/* gradient + shimmer text (terms and the name) */
+.gtext { position: relative; display: inline-block; }
+.gtext__fill {
+  display: inline-block;
+  padding: 0 0.1em 0.08em 0;
+  margin-right: -0.1em;
+  background: linear-gradient(100deg, #0d2621 0%, #1e4c3f 25%, #3f7a63 45%, #79a892 55%, #3f7a63 65%, #1e4c3f 82%, #0d2621 100%);
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: grad-sweep 12s ease-in-out infinite alternate;
+}
+.gtext__shine {
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  padding: 0 0.1em 0.08em 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.accent .gtext__fill { animation-delay: -4s; }
+/* underline that draws in as the term is revealed */
 .term::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0.35em;
   bottom: 0.04em;
-  height: 0.09em;
+  height: 0.08em;
   border-radius: 1em;
   background: linear-gradient(90deg, var(--accent-about), #9cc2ad);
-  opacity: 0.55;
+  opacity: 0.5;
   transform: scaleX(var(--line));
   transform-origin: left center;
   transition: opacity 0.4s, height 0.4s;
@@ -1121,12 +1142,39 @@ button {
   color: var(--accent-about);
   vertical-align: baseline;
 }
-.term:hover,
-.term.is-hover,
-.term:focus-visible { color: var(--accent-about); }
-.term:hover::after,
 .term.is-hover::after,
-.term:focus-visible::after { opacity: 1; height: 0.12em; }
+.term:focus-visible::after { opacity: 1; height: 0.11em; }
+.term.is-hover .gtext__fill { animation-duration: 2.4s; }
+
+/* hover / tap card */
+.pop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 10;
+  width: 290px;
+  translate: -50% 0;
+  white-space: normal;
+  font-style: normal;
+  pointer-events: none;
+}
+.pop--left { left: 0; translate: 0 0; }
+.pop--right { left: auto; right: 0; translate: 0 0; }
+.pop__glass { --r: 20px; display: block; }
+.pop__glass .glass__tint { background: linear-gradient(150deg, rgba(255, 255, 255, 0.97), rgba(250, 251, 249, 0.93)); }
+.pop__glass { box-shadow: 0 24px 50px -20px rgba(15, 43, 37, 0.35), 0 2px 6px rgba(15, 43, 37, 0.06); }
+.pop__glass > .glass__content { display: grid; gap: 8px; padding: 16px 18px 18px; }
+.pop__head { display: flex; align-items: baseline; gap: 10px; }
+.pop__num { font-family: var(--sans); font-style: normal; font-size: 11px; font-weight: 500; color: var(--accent-about); }
+.pop__body {
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
 
 .about__more {
   display: grid;
@@ -1863,6 +1911,7 @@ button {
 @media (max-width: 760px) {
   .about-notes { grid-template-columns: 1fr; }
   .about__text { font-size: clamp(26px, 7.4vw, 34px); line-height: 1.28; }
+  .pop { width: min(270px, calc(100vw - 40px)); }
   .hx-inner {
     grid-template-columns: 1fr;
     grid-template-areas: 'top' 'title' 'lead' 'foot';

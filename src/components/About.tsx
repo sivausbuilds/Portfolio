@@ -1,10 +1,12 @@
 import { useGSAP } from '@gsap/react'
-import { animate, motion, useInView } from 'motion/react'
+import { AnimatePresence, animate, motion, useInView } from 'motion/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useRef, useState } from 'react'
 import { about, type AboutToken } from '../content'
 import { prefersReducedMotion } from '../lib/smooth'
+import { LiquidGlass } from './LiquidGlass'
+import ShinyText from './ShinyText'
 
 gsap.registerPlugin(ScrollTrigger)
 const ease = [0.22, 1, 0.36, 1] as const
@@ -82,22 +84,10 @@ export function About() {
               typeof t === 'string' ? (
                 <Words key={i} text={t} />
               ) : 'idx' in t ? (
-                <span
-                  key={i}
-                  className={`w term ${hover === t.idx ? 'is-hover' : ''}`}
-                  data-note={t.idx}
-                  tabIndex={0}
-                  onPointerEnter={() => setHover(t.idx as number)}
-                  onPointerLeave={() => setHover(null)}
-                  onFocus={() => setHover(t.idx as number)}
-                  onBlur={() => setHover(null)}
-                >
-                  {t.text}
-                  <sup className="term__num">{String(t.idx).padStart(2, '0')}</sup>{' '}
-                </span>
+                <Term key={i} text={t.text} idx={t.idx as number} note={t.note!} active={hover === t.idx} setHover={setHover} />
               ) : (
                 <span key={i} className="w accent">
-                  {t.text}{' '}
+                  <Gradient text={t.text} delay={5} />{' '}
                 </span>
               ),
             )}
@@ -110,6 +100,111 @@ export function About() {
         <Principles />
       </div>
     </section>
+  )
+}
+
+/** Gradient text with a ReactBits ShinyText highlight passing over it. */
+function Gradient({ text, delay }: { text: string; delay: number }) {
+  return (
+    <span className="gtext">
+      <span className="gtext__fill">{text}</span>
+      <ShinyText
+        className="gtext__shine"
+        text={text}
+        color="rgba(255, 255, 255, 0)"
+        shineColor="rgba(226, 243, 233, 0.95)"
+        speed={2.8}
+        delay={delay}
+        shineWidth={26}
+        softness={0.95}
+        angle={112}
+      />
+    </span>
+  )
+}
+
+/** Highlighted term: gradient + shimmer, underline, note number and a glass card on hover / tap. */
+function Term({
+  text,
+  idx,
+  note,
+  active,
+  setHover,
+}: {
+  text: string
+  idx: number
+  note: { title: string; body: string }
+  active: boolean
+  setHover: (v: number | null) => void
+}) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const pointer = useRef('mouse')
+  const [open, setOpen] = useState(false)
+  const [align, setAlign] = useState<'center' | 'left' | 'right'>('center')
+  const num = String(idx).padStart(2, '0')
+
+  const show = () => {
+    const r = ref.current?.getBoundingClientRect()
+    if (r) {
+      const c = r.left + r.width / 2
+      setAlign(c < 170 ? 'left' : c > window.innerWidth - 170 ? 'right' : 'center')
+    }
+    setOpen(true)
+    setHover(idx)
+  }
+  const hide = () => {
+    setOpen(false)
+    setHover(null)
+  }
+
+  useEffect(() => {
+    if (!open) return
+    const close = (e: PointerEvent) => !ref.current?.contains(e.target as Node) && hide()
+    window.addEventListener('pointerdown', close)
+    return () => window.removeEventListener('pointerdown', close)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
+
+  return (
+    <span
+      ref={ref}
+      className={`w term ${active || open ? 'is-hover' : ''}`}
+      data-note={idx}
+      tabIndex={0}
+      role="button"
+      aria-expanded={open}
+      onPointerDown={(e) => {
+        pointer.current = e.pointerType
+      }}
+      onPointerEnter={(e) => e.pointerType === 'mouse' && show()}
+      onPointerLeave={(e) => e.pointerType === 'mouse' && hide()}
+      onClick={() => pointer.current !== 'mouse' && (open ? hide() : show())}
+      onFocus={(e) => e.currentTarget.matches(':focus-visible') && show()}
+      onBlur={hide}
+    >
+      <Gradient text={text} delay={4 + idx * 0.7} />
+      <sup className="term__num">{num}</sup>
+      <AnimatePresence>
+        {open && (
+          <motion.span
+            className={`pop pop--${align}`}
+            role="tooltip"
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.97 }}
+            transition={{ duration: 0.35, ease }}
+          >
+            <LiquidGlass as="span" className="pop__glass" interactive={false}>
+              <span className="pop__head">
+                <span className="pop__num">{num}</span>
+                <span className="label">{note.title}</span>
+              </span>
+              <span className="pop__body">{note.body}</span>
+            </LiquidGlass>
+          </motion.span>
+        )}
+      </AnimatePresence>{' '}
+    </span>
   )
 }
 
