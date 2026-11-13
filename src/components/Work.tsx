@@ -7,6 +7,8 @@ import { work, type Category, type CaseStudy } from '../content'
 import { navigate } from '../lib/router'
 import { prefersReducedMotion } from '../lib/smooth'
 import { Cover } from './Cover'
+import { AutoVideo } from './Media'
+import { plain } from './Rich'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 
@@ -56,7 +58,7 @@ export function Work() {
             transition={{ duration: 1, ease, delay: 0.15 }}
           >
             <p className="body-lg">
-              E-commerce journeys and product work — each one framed by a problem, a decision and a measurable outcome.
+              Shopify builds that sell and products I defined myself — each one told as problem, insight, build and outcome.
             </p>
             <LayoutGroup id="work-filter">
               <LiquidGlass className="segmented" interactive={false} role="tablist" aria-label="Filter case studies">
@@ -175,7 +177,7 @@ function Stack({ items }: { items: CaseStudy[] }) {
     { scope: root, dependencies: [items] },
   )
 
-  const ribbonText = item ? [item.name, item.category, item.platform.split(' · ')[0]] : []
+  const ribbonText = item ? [item.name, item.category, item.kicker] : []
 
   return (
     <div ref={root} className="stack" onPointerMove={(e) => { mx.set(e.clientX); my.set(e.clientY) }}>
@@ -232,20 +234,30 @@ function Stack({ items }: { items: CaseStudy[] }) {
                   onPointerLeave={() => setHovering(false)}
                 >
                   <div className="card__media" style={{ background: it.tone[0] }}>
-                    {it.image ? <img src={it.image} alt="" loading="lazy" /> : <Cover item={it} />}
+                    {it.cover?.kind === 'video' && Math.abs(i - active) <= 1 ? (
+                      <div className="card__video">
+                        <AutoVideo src={it.cover.src} autoPlay={i === active} />
+                      </div>
+                    ) : it.cover?.kind === 'image' ? (
+                      <img src={it.cover.src} alt="" loading="lazy" />
+                    ) : (
+                      <Cover item={it} />
+                    )}
                   </div>
                   <div className="card__info">
                     <div className="card__row">
-                      <span className="label">{pad(i + 1)} / {pad(items.length)}</span>
-                      <span className="label">{it.year}</span>
+                      <span className="label">{pad(i + 1)} / {pad(items.length)} · {it.kicker}</span>
+                      <span className={`card__status ${it.status === 'Complete' ? 'is-done' : ''}`}>
+                        <i aria-hidden /> {it.status === 'Complete' ? it.year : 'In progress'}
+                      </span>
                     </div>
                     <div className="card__main">
-                      <h3 className="card__title">{it.title}</h3>
+                      <h3 className="card__title">{plain(it.title)}</h3>
                       <p className="card__summary">{it.summary}</p>
                       <ul className="card__tags">
-                        <li>{it.category}</li>
-                        <li>Timeline {it.timeline}</li>
-                        <li className="hide-sm">{it.role}</li>
+                        {it.tags.slice(0, 3).map((t, k) => (
+                          <li key={t} className={k === 2 ? 'hide-sm' : ''}>{t}</li>
+                        ))}
                       </ul>
                     </div>
                     <LiquidGlass className="card__go" interactive={false} refract={false}>
