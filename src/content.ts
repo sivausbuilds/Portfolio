@@ -65,3 +65,49 @@ export const about = {
   ],
 }
 
+
+/*
+  What I do — capability grid after About. `proof` links each skill to the case studies that show it.
+*/
+export const services = {
+  title: 'What I bring to *the table*',
+  intro: 'Design and product thinking in one person — and the code to ship it. Each skill links to the work that proves it.',
+  items: [
+    {
+      icon: 'interface',
+      title: 'UI/UX *Design*',
+      body: 'Flows first, then interface. From wireframes to polished screens, grounded in research and judged on a phone first.',
+      proof: ['varak', 'offnorth'],
+    },
+    {
+      icon: 'compass',
+      title: 'Product *Design*',
+      body: 'PM thinking applied to design: framing the problem, setting scope and success metrics, and shipping the version that moves the number.',
+      proof: ['theliv', 'finly'],
+    },
+    {
+      icon: 'system',
+      title: 'Design *Systems*',
+      body: 'Reusable components, tokens and Shopify sections that keep a product consistent and let teams ship faster.',
+      proof: ['varak', 'offnorth'],
+    },
+    {
+      icon: 'code',
+      title: 'Prototyping *& Build*',
+      body: 'Interactive prototypes that settle debates, then production code in Liquid and JavaScript, so the idea reaches the store as designed.',
+      proof: ['varak', 'theliv'],
+    },
+    {
+      icon: 'research',
+      title: 'User *Research*',
+      body: 'Interviews, recordings, store data and friction analysis to find where people hesitate, and why.',
+      proof: ['theliv', 'whatsapp'],
+    },
+    {
+      icon: 'spark',
+      title: 'AI Visuals *& Workflows*',
+      body: 'AI-generated visuals, product mockups and motion for faster exploration, plus AI inside the product itself, like Theliv’s RAG assistant.',
+      proof: ['theliv'],
+    },
+  ] as { icon: 'interface' | 'compass' | 'system' | 'code' | 'research' | 'spark'; title: string; body: string; proof: string[] }[],
+}

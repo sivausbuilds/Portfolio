@@ -6,6 +6,7 @@ import { CaseStudyPage } from './components/CaseStudyPage'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { GlassFilter } from './components/LiquidGlass'
+import { Services } from './components/Services'
 import { Work } from './components/Work'
 import { work } from './content'
 import { takePendingHash, usePath } from './lib/router'
@@ -56,6 +57,7 @@ function Home() {
       <Hero />
       <Work />
       <About />
+      <Services />
     </>
   )
 }
