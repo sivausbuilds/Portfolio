@@ -61,7 +61,7 @@ export function About() {
     <section ref={root} id="about" className="about">
       <div className="about__pin">
         <div className="container about__wrap">
-          <p className="label about__label">(02) — About</p>
+          <p className="label about__label">(03) — About</p>
           <ol className="about-notes" aria-label="Notes">
               {notes.map((t) => (
                 <li
@@ -96,7 +96,10 @@ export function About() {
       </div>
 
       <div className="container about__more">
-        <Stats />
+        <div className="about__stats">
+          <p className="label">In numbers</p>
+          <Stats />
+        </div>
         <Principles />
       </div>
     </section>

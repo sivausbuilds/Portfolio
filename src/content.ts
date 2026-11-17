@@ -119,7 +119,7 @@ export const services = {
 export type Site = { name: string; url: string; tag: string; note: string; tone: [string, string]; image?: string; video?: string }
 export const websites = {
   years: '2023—26',
-  lead: '— Shopify stores, designed and developed end to end for brands in India, UAE, UK and Australia.',
+  lead: 'Shopify stores, designed and developed end to end for brands in India, UAE, UK and Australia.',
   title: ['I build stores', '*that sell.*'],
   items: [
     { name: 'Varak', url: 'https://varakedibleluxury.com', tag: 'Gifting · UAE', note: 'Custom cart, upsells and a jar box builder.', tone: ['#123a30', '#c9a77a'], image: '/sites/varak.jpg' },

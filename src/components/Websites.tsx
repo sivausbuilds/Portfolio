@@ -139,7 +139,8 @@ export function Websites() {
         <span className="wsx__glow" aria-hidden />
         <div className="container wsx__inner">
           <p className="wsx__lead">
-            <strong>Websites built</strong> {websites.lead}
+            <span className="label wsx__num">(02) — Websites built</span>
+            <strong className="sr-only">Websites built</strong> {websites.lead}
           </p>
 
           <div

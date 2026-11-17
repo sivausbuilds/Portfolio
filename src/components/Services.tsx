@@ -13,7 +13,7 @@ export function Services() {
       <div className="container">
         <div className="svc__head">
           <motion.p className="label" initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 0.9, ease }}>
-            (04) — What I do
+            (05) — What I do
           </motion.p>
           <h2 className="svc__title">
             <span className="line">
