@@ -21,7 +21,8 @@ const host = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '')
 function useGeometry() {
   const calc = () => {
     const w = typeof window === 'undefined' ? 1440 : window.innerWidth
-    const R = w < 760 ? w * 0.62 : w < 1100 ? w * 0.48 : Math.min(640, w * 0.36)
+    const h = typeof window === 'undefined' ? 900 : window.innerHeight
+    const R = w < 760 ? w * 0.6 : w < 1100 ? w * 0.46 : Math.min(620, w * 0.34, h * 0.6)
     const sliceDeg = ARC / SLICES
     const sliceW = 2 * R * Math.tan(((sliceDeg / 2) * Math.PI) / 180) + 1.2 // overlap hides seams
     const panelW = sliceW * SLICES
@@ -42,7 +43,9 @@ function useGeometry() {
  */
 export function Websites() {
   const root = useRef<HTMLElement>(null)
-  const ring = useRef<HTMLDivElement>(null)
+  const ringBack = useRef<HTMLDivElement>(null)
+  const ringFront = useRef<HTMLDivElement>(null)
+  const list = useRef<HTMLOListElement>(null)
   const g = useGeometry()
   const [active, setActive] = useState(0)
   const state = useRef({ scroll: 0, drag: 0, current: 0, lastFront: -1 })
@@ -50,18 +53,30 @@ export function Websites() {
   useGSAP(
     () => {
       const panels = gsap.utils.toArray<HTMLElement>('.wsx-panel')
+      const rows = gsap.utils.toArray<HTMLElement>('.wsx__list > li')
       const s = state.current
       const render = () => {
         const target = -(s.scroll + s.drag)
-        s.current += (target - s.current) * 0.08
-        if (ring.current) ring.current.style.transform = `rotateY(${s.current}deg)`
+        s.current += (target - s.current) * 0.075
+        const t = `rotateY(${s.current}deg)`
+        if (ringBack.current) ringBack.current.style.transform = t
+        if (ringFront.current) ringFront.current.style.transform = t
         const front = (((-s.current / STEP) % N) + N) % N
-        if (Math.abs(front - s.lastFront) > 0.01) {
+        if (Math.abs(front - s.lastFront) > 0.002) {
           s.lastFront = front
-          panels.forEach((p, i) => {
+          panels.forEach((p) => {
+            const i = Number(p.dataset.i)
             let d = Math.abs(i - front)
             d = Math.min(d, N - d)
             p.style.setProperty('--d', d.toFixed(3))
+          })
+          // wheel list: signed offset from the front, wrapped to [-N/2, N/2]
+          rows.forEach((r, i) => {
+            let o = i - front
+            if (o > N / 2) o -= N
+            if (o < -N / 2) o += N
+            r.style.setProperty('--o', o.toFixed(3))
+            r.style.setProperty('--ao', Math.abs(o).toFixed(3))
           })
           const idx = Math.round(front) % N
           setActive((a) => (a === idx ? a : idx))
@@ -77,6 +92,7 @@ export function Websites() {
           end: () => `+=${window.innerHeight * 0.6 * (N - 1)}`,
           pin: true,
           scrub: true,
+          snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, delay: 0.08, ease: 'power2.inOut' },
           onUpdate: (self) => {
             s.scroll = self.progress * STEP * (N - 1)
           },
@@ -134,47 +150,43 @@ export function Websites() {
             onPointerLeave={onUp}
             onPointerCancel={onUp}
           >
-            <div className="wsx__tilt">
-              <div ref={ring} className="wsx__ring">
-                {items.map((s, i) => (
-                  <a
-                    key={s.url}
-                    className={`wsx-panel ${i === active ? 'is-active' : ''}`}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    draggable={false}
-                    aria-label={`${s.name} — open ${host(s.url)}`}
-                    onClick={(e) => {
-                      if (moved.current) return e.preventDefault()
-                      if (i !== active) {
-                        e.preventDefault()
-                        goTo(i)
-                      }
-                    }}
-                  >
-                    {Array.from({ length: SLICES }).map((_, k) => {
-                      const off = -ARC / 2 + g.sliceDeg * (k + 0.5)
-                      return (
-                        <span
-                          key={k}
-                          className="wsx-slice"
-                          style={{
-                            width: g.sliceW,
-                            height: g.H,
-                            marginLeft: -g.sliceW / 2,
-                            marginTop: -g.H / 2,
-                            transform: `rotateY(${i * STEP + off}deg) translateZ(${g.R}px)`,
-                            backgroundImage: `linear-gradient(var(--fog), var(--fog)), url(${s.image})`,
-                            backgroundSize: `100% 100%, ${(g.sliceW - 1.2) * SLICES}px ${g.H}px`,
-                            backgroundPosition: `0 0, ${-k * (g.sliceW - 1.2)}px 0`,
-                            borderRadius: k === 0 ? '18px 0 0 18px' : k === SLICES - 1 ? '0 18px 18px 0' : 0,
-                          }}
-                        />
-                      )
-                    })}
-                  </a>
-                ))}
+            <div className="wsx__layer wsx__layer--back" aria-hidden>
+              <div className="wsx__tilt">
+                <div ref={ringBack} className="wsx__ring">
+                  {items.map((s, i) => (
+                    <span key={s.url} className="wsx-panel" data-i={i}>
+                      <Slices s={s} i={i} g={g} />
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="wsx__layer wsx__layer--front">
+              <div className="wsx__tilt">
+                <div ref={ringFront} className="wsx__ring">
+                  {items.map((s, i) => (
+                    <a
+                      key={s.url}
+                      data-i={i}
+                      className={`wsx-panel ${i === active ? 'is-active' : ''}`}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      draggable={false}
+                      tabIndex={i === active ? 0 : -1}
+                      aria-label={`${s.name} — open ${host(s.url)}`}
+                      onClick={(e) => {
+                        if (moved.current) return e.preventDefault()
+                        if (i !== active) {
+                          e.preventDefault()
+                          goTo(i)
+                        }
+                      }}
+                    >
+                      <Slices s={s} i={i} g={g} />
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -189,12 +201,10 @@ export function Websites() {
             </motion.span>
           </h2>
 
-          <ol className="wsx__list">
+          <ol ref={list} className="wsx__list">
             {items.map((s, i) => {
-              let d = Math.abs(i - active)
-              d = Math.min(d, N - d)
               return (
-                <li key={s.url} className={i === active ? 'is-active' : ''} style={{ ['--d' as string]: d }}>
+                <li key={s.url} className={i === active ? 'is-active' : ''}>
                   <a
                     href={s.url}
                     target="_blank"
@@ -224,5 +234,39 @@ export function Websites() {
         </div>
       </div>
     </section>
+  )
+}
+
+type Geo = ReturnType<typeof useGeometry>
+
+/** One curved panel: thin strips around the cylinder, sharing one continuous image + grade. */
+function Slices({ s, i, g }: { s: (typeof items)[number]; i: number; g: Geo }) {
+  const w0 = g.sliceW - 1.2
+  const pw = w0 * SLICES
+  return (
+    <>
+      {Array.from({ length: SLICES }).map((_, k) => {
+        const off = -ARC / 2 + g.sliceDeg * (k + 0.5)
+        const x = -k * w0
+        return (
+          <span
+            key={k}
+            className="wsx-slice"
+            style={{
+              width: g.sliceW,
+              height: g.H,
+              marginLeft: -g.sliceW / 2,
+              marginTop: -g.H / 2,
+              transform: `rotateY(${i * STEP + off}deg) translateZ(${g.R}px)`,
+              // fog · grade (sheen + vignette, continuous across strips) · screenshot
+              backgroundImage: `linear-gradient(var(--fog), var(--fog)), linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 28%, rgba(10,24,20,0) 60%, rgba(10,24,20,.32)), radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0) 55%, rgba(10,24,20,.28)), url(${s.image})`,
+              backgroundSize: `100% 100%, ${pw}px ${g.H}px, ${pw}px ${g.H}px, ${pw}px ${g.H}px`,
+              backgroundPosition: `0 0, ${x}px 0, ${x}px 0, ${x}px 0`,
+              borderRadius: k === 0 ? '20px 0 0 20px' : k === SLICES - 1 ? '0 20px 20px 0' : 0,
+            }}
+          />
+        )
+      })}
+    </>
   )
 }
