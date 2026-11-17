@@ -33,7 +33,7 @@ export function Bento() {
     <section className="bento" aria-label="In short">
       <div className="container">
         <div className="bento__head">
-          <p className="label">(04) — In short</p>
+          <p className="label">(03) — In short</p>
           <h2 className="bento__title">
             <Rich text="The whole picture, *at a glance*" fancy />
           </h2>

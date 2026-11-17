@@ -59,8 +59,8 @@ function Home() {
       <Hero />
       <Work />
       <About />
-      <Services />
       <Bento />
+      <Services />
       <Websites />
     </>
   )

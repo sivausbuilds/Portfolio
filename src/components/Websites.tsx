@@ -2,11 +2,10 @@ import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'motion/react'
-import { useRef, useState } from 'react'
-import { websites, type Site } from '../content'
+import { useEffect, useRef, useState } from 'react'
+import { site, websites } from '../content'
 import { prefersReducedMotion } from '../lib/smooth'
 import { Arrow } from './Header'
-import { AutoVideo } from './Media'
 import { Rich } from './Rich'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -14,45 +13,68 @@ const ease = [0.22, 1, 0.36, 1] as const
 const items = websites.items
 const N = items.length
 const STEP = 360 / N
+const ARC = STEP * 0.86 // each panel covers most of its sector, leaving a small gap
+const SLICES = 12 // vertical strips per panel; more = smoother curve
 const host = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
+/** Cylinder size from the viewport. */
+function useGeometry() {
+  const calc = () => {
+    const w = typeof window === 'undefined' ? 1440 : window.innerWidth
+    const R = w < 760 ? w * 0.62 : w < 1100 ? w * 0.48 : Math.min(640, w * 0.36)
+    const sliceDeg = ARC / SLICES
+    const sliceW = 2 * R * Math.tan(((sliceDeg / 2) * Math.PI) / 180) + 1.2 // overlap hides seams
+    const panelW = sliceW * SLICES
+    return { R, sliceDeg, sliceW, panelW, H: panelW * 0.62 }
+  }
+  const [g, setG] = useState(calc)
+  useEffect(() => {
+    const on = () => setG(calc())
+    window.addEventListener('resize', on)
+    return () => window.removeEventListener('resize', on)
+  }, [])
+  return g
+}
+
 /**
- * A ring of site panels in 3D. Scroll (pinned on desktop) or drag turns it;
- * the panel facing you is the active site. Click any panel or name to open the site.
+ * Curved site panels on a tilted cylinder. Scroll (pinned on desktop) or drag turns it;
+ * the panel facing you is active. Click the active panel or any name to open the live site.
  */
 export function Websites() {
   const root = useRef<HTMLElement>(null)
   const ring = useRef<HTMLDivElement>(null)
+  const g = useGeometry()
   const [active, setActive] = useState(0)
-  const state = useRef({ scroll: 0, drag: 0, target: 0, current: 0 })
+  const state = useRef({ scroll: 0, drag: 0, current: 0, lastFront: -1 })
 
   useGSAP(
     () => {
-      const panels = gsap.utils.toArray<HTMLElement>('.ws-panel')
+      const panels = gsap.utils.toArray<HTMLElement>('.wsx-panel')
       const s = state.current
       const render = () => {
-        s.target = -(s.scroll + s.drag)
-        s.current += (s.target - s.current) * 0.09
-        if (ring.current) ring.current.style.transform = `translateZ(calc(var(--r) * -1)) rotateY(${s.current}deg)`
+        const target = -(s.scroll + s.drag)
+        s.current += (target - s.current) * 0.08
+        if (ring.current) ring.current.style.transform = `rotateY(${s.current}deg)`
         const front = (((-s.current / STEP) % N) + N) % N
-        panels.forEach((p, i) => {
-          let d = Math.abs(i - front)
-          d = Math.min(d, N - d) // distance in panels from the front
-          p.style.opacity = String(Math.max(0.12, 1 - d * 0.32))
-          p.style.filter = `blur(${Math.min(8, d * 3.2)}px) saturate(${1 - Math.min(0.5, d * 0.2)})`
-        })
-        const idx = Math.round(front) % N
-        setActive((a) => (a === idx ? a : idx))
+        if (Math.abs(front - s.lastFront) > 0.01) {
+          s.lastFront = front
+          panels.forEach((p, i) => {
+            let d = Math.abs(i - front)
+            d = Math.min(d, N - d)
+            p.style.setProperty('--d', d.toFixed(3))
+          })
+          const idx = Math.round(front) % N
+          setActive((a) => (a === idx ? a : idx))
+        }
       }
       gsap.ticker.add(render)
-
       const mm = gsap.matchMedia()
       mm.add('(min-width: 900px)', () => {
         if (prefersReducedMotion()) return
         const st = ScrollTrigger.create({
-          trigger: '.ws__pin',
+          trigger: '.wsx__pin',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 0.55 * (N - 1)}`,
+          end: () => `+=${window.innerHeight * 0.6 * (N - 1)}`,
           pin: true,
           scrub: true,
           onUpdate: (self) => {
@@ -66,24 +88,23 @@ export function Websites() {
     { scope: root },
   )
 
-  // drag to turn (all devices); a click without movement opens the panel's site
+  // drag (all devices); snap to the nearest panel on release
   const drag = useRef<{ x: number; start: number; moved: boolean } | null>(null)
+  const moved = useRef(false)
   const onDown = (e: React.PointerEvent) => {
     drag.current = { x: e.clientX, start: state.current.drag, moved: false }
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    moved.current = false
   }
   const onMove = (e: React.PointerEvent) => {
     const d = drag.current
     if (!d) return
     const dx = e.clientX - d.x
-    if (Math.abs(dx) > 4) d.moved = true
-    state.current.drag = d.start - dx * 0.18
+    if (Math.abs(dx) > 5) d.moved = moved.current = true
+    state.current.drag = d.start - dx * 0.16
   }
   const onUp = () => {
-    const d = drag.current
+    if (!drag.current) return
     drag.current = null
-    if (!d) return
-    // settle on the nearest panel
     const total = state.current.scroll + state.current.drag
     state.current.drag += Math.round(total / STEP) * STEP - total
   }
@@ -97,104 +118,111 @@ export function Websites() {
   }
 
   return (
-    <section ref={root} id="websites" className="ws">
-      <div className="ws__pin">
-        <div className="container ws__inner">
-          <div className="ws__intro">
-            <p className="label">(05) — Websites built</p>
-            <p className="ws__lead">{websites.intro}</p>
-          </div>
+    <section ref={root} id="websites" className="wsx">
+      <div className="wsx__pin">
+        <span className="wsx__glow" aria-hidden />
+        <div className="container wsx__inner">
+          <p className="wsx__lead">
+            <strong>Websites built</strong> {websites.lead}
+          </p>
 
           <div
-            className="ws__stage"
+            className="wsx__stage"
             onPointerDown={onDown}
             onPointerMove={onMove}
             onPointerUp={onUp}
+            onPointerLeave={onUp}
             onPointerCancel={onUp}
           >
-            <div ref={ring} className="ws__ring" style={{ ['--n' as string]: N }}>
-              {items.map((s, i) => (
-                <a
-                  key={s.url}
-                  className={`ws-panel ${i === active ? 'is-active' : ''}`}
-                  href={s.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ transform: `rotateY(${i * STEP}deg) translateZ(var(--r))` }}
-                  onClick={(e) => {
-                    if (drag.current?.moved) e.preventDefault()
-                    else if (i !== active) {
-                      e.preventDefault()
-                      goTo(i)
-                    }
-                  }}
-                  aria-label={`${s.name} — open website`}
-                  draggable={false}
-                >
-                  <Panel s={s} live={i === active} />
-                </a>
-              ))}
+            <div className="wsx__tilt">
+              <div ref={ring} className="wsx__ring">
+                {items.map((s, i) => (
+                  <a
+                    key={s.url}
+                    className={`wsx-panel ${i === active ? 'is-active' : ''}`}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    draggable={false}
+                    aria-label={`${s.name} — open ${host(s.url)}`}
+                    onClick={(e) => {
+                      if (moved.current) return e.preventDefault()
+                      if (i !== active) {
+                        e.preventDefault()
+                        goTo(i)
+                      }
+                    }}
+                  >
+                    {Array.from({ length: SLICES }).map((_, k) => {
+                      const off = -ARC / 2 + g.sliceDeg * (k + 0.5)
+                      return (
+                        <span
+                          key={k}
+                          className="wsx-slice"
+                          style={{
+                            width: g.sliceW,
+                            height: g.H,
+                            marginLeft: -g.sliceW / 2,
+                            marginTop: -g.H / 2,
+                            transform: `rotateY(${i * STEP + off}deg) translateZ(${g.R}px)`,
+                            backgroundImage: `linear-gradient(var(--fog), var(--fog)), url(${s.image})`,
+                            backgroundSize: `100% 100%, ${(g.sliceW - 1.2) * SLICES}px ${g.H}px`,
+                            backgroundPosition: `0 0, ${-k * (g.sliceW - 1.2)}px 0`,
+                            borderRadius: k === 0 ? '18px 0 0 18px' : k === SLICES - 1 ? '0 18px 18px 0' : 0,
+                          }}
+                        />
+                      )
+                    })}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
-          <ol className="ws__list">
-            {items.map((s, i) => (
-              <li key={s.url} className={i === active ? 'is-active' : ''}>
-                <a href={s.url} target="_blank" rel="noopener noreferrer" onPointerEnter={(e) => e.pointerType === 'mouse' && goTo(i)} onFocus={() => goTo(i)}>
-                  <span className="ws__tag">{s.tag}</span>
-                  <span className="ws__name">{s.name}</span>
-                  <span className="ws__more">
-                    <span className="ws__note">{s.note}</span>
-                    <span className="ws__visit">
-                      Visit {host(s.url)} <Arrow />
-                    </span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ol>
-
-          <h2 className="ws__title">
-            <motion.span className="ws__title-inner" initial={{ y: '40%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease }}>
-              <Rich text={websites.title} fancy />
+          <div className="wsx__years">© {websites.years}</div>
+          <h2 className="wsx__title">
+            <motion.span className="wsx__l1" initial={{ y: '30%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease }}>
+              {websites.title[0]}
+            </motion.span>
+            <motion.span className="wsx__l2" initial={{ y: '30%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease, delay: 0.12 }}>
+              <Rich text={websites.title[1]} fancy />
             </motion.span>
           </h2>
 
-          <div className="ws__foot">
-            <span className="label">14 stores · 4 countries</span>
-            <span className="label ws__hint">Scroll or drag to explore · click to visit</span>
+          <ol className="wsx__list">
+            {items.map((s, i) => {
+              let d = Math.abs(i - active)
+              d = Math.min(d, N - d)
+              return (
+                <li key={s.url} className={i === active ? 'is-active' : ''} style={{ ['--d' as string]: d }}>
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onPointerEnter={(e) => e.pointerType === 'mouse' && goTo(i)}
+                    onFocus={() => goTo(i)}
+                  >
+                    <span className="wsx__tag">{s.tag}</span>
+                    <span className="wsx__name">{s.name}</span>
+                    <span className="wsx__more">
+                      <span className="wsx__note">{s.note}</span>
+                      <span className="wsx__visit">
+                        Visit {host(s.url)} <Arrow />
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              )
+            })}
+          </ol>
+
+          <div className="wsx__foot">
+            <span>© 2026 {site.name}</span>
+            <span className="wsx__hint">Scroll or drag to explore</span>
+            <span>Bengaluru, IN — 14 stores</span>
           </div>
         </div>
       </div>
     </section>
-  )
-}
-
-function Panel({ s, live }: { s: Site; live: boolean }) {
-  return (
-    <span className="ws-panel__inner" style={{ ['--bg' as string]: s.tone[0], ['--fg' as string]: s.tone[1] }}>
-      {s.video ? (
-        <AutoVideo src={s.video} autoPlay={live} />
-      ) : s.image ? (
-        <img src={s.image} alt="" draggable={false} />
-      ) : (
-        <span className="ws-panel__gen" aria-hidden>
-          <span className="ws-panel__bar">
-            <i />
-            <i />
-            <i />
-            <em>{host(s.url)}</em>
-          </span>
-          <span className="ws-panel__brand">{s.name}</span>
-          <span className="ws-panel__tiles">
-            <b />
-            <b />
-            <b />
-            <b />
-          </span>
-        </span>
-      )}
-      <span className="ws-panel__shine" aria-hidden />
-    </span>
   )
 }
