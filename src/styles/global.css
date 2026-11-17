@@ -2412,35 +2412,54 @@ button {
 }
 
 
-/* © years + headline, over the ring */
+/* label + headline, over the ring */
 .wsx__years {
   grid-area: years;
   position: relative;
   z-index: 3;
   align-self: end;
-  font-family: var(--sans);
-  font-size: clamp(18px, min(2vw, 3.6svh), 30px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
   pointer-events: none;
 }
-.wsx__title { grid-area: title; position: relative; z-index: 3; margin: 6px 0 0; display: grid; line-height: 0.9; pointer-events: none; }
+.wsx__years-rule { width: 44px; height: 1px; background: currentColor; opacity: 0.5; }
+.wsx__years-dot { width: 4px; height: 4px; border-radius: 50%; background: #6f9e88; }
+.wsx__title {
+  grid-area: title;
+  position: relative;
+  z-index: 3;
+  margin: clamp(10px, 1.6svh, 18px) 0 0;
+  display: grid;
+  font-family: var(--serif);
+  font-weight: 300;
+  line-height: 0.96;
+  pointer-events: none;
+}
 .wsx__l1 {
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: clamp(46px, min(8.8vw, 13.5svh), 160px);
-  letter-spacing: -0.055em;
+  font-size: clamp(48px, min(8vw, 12.5svh), 148px);
+  letter-spacing: -0.045em;
   color: #0d2621;
 }
 .wsx__l2 {
-  font-family: var(--serif);
   font-style: italic;
-  font-weight: 300;
-  font-size: clamp(52px, min(10vw, 15.5svh), 182px);
-  letter-spacing: -0.045em;
-  margin-top: -0.06em;
+  font-size: clamp(52px, min(8.8vw, 13.5svh), 162px);
+  letter-spacing: -0.04em;
+  padding-left: 0.5em; /* editorial indent under the first line */
   padding-bottom: 0.08em;
+}
+/* soft halo so the type stays legible over the panels */
+.wsx__title::before {
+  content: '';
+  position: absolute;
+  inset: -34% -8% -6% -6%;
+  z-index: -1;
+  background: radial-gradient(60% 70% at 30% 55%, rgba(241, 239, 233, 0.85), rgba(241, 239, 233, 0) 75%);
 }
 
 /* wheel list: names ride up and down with the ring, only neighbours visible */

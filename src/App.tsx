@@ -58,10 +58,10 @@ function Home() {
     <>
       <Hero />
       <Work />
+      <Websites />
       <About />
       <Bento />
       <Services />
-      <Websites />
     </>
   )
 }

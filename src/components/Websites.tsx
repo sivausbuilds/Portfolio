@@ -191,7 +191,12 @@ export function Websites() {
             </div>
           </div>
 
-          <div className="wsx__years">© {websites.years}</div>
+          <div className="wsx__years">
+            <span className="wsx__years-rule" aria-hidden />
+            <span>Selected stores</span>
+            <span className="wsx__years-dot" aria-hidden />
+            <span>{websites.years}</span>
+          </div>
           <h2 className="wsx__title">
             <motion.span className="wsx__l1" initial={{ y: '30%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease }}>
               {websites.title[0]}
