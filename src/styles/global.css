@@ -2709,3 +2709,15 @@ h1, h2, h3,
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .wsx__num { display: block; margin-bottom: 18px; }
+
+.wsx-panel:focus { outline: none; }
+.wsx-panel:focus-visible .wsx-slice { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+/* All headings in italic serif */
+h1, h2, h3,
+.work__title, .svc__title, .bento__title, .wsx__l1, .wsx__l2,
+.cs-hero__title, .cs-chapter__title, .cs-next__title, .card__title,
+.svc-card__title, .b-title, .drawer-demo__title, .cs-link__title, .feature__title,
+.hx-feat__title, .principle__title, .stat__value {
+  font-style: italic;
+}

@@ -175,7 +175,6 @@ export function Websites() {
                       rel="noopener noreferrer"
                       draggable={false}
                       tabIndex={i === active ? 0 : -1}
-                      aria-label={`${s.name} — open ${host(s.url)}`}
                       onClick={(e) => {
                         if (moved.current) return e.preventDefault()
                         if (i !== active) {
@@ -184,6 +183,7 @@ export function Websites() {
                         }
                       }}
                     >
+                      <span className="sr-only">{s.name}, open {host(s.url)}</span>
                       <Slices s={s} i={i} g={g} />
                     </a>
                   ))}
