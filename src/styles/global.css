@@ -2349,26 +2349,26 @@ button {
 
 /* ───────────────────────── Websites: curved 3D ring ───────────────────────── */
 .wsx { position: relative; }
-.wsx__pin { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; background: #f1efe9; }
+.wsx__pin { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; background: var(--bg); }
 .wsx__glow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(45% 55% at 50% 45%, rgba(169, 194, 179, 0.45), transparent 70%),
-    radial-gradient(30% 40% at 85% 90%, rgba(201, 167, 122, 0.22), transparent 70%);
+    radial-gradient(45% 55% at 50% 45%, rgba(169, 194, 179, 0.42), transparent 70%),
+    radial-gradient(35% 45% at 88% 85%, rgba(212, 230, 220, 0.6), transparent 70%);
 }
 .wsx__inner {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(260px, 22vw, 340px);
-  grid-template-rows: auto 1fr auto auto auto;
+  grid-template-rows: auto 1fr auto auto;
   grid-template-areas:
     'lead  .'
     '.     list'
     'years list'
-    'title list'
-    'foot  foot';
+    'title list';
+  padding-bottom: clamp(32px, 7svh, 72px);
   min-height: 100svh;
   padding-top: calc(var(--header-h) + clamp(24px, 5svh, 52px));
 }
@@ -2389,9 +2389,9 @@ button {
 .wsx__layer { position: absolute; inset: 0; perspective: 1900px; perspective-origin: 50% 30%; }
 /* the whole ring, softly out of focus — gives depth without seams */
 .wsx__layer--back { filter: blur(7px) saturate(0.85); opacity: 0.9; pointer-events: none; }
-.wsx__layer--back .wsx-panel { --fog: rgba(241, 239, 233, calc(0.12 + min(var(--d), 2.4) * 0.26)); }
+.wsx__layer--back .wsx-panel { --fog: rgba(245, 245, 247, calc(0.12 + min(var(--d), 2.4) * 0.26)); }
 /* the sharp copy only shows the panel in front, fading as it turns away */
-.wsx__layer--front .wsx-panel { --fog: rgba(241, 239, 233, 0); opacity: clamp(0, calc(1.7 - var(--d) * 1.5), 1); }
+.wsx__layer--front .wsx-panel { --fog: rgba(245, 245, 247, 0); opacity: clamp(0, calc(1.7 - var(--d) * 1.5), 1); }
 .wsx__layer--front .wsx-panel:not(.is-active) { pointer-events: none; }
 .wsx__tilt {
   position: absolute;
@@ -2459,7 +2459,7 @@ button {
   position: absolute;
   inset: -34% -8% -6% -6%;
   z-index: -1;
-  background: radial-gradient(60% 70% at 30% 55%, rgba(241, 239, 233, 0.85), rgba(241, 239, 233, 0) 75%);
+  background: radial-gradient(60% 70% at 30% 55%, rgba(245, 245, 247, 0.85), rgba(245, 245, 247, 0) 75%);
 }
 
 /* wheel list: names ride up and down with the ring, only neighbours visible */
@@ -2506,28 +2506,12 @@ button {
 .wsx__list li.is-active .wsx__name { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; font-size: clamp(24px, 2.1vw, 34px); letter-spacing: -0.02em; }
 .wsx__list li.is-active .wsx__more { max-height: 80px; opacity: 1; }
 
-.wsx__foot {
-  grid-area: foot;
-  position: relative;
-  z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: clamp(16px, 2vw, 28px);
-  padding: 16px 0 22px;
-  border-top: 1px solid var(--line);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
 
 @media (max-width: 1100px) {
   .wsx__inner {
     grid-template-columns: 1fr;
-    grid-template-rows: auto clamp(320px, 62vw, 560px) auto auto auto auto;
-    grid-template-areas: 'lead' 'stage' 'years' 'title' 'list' 'foot';
+    grid-template-rows: auto clamp(320px, 62vw, 560px) auto auto auto;
+    grid-template-areas: 'lead' 'stage' 'years' 'title' 'list';
     min-height: 0;
     padding-block: clamp(80px, 12vw, 120px) 0;
   }
@@ -2536,7 +2520,7 @@ button {
   .wsx__list { grid-row: auto; height: 300px; margin-top: 4px; }
 }
 @media (max-width: 760px) {
-  .wsx__inner { grid-template-rows: auto 78vw auto auto auto auto; }
+  .wsx__inner { grid-template-rows: auto 78vw auto auto auto; }
   .wsx__tilt { left: 50%; transform: rotateZ(-8deg) rotateX(8deg); }
   .wsx__hint { display: none; }
 }

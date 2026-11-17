@@ -121,7 +121,7 @@ export function Bento() {
           <motion.div className="b-cell b-ship" {...cell(5)}>
             <div>
               <p className="b-title b-ship__title">Products Shipped</p>
-              <p className="b-text">Delivered across 14 stores in four countries &amp; my own products.</p>
+              <p className="b-text">Delivered across Shopify stores in four countries &amp; my own products.</p>
             </div>
             <span className="b-ship__n">
               <Count to={20} />

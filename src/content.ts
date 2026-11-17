@@ -24,7 +24,7 @@ export const site = {
       'I turn messy problems into clear flows and interfaces, then build them so they ship and sell — for 20+ brands across India, UAE, UK and Australia.',
     meta: [
       { label: 'Focus', value: 'Product Design & E-commerce' },
-      { label: 'Shipped', value: '20+ brands · 14 stores' },
+      { label: 'Shipped', value: '20+ brands' },
       { label: 'Experience', value: '3 years' },
     ],
     // Cycles inside the glass card — the "PM mindset" in practice.
@@ -48,13 +48,13 @@ export const about = {
     'I’ve shipped',
     { text: '20+ products', note: { title: 'Shipped', body: 'Stores, custom Shopify sections and my own products like Theliv and Finly, designed and built by me.' } },
     'across',
-    { text: 'e-commerce', note: { title: 'E-commerce', body: '14 Shopify stores built end to end for brands in India, UAE, UK and Australia.' } },
+    { text: 'e-commerce', note: { title: 'E-commerce', body: 'Shopify stores built end to end for brands in India, UAE, UK and Australia.' } },
     'and digital products: framing the problem, aligning the team, and following the work all the way to',
     { text: 'the metric after launch.', note: { title: 'Measured', body: 'I find where people hesitate, design and build the fix, then check the numbers.' } },
   ] as AboutToken[],
   stats: [
     { value: 20, suffix: '+', label: 'Brands' },
-    { value: 14, suffix: '', label: 'Stores built end to end' },
+    { value: 20, suffix: '+', label: 'Products shipped' },
     { value: 4, suffix: '', label: 'Countries' },
   ],
   principles: [
@@ -119,7 +119,7 @@ export const services = {
 export type Site = { name: string; url: string; tag: string; note: string; tone: [string, string]; image?: string; video?: string }
 export const websites = {
   years: '2023—26',
-  lead: '— 14 Shopify stores, designed and developed end to end for brands in India, UAE, UK and Australia.',
+  lead: '— Shopify stores, designed and developed end to end for brands in India, UAE, UK and Australia.',
   title: ['I build stores', '*that sell.*'],
   items: [
     { name: 'Varak', url: 'https://varakedibleluxury.com', tag: 'Gifting · UAE', note: 'Custom cart, upsells and a jar box builder.', tone: ['#123a30', '#c9a77a'], image: '/sites/varak.jpg' },

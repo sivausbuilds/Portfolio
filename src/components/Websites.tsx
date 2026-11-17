@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { site, websites } from '../content'
+import { websites } from '../content'
 import { prefersReducedMotion } from '../lib/smooth'
 import { Arrow } from './Header'
 import { Rich } from './Rich'
@@ -231,11 +231,6 @@ export function Websites() {
             })}
           </ol>
 
-          <div className="wsx__foot">
-            <span>© 2026 {site.name}</span>
-            <span className="wsx__hint">Scroll or drag to explore</span>
-            <span>Bengaluru, IN — 14 stores</span>
-          </div>
         </div>
       </div>
     </section>
