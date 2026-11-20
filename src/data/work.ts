@@ -33,7 +33,9 @@ export type Block =
   | { type: 'kpis'; items: { value: string; label: string }[]; note?: string }
   | { type: 'compare'; before: { src: string; caption: string }; after: { src: string; caption: string }; url?: string }
   | { type: 'tabs'; tabs: { label: string; before: string[]; after: string[] }[] }
-  | { type: 'flow'; without: FlowNode[]; with: FlowNode[]; withoutResult: string; withResult: string }
+  | { type: 'flow'; without: FlowNode[]; with: FlowNode[]; withoutResult: string; withResult: string; labels?: [string, string] }
+  | { type: 'versus'; options: { name: string; verdict: string; chosen?: boolean; points: string[] }[] }
+  | { type: 'metrics'; items: { metric: string; why: string }[] }
   | { type: 'stats'; items: { value: string; label: string }[] }
   | { type: 'table'; rows: [string, string][] }
   | { type: 'links'; items: LinkItem[] }
@@ -396,6 +398,206 @@ export const work: CaseStudy[] = [
     ],
   },
 
+  {
+    slug: 'solxi',
+    name: 'SolXi',
+    title: 'SolXi: school uniforms, *built not bought*',
+    kicker: 'Shopify · India · Pre-launch',
+    category: 'E-commerce',
+    status: 'Complete',
+    year: '2026',
+    summary: 'A build-vs-buy call that replaced two paid apps with custom Shopify features: a fitting booking system and a school uniform finder.',
+    intro:
+      'SolXi sells school uniforms and accessories. Parents shop by school, gender and grade, and many want an in-person fitting first. Shopify handles neither out of the box, so I compared the apps against a custom build, then designed and built both features inside Shopify.',
+    tags: ['Build vs buy', 'Shopify Flow', 'Liquid', 'Metaobjects', 'AI-assisted build'],
+    meta: [
+      { label: 'Role', value: 'Product, design and build' },
+      { label: 'Stack', value: 'Shopify theme, Liquid, JavaScript, Shopify Flow, Metaobjects' },
+      { label: 'Market', value: 'India (INR)' },
+      { label: 'Status', value: 'Built, pre-launch' },
+    ],
+    cover: { kind: 'image', src: '/work/solxi/cover.jpg', alt: 'SolXi fitting booking and Find Your School' },
+    tone: ['#f1e8ea', '#6b1f30'],
+    facts: {
+      problem: 'Parents need school-specific uniform bundles and in-person fittings; booking and bundle apps cost a monthly fee and could not handle multi-child bookings or school-level search.',
+      built: 'Two custom Shopify features with no third-party apps: a multi-child, multi-location fitting booking system and a 4-step Find Your School bundle flow, plus Flow automation that routes bookings and product orders.',
+      outcome: 'About $30–40 a month saved in app fees, zero apps to maintain, and a school added in about 15 minutes without a developer. Launch metrics are defined; the store is not live yet.',
+      highlights: [
+        { value: '$30–40', label: 'saved per month vs apps' },
+        { value: '0', label: 'third-party apps' },
+        { value: '15 min', label: 'to add a school' },
+      ],
+    },
+    chapters: [
+      {
+        id: 'problem',
+        kicker: 'The problem',
+        title: 'Uniforms are bought by school, *not by product.*',
+        blocks: [
+          {
+            type: 'p',
+            text: 'A parent does not search for “navy shorts, size 28”. They search for their child’s school, then need the exact items for that gender and grade. Many also want to try sizes in person before they buy. SolXi needed both: ==a school-first shopping flow== and ==a fitting booking system==, in the same store and the same checkout.',
+          },
+          {
+            type: 'p',
+            text: 'Shopify has no native appointment booking, and its order confirmation is the same email for every order. A booking and a box of uniforms would look identical to the parent and to the team packing orders.',
+          },
+          { type: 'goal', text: 'Let a parent go from **school** to **booked fitting** or **checked-out bundle** in a few taps, and let the founder run it all from Shopify admin **without a developer**.' },
+        ],
+      },
+      {
+        id: 'decision',
+        kicker: 'Build vs buy',
+        title: 'Apps were faster to install, *slower to live with.*',
+        blocks: [
+          { type: 'p', text: 'Before writing code I tested the app route against the requirements. The deciding factors were not features on a pricing page but the edge cases SolXi would hit every day.' },
+          {
+            type: 'versus',
+            options: [
+              {
+                name: 'Third-party apps',
+                verdict: 'Rejected',
+                points: [
+                  'Recurring cost of about $30–40 a month across booking and bundle apps',
+                  'Capacity counted per child, not per family, so a parent with 3 children took 3 places',
+                  'No school-level search, gender and grade filtering for bundles',
+                  'Extra scripts, a second admin to learn, and booking data outside Shopify',
+                  'Generic widgets that did not match the theme',
+                ],
+              },
+              {
+                name: 'Custom build in Shopify',
+                verdict: 'Chosen',
+                chosen: true,
+                points: [
+                  'No monthly app fees; runs on Shopify features SolXi already pays for',
+                  'Multi-child bookings: one family uses one place, however many children',
+                  'Schools, venues and bundles managed as Metaobjects in Shopify admin',
+                  'Every booking is a ₹0 Shopify order, so reports, exports and customer data stay in one place',
+                  'Designed to match the store, desktop and mobile',
+                ],
+              },
+            ],
+          },
+          { type: 'why', text: 'The custom route cost more effort up front, but it removed a monthly fee, a vendor dependency and ==two limitations the apps could not solve==: multi-child bookings and school-first search.' },
+        ],
+      },
+      {
+        id: 'booking',
+        kicker: 'Feature 1',
+        title: 'Pre-book fitting: *one family, one place.*',
+        blocks: [
+          { type: 'p', text: 'Parents book a 15 or 30 minute private fitting. The core product decision was the capacity rule: ==each slot holds a number of families, not children==, because a parent arrives with all of their children at once.' },
+          {
+            type: 'journey',
+            steps: [
+              { stage: 'School', question: 'Where do I go?', fix: 'Search the school, see its fitting centre' },
+              { stage: 'Children', question: 'Can I bring all my kids?', fix: 'Grades and each child’s name in one booking' },
+              { stage: 'Slot', question: 'When is free?', fix: 'Date and slot with “X of Y places left”' },
+              { stage: 'Confirm', question: 'Is it really booked?', fix: '₹0 checkout and a branded booking email' },
+            ],
+            extra: 'Plus multiple fitting centres per school, with “Find nearest” sorting centres by distance.',
+          },
+          {
+            type: 'table',
+            rows: [
+              ['Slots', 'One product variant per date and time; stock equals family places left'],
+              ['Bookings', 'Each booking is a ₹0 order; the order number is the booking reference'],
+              ['Schools and venues', 'Metaobjects in Shopify admin; a new school takes about 15 minutes'],
+              ['Slot generator', 'A tool that creates a whole fitting programme as a CSV, skipping Sundays and closed dates'],
+              ['Rules', 'A 2-hour booking cut-off, closed days, full slots shown as Full, cancellations restock the place'],
+            ],
+          },
+        ],
+      },
+      {
+        id: 'routing',
+        kicker: 'Automation',
+        title: 'One checkout, *two kinds of orders.*',
+        blocks: [
+          { type: 'p', text: 'SolXi sells physical products and fitting bookings through the same checkout. Shopify sends one confirmation email for every order, so I built the logic that ==tells them apart automatically==.' },
+          {
+            type: 'flow',
+            labels: ['Without automation', 'With automation'],
+            without: [
+              { t: 'Order placed' }, { t: 'Same confirmation email', kind: 'bad' }, { t: 'Parent unsure it is a booking', kind: 'bad' },
+              { t: 'Team opens each order', kind: 'break' }, { t: 'Manual sorting', kind: 'bad' },
+            ],
+            with: [
+              { t: 'Order placed' }, { t: 'Flow checks product type', kind: 'ai' }, { t: 'Booking: tag “Fitting Booking”', kind: 'ok' },
+              { t: 'Booking email with date, venue, calendar', kind: 'ok' }, { t: 'Product order: standard email' }, { t: 'Filter bookings in Orders', kind: 'ok' },
+            ],
+            withoutResult: 'Bookings and uniform orders look the same, so parents are unsure and the team sorts orders by hand.',
+            withResult: 'Each order gets the right email and a tag, so bookings filter out of the order list in one click.',
+          },
+          { type: 'image', src: '/work/solxi/flow.jpg', alt: 'Shopify Flow workflow: order created, condition product type is Fitting Appointment, add order tag Fitting Booking', caption: 'Shopify Flow · Fitting Appointment tagging' },
+          { type: 'image', src: '/work/solxi/booking-email.jpg', alt: 'SolXi booking confirmation email with date, venue, add to calendar and booking reference', caption: 'Booking email (test booking, personal details blurred)' },
+        ],
+      },
+      {
+        id: 'finder',
+        kicker: 'Feature 2',
+        title: 'Find Your School: *the bundle in four steps.*',
+        blocks: [
+          { type: 'p', text: 'A school-first bundle flow that runs entirely on Shopify, ==with no bundle app and no external server==. Each bundle is an ordinary Shopify collection, so the team edits it like any other.' },
+          {
+            type: 'journey',
+            steps: [
+              { stage: 'School & group', question: 'Which items does my school need?', fix: 'Search school, pick Boys or Girls and grade range' },
+              { stage: 'Uniforms', question: 'What size, and do I need all of it?', fix: 'Every item pre-ticked, untick what you don’t need' },
+              { stage: 'Add-ons', question: 'Anything else?', fix: 'Bags, bottles, stationery with filter tabs' },
+              { stage: 'Checkout', question: 'Can I order for two children?', fix: 'Each child’s bundle stays its own cart line' },
+            ],
+          },
+          {
+            type: 'table',
+            rows: [
+              ['Data model', 'One Metaobject per school with up to six bundle slots (KG, Primary, Secondary × Boys, Girls)'],
+              ['Search and filtering', 'School search, gender and grade-range filters; bundles a school does not offer are greyed out'],
+              ['Sizes', 'Variants become a size dropdown; sold-out sizes are disabled and unavailable items drop out'],
+              ['Multi-child orders', 'A hidden bundle ID per checkout keeps two children’s bundles as separate lines'],
+              ['Price lock', 'Prices hidden until sign-in; choices are kept through the sign-in round trip'],
+              ['Size help', 'Per-school size note, size chart drawer and a quick view for every item'],
+            ],
+          },
+        ],
+      },
+      {
+        id: 'build',
+        kicker: 'How I built it',
+        title: 'AI-assisted, *with a workflow I tuned.*',
+        blocks: [
+          { type: 'p', text: 'I built both features with **Claude Code** using my own optimized workflow: a written spec first, small reviewable changes, and tests before anything reaches the store. It let one person cover product, design and front-end build in a fraction of the usual time.' },
+          {
+            type: 'stats',
+            items: [
+              { value: '35', label: 'automated checks (search, sizes, totals, cart payload, sign-in lock) run during the build' },
+              { value: '2', label: 'admin setup guides so the founder can run schools, slots and bundles without a developer' },
+              { value: '0', label: 'external servers or build steps; everything ships inside the Shopify theme' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'outcome',
+        kicker: 'The outcome',
+        title: 'Ready to launch, *with metrics defined.*',
+        blocks: [
+          { type: 'p', text: 'Both features are built and tested; the store is ==not launched yet==, so there are no live conversion numbers. What is already true: about **$30–40 a month** saved against the app route, zero apps to maintain, and booking data that lives in Shopify orders.' },
+          {
+            type: 'metrics',
+            items: [
+              { metric: 'Booking completion rate', why: 'Share of parents who start the fitting flow and receive a booking email' },
+              { metric: 'Fitting no-show rate', why: 'Tests whether the reminder email and calendar link are enough' },
+              { metric: 'Orders through Find Your School', why: 'Share of uniform orders that start from the school flow' },
+              { metric: 'Size-related returns and queries', why: 'Checks whether size charts and fittings reduce wrong sizes' },
+              { metric: 'Time to add a school', why: 'Target under 15 minutes, done by the founder without a developer' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   {
     slug: 'theliv',
     name: 'Theliv',

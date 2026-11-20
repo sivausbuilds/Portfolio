@@ -92,6 +92,36 @@ export function BlockView({ block, item }: { block: Block; item: CaseStudy }) {
           ))}
         </div>
       )
+    case 'versus':
+      return (
+        <div className="vs cs-wide">
+          {block.options.map((o, k) => (
+            <motion.div key={o.name} className={`vs__col ${o.chosen ? 'is-chosen' : ''}`} {...reveal} transition={{ ...reveal.transition, delay: k * 0.1 }}>
+              <div className="vs__head">
+                <span className="vs__name">{o.name}</span>
+                <span className={`vs__verdict ${o.chosen ? 'is-yes' : 'is-no'}`}>{o.verdict}</span>
+              </div>
+              <ul>
+                {o.points.map((pt) => (
+                  <li key={pt}>{pt}</li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+      )
+    case 'metrics':
+      return (
+        <motion.ol className="mx cs-wide" {...reveal}>
+          {block.items.map((m, k) => (
+            <li key={m.metric}>
+              <span className="mx__num">{String(k + 1).padStart(2, '0')}</span>
+              <span className="mx__metric">{m.metric}</span>
+              <span className="mx__why">{m.why}</span>
+            </li>
+          ))}
+        </motion.ol>
+      )
     case 'pending':
       return (
         <motion.div className="cs-pending" {...reveal} style={{ ['--accent' as string]: item.tone[1] }}>
@@ -477,7 +507,7 @@ function Flow(props: Extract<Block, { type: 'flow' }>) {
           {[false, true].map((w) => (
             <button key={String(w)} type="button" role="tab" aria-selected={withIt === w} className={`segmented__btn ${withIt === w ? 'is-active' : ''}`} onClick={() => setWithIt(w)}>
               {withIt === w && <motion.span layoutId="flow-pill" className="segmented__pill" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
-              <span className="segmented__text">{w ? 'With Theliv' : 'Without Theliv'}</span>
+              <span className="segmented__text">{w ? props.labels?.[1] ?? 'With Theliv' : props.labels?.[0] ?? 'Without Theliv'}</span>
             </button>
           ))}
         </LiquidGlass>
