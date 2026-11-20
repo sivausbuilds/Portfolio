@@ -416,7 +416,7 @@ export const work: CaseStudy[] = [
       { label: 'Market', value: 'India (INR)' },
       { label: 'Status', value: 'Built, pre-launch' },
     ],
-    cover: { kind: 'image', src: '/work/solxi/cover.jpg', alt: 'SolXi fitting booking and Find Your School' },
+    cover: { kind: 'video', src: '/work/solxi/find-your-school.mp4' },
     tone: ['#f1e8ea', '#6b1f30'],
     facts: {
       problem: 'Parents need school-specific uniform bundles and in-person fittings; booking and bundle apps cost a monthly fee and could not handle multi-child bookings or school-level search.',
@@ -499,6 +499,18 @@ export const work: CaseStudy[] = [
             extra: 'Plus multiple fitting centres per school, with “Find nearest” sorting centres by distance.',
           },
           {
+            type: 'feature',
+            frame: 'browser',
+            url: 'solxuniform.myshopify.com/pages/pre-book-fitting',
+            src: '/work/solxi/fitting-booking.mp4',
+            steps: [
+              { title: 'Find the school', body: 'Search the school, then pick one of its fitting centres.', at: 0 },
+              { title: 'Add the children', body: 'Tap each grade, set how many children and add their names. One booking covers the family.', at: 5 },
+              { title: 'Pick a date and slot', body: 'Slots show places left; full slots are greyed out.', at: 12 },
+              { title: 'Review and book', body: 'One summary to check, then a ₹0 checkout and the booking email.', at: 16.5 },
+            ],
+          },
+          {
             type: 'table',
             rows: [
               ['Slots', 'One product variant per date and time; stock equals family places left'],
@@ -547,6 +559,19 @@ export const work: CaseStudy[] = [
               { stage: 'Uniforms', question: 'What size, and do I need all of it?', fix: 'Every item pre-ticked, untick what you don’t need' },
               { stage: 'Add-ons', question: 'Anything else?', fix: 'Bags, bottles, stationery with filter tabs' },
               { stage: 'Checkout', question: 'Can I order for two children?', fix: 'Each child’s bundle stays its own cart line' },
+            ],
+          },
+          {
+            type: 'feature',
+            frame: 'browser',
+            url: 'solxuniform.myshopify.com/pages/find-your-school',
+            src: '/work/solxi/find-your-school.mp4',
+            steps: [
+              { title: 'School and group', body: 'Search the school, choose Boys or Girls and the grade range.', at: 0 },
+              { title: 'Uniform items', body: 'Every item in the bundle is ticked; pick sizes and untick what you don’t need.', at: 5 },
+              { title: 'Quick view', body: 'Tap any item for photos, details and the size chart.', at: 14 },
+              { title: 'Prices after sign-in', body: 'Prices appear once the parent signs in, with choices kept.', at: 20 },
+              { title: 'Add-ons and checkout', body: 'Bags, bottles and stationery with filter tabs, then one tap to checkout.', at: 32 },
             ],
           },
           {
