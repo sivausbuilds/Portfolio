@@ -129,16 +129,15 @@ export function Websites() {
                   key={active.image}
                   src={active.image}
                   alt=""
-                  className={active.status === 'protected' ? 'is-locked' : ''}
-                  initial={{ opacity: 0, scale: 1.15, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, scale: 1, filter: active.status === 'protected' ? 'blur(6px)' : 'blur(0px)' }}
+                                    initial={{ opacity: 0, scale: 1.15, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5, ease }}
                 />
               </AnimatePresence>
               {active.status !== 'live' && (
                 <span className="sx__lock">
-                  <LockIcon /> {STATUS[active.status]}
+                  <LockIcon /> {active.password ? `Password: ${active.password}` : STATUS[active.status]}
                 </span>
               )}
             </motion.div>
@@ -150,8 +149,9 @@ export function Websites() {
 }
 
 function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover: (i: number | null) => void }) {
-  const live = s.status === 'live'
-  const href = live ? s.url : `mailto:${site.email}?subject=${encodeURIComponent(`Access to ${s.name} preview`)}`
+  const dev = s.status !== 'live'
+  const href = s.url
+  const cta = !href ? 'Link coming soon' : dev ? 'Open preview' : `Visit ${host(href)}`
   return (
     <motion.li
       layout
@@ -162,23 +162,22 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
       viewport={{ once: true, margin: '-6% 0px' }}
       transition={{ duration: 0.8, ease, delay: Math.min(i, 6) * 0.05 }}
     >
-      <a
-        href={href}
-        target={live ? '_blank' : undefined}
-        rel={live ? 'noopener noreferrer' : undefined}
-        className="sx-row__link"
-        onPointerEnter={(e) => e.pointerType === 'mouse' && onHover(i)}
-        onFocus={() => onHover(i)}
-        onBlur={() => onHover(null)}
-      >
+      <div className="sx-row__link" onPointerEnter={(e) => e.pointerType === 'mouse' && onHover(i)} onFocus={() => onHover(i)} onBlur={() => onHover(null)}>
         <span className="sx-row__num">{String(i + 1).padStart(2, '0')}</span>
         <span className="sx-row__thumb" aria-hidden>
-          <img src={s.image} alt="" loading="lazy" className={s.status === 'protected' ? 'is-locked' : ''} />
-          {!live && <span className="sx__lock"><LockIcon /></span>}
+          <img src={s.image} alt="" loading="lazy" />
+          {dev && <span className="sx__lock"><LockIcon /></span>}
         </span>
         <span className="sx-row__main">
           <span className="sx-row__name">{s.name}</span>
-          <span className="sx-row__note">{s.note}</span>
+          {dev ? (
+            <span className="sx-row__access">
+              <span className="sx-row__url">{host(s.url)}</span>
+              {s.password && <Password value={s.password} />}
+            </span>
+          ) : (
+            <span className="sx-row__note">{s.note}</span>
+          )}
         </span>
         <span className="sx-row__meta">
           {s.tag}
@@ -187,13 +186,44 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
         <span className={`sx-row__status is-${s.status}`}>
           <i aria-hidden /> {STATUS[s.status]}
         </span>
-        <span className="sx-row__cta">
-          <span className="sx-row__cta-text">{live ? `Visit ${host(s.url)}` : 'Request access'}</span>
-          <span className="sx-row__arrow"><Arrow /></span>
-        </span>
+        {href ? (
+          <a className="sx-row__cta sx-row__hit" href={href} target="_blank" rel="noopener noreferrer" aria-label={`${cta} (${s.name})`}>
+            <span className="sx-row__cta-text">{cta}</span>
+            <span className="sx-row__arrow"><Arrow /></span>
+          </a>
+        ) : (
+          <span className="sx-row__cta is-soon"><span className="sx-row__cta-text">{cta}</span></span>
+        )}
         <span className="sx-row__fill" aria-hidden />
-      </a>
+      </div>
     </motion.li>
+  )
+}
+
+/** Storefront password with one-click copy. Sits above the row link. */
+function Password({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false)
+  return (
+    <button
+      type="button"
+      className="sx-pw"
+      onClick={async (e) => {
+        e.stopPropagation()
+        try {
+          await navigator.clipboard.writeText(value)
+          setCopied(true)
+          setTimeout(() => setCopied(false), 1600)
+        } catch {
+          /* clipboard blocked: the password is visible anyway */
+        }
+      }}
+      aria-label={`Copy password ${value}`}
+    >
+      <LockIcon />
+      <span className="sx-pw__label">Password</span>
+      <code>{value}</code>
+      <span className="sx-pw__copy">{copied ? 'Copied' : 'Copy'}</span>
+    </button>
   )
 }
 
