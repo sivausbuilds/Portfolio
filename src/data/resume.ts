@@ -9,7 +9,7 @@ export const resume = {
   location: 'Bengaluru, India',
   email: 'sivadarshanus@gmail.com',
   portfolio: 'sivadarshanus.vercel.app',
-  linkedin: '', // e.g. 'linkedin.com/in/your-handle'
+  linkedin: 'linkedin.com/in/sivadarshanus',
   summary:
     'Product Designer with a PM mindset and 3 years of end-to-end experience across e-commerce and digital products. Shipped 20+ Shopify stores and custom features for brands in India, UAE, UK and Australia, owning research, UX and UI design, front-end build in Liquid and JavaScript, and post-launch measurement. Defined and built two 0-to-1 products (Theliv, Finly) from PRD to working MVP.',
   skills: [

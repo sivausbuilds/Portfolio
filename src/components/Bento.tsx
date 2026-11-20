@@ -2,6 +2,7 @@ import { animate, motion, useInView } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { site } from '../content'
 import { Rich } from './Rich'
+import { LinkedInIcon } from './Social'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -47,8 +48,13 @@ export function Bento() {
             <div className="b-id__foot">
               <span className="b-id__name">{site.name}</span>
               <span className="b-id__role">Product Designer · PM mindset</span>
-              <span className="b-id__status">
-                <span className="status__dot" aria-hidden /> {site.status}
+              <span className="b-id__row">
+                <span className="b-id__status">
+                  <span className="status__dot" aria-hidden /> {site.status}
+                </span>
+                <a className="b-id__in" href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                  <LinkedInIcon /> LinkedIn
+                </a>
               </span>
             </div>
           </motion.div>

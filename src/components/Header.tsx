@@ -5,6 +5,7 @@ import { navigate } from '../lib/router'
 import { lockScroll, scrollTo } from '../lib/smooth'
 import { LiquidGlass } from './LiquidGlass'
 import ShinyText from './ShinyText'
+import { SocialLinks } from './Social'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -71,6 +72,7 @@ export function Header() {
             <span className="status__dot" aria-hidden />
             {site.status}
           </span>
+          <SocialLinks className="header__social" />
           <span className="btn-wrap">
             <a href="#contact" onClick={go('#contact')} className="btn btn--ink btn--sm">
               Let’s talk
@@ -127,7 +129,8 @@ export function Header() {
                   <span className="status__dot" aria-hidden />
                   {site.status}
                 </span>
-                <a href={`mailto:${site.email}`} className="btn btn--ink">
+                <SocialLinks />
+                <a href="#contact" onClick={go('#contact')} className="btn btn--ink">
                   Let’s talk <Arrow />
                 </a>
               </motion.div>

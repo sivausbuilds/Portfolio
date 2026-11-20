@@ -8,6 +8,7 @@ export const site = {
   year: '2026',
   status: 'Open to APM roles',
   email: 'sivadarshanus@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/sivadarshanus/',
   nav: [
     { label: 'Work', href: '#work' },
     { label: 'About', href: '#about' },

@@ -11,6 +11,7 @@ import { Websites } from './components/Websites'
 import { Services } from './components/Services'
 import { Work } from './components/Work'
 import { Footer } from './components/Footer'
+import { Contact } from './components/Contact'
 import { Resume } from './components/Resume'
 import { work } from './content'
 import { takePendingHash, usePath } from './lib/router'
@@ -66,6 +67,7 @@ function Home() {
       <About />
       <Bento />
       <Services />
+      <Contact />
     </>
   )
 }

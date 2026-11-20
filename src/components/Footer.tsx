@@ -6,6 +6,7 @@ import { navigate } from '../lib/router'
 import { scrollTo } from '../lib/smooth'
 import { Arrow } from './Header'
 import { Rich } from './Rich'
+import { LinkedInIcon } from './Social'
 
 const ease = [0.22, 1, 0.36, 1] as const
 const WORD = 'Sivadarshan'
@@ -23,6 +24,11 @@ export function Footer() {
       { label: 'About', href: '/#about', on: go('#about') },
       { label: 'What I do', href: '/#services', on: go('#services') },
     ] },
+    { title: 'Connect', items: [
+      { label: 'LinkedIn', href: site.linkedin, external: true },
+      { label: 'Email', href: `mailto:${site.email}` },
+      { label: 'Start a project', href: '/#contact', on: go('#contact') },
+    ] },
     { title: 'Resume', items: [
       { label: 'View resume', href: '/resume', on: (e: React.MouseEvent) => { e.preventDefault(); navigate('/resume') } },
       { label: 'Download PDF', href: RESUME_PDF, download: true },
@@ -30,12 +36,12 @@ export function Footer() {
   ]
 
   return (
-    <footer id="contact" className="ft">
+    <footer id="footer" className="ft">
       <span className="ft__grid-bg" aria-hidden />
       <span className="ft__glow" aria-hidden />
       <div className="container">
         <div className="ft__top">
-          <p className="label">(06) — Contact</p>
+          <p className="label">(07) — Say hello</p>
           <span className="status ft__status"><span className="status__dot" aria-hidden /> {site.status}</span>
         </div>
 
@@ -67,6 +73,9 @@ export function Footer() {
             <span className="btn--shimmer__label">Email me <Arrow /></span>
           </a>
           <CopyEmail />
+          <a className="ft__in" href={site.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <LinkedInIcon /> LinkedIn <Arrow />
+          </a>
         </motion.div>
 
         <div className="ft__cols">
@@ -76,7 +85,7 @@ export function Footer() {
               <ul>
                 {c.items.map((it) => (
                   <li key={it.label}>
-                    <a className="ft__link" href={it.href} onClick={it.on} download={'download' in it ? true : undefined}>
+                    <a className="ft__link" href={it.href} onClick={'on' in it ? it.on : undefined} download={'download' in it ? true : undefined} {...('external' in it ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                       <span className="ft__roll" data-text={it.label}><span>{it.label}</span></span>
                       <Arrow />
                     </a>
