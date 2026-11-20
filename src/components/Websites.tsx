@@ -1,273 +1,196 @@
-import { useGSAP } from '@gsap/react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { motion } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
-import { websites } from '../content'
-import { prefersReducedMotion } from '../lib/smooth'
+import { AnimatePresence, LayoutGroup, motion, useMotionValue, useSpring, useTransform, useVelocity } from 'motion/react'
+import { useMemo, useState } from 'react'
+import { site, websites, type Site, type SiteStatus } from '../content'
+import { navigate } from '../lib/router'
+import { scrollTo } from '../lib/smooth'
 import { Arrow } from './Header'
+import { LiquidGlass } from './LiquidGlass'
 import { Rich } from './Rich'
 
-gsap.registerPlugin(ScrollTrigger)
 const ease = [0.22, 1, 0.36, 1] as const
-const items = websites.items
-const N = items.length
-const STEP = 360 / N
-const ARC = STEP * 0.86 // each panel covers most of its sector, leaving a small gap
-const SLICES = 12 // vertical strips per panel; more = smoother curve
 const host = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '')
-
-/** Cylinder size from the viewport. */
-function useGeometry() {
-  const calc = () => {
-    const w = typeof window === 'undefined' ? 1440 : window.innerWidth
-    const h = typeof window === 'undefined' ? 900 : window.innerHeight
-    const R = w < 760 ? w * 0.6 : w < 1100 ? w * 0.46 : Math.min(620, w * 0.34, h * 0.6)
-    const sliceDeg = ARC / SLICES
-    const sliceW = 2 * R * Math.tan(((sliceDeg / 2) * Math.PI) / 180) + 1.2 // overlap hides seams
-    const panelW = sliceW * SLICES
-    return { R, sliceDeg, sliceW, panelW, H: panelW * 0.62 }
-  }
-  const [g, setG] = useState(calc)
-  useEffect(() => {
-    const on = () => setG(calc())
-    window.addEventListener('resize', on)
-    return () => window.removeEventListener('resize', on)
-  }, [])
-  return g
-}
+const STATUS: Record<SiteStatus, string> = { live: 'Live', building: 'In development', protected: 'Password protected' }
+type Filter = 'all' | 'live' | 'private'
 
 /**
- * Curved site panels on a tilted cylinder. Scroll (pinned on desktop) or drag turns it;
- * the panel facing you is active. Click the active panel or any name to open the live site.
+ * Project index: one clean row per store. On desktop a preview follows the cursor
+ * and tilts with its speed; on touch screens each row shows its image inline.
  */
 export function Websites() {
-  const root = useRef<HTMLElement>(null)
-  const ringBack = useRef<HTMLDivElement>(null)
-  const ringFront = useRef<HTMLDivElement>(null)
-  const list = useRef<HTMLOListElement>(null)
-  const g = useGeometry()
-  const [active, setActive] = useState(0)
-  const state = useRef({ scroll: 0, drag: 0, current: 0, lastFront: -1 })
-
-  useGSAP(
-    () => {
-      const panels = gsap.utils.toArray<HTMLElement>('.wsx-panel')
-      const rows = gsap.utils.toArray<HTMLElement>('.wsx__list > li')
-      const s = state.current
-      const render = () => {
-        const target = -(s.scroll + s.drag)
-        s.current += (target - s.current) * 0.075
-        const t = `rotateY(${s.current}deg)`
-        if (ringBack.current) ringBack.current.style.transform = t
-        if (ringFront.current) ringFront.current.style.transform = t
-        const front = (((-s.current / STEP) % N) + N) % N
-        if (Math.abs(front - s.lastFront) > 0.002) {
-          s.lastFront = front
-          panels.forEach((p) => {
-            const i = Number(p.dataset.i)
-            let d = Math.abs(i - front)
-            d = Math.min(d, N - d)
-            p.style.setProperty('--d', d.toFixed(3))
-          })
-          // wheel list: signed offset from the front, wrapped to [-N/2, N/2]
-          rows.forEach((r, i) => {
-            let o = i - front
-            if (o > N / 2) o -= N
-            if (o < -N / 2) o += N
-            r.style.setProperty('--o', o.toFixed(3))
-            r.style.setProperty('--ao', Math.abs(o).toFixed(3))
-          })
-          const idx = Math.round(front) % N
-          setActive((a) => (a === idx ? a : idx))
-        }
-      }
-      gsap.ticker.add(render)
-      const mm = gsap.matchMedia()
-      mm.add('(min-width: 900px)', () => {
-        if (prefersReducedMotion()) return
-        const st = ScrollTrigger.create({
-          trigger: '.wsx__pin',
-          start: 'top top',
-          end: () => `+=${window.innerHeight * 0.6 * (N - 1)}`,
-          pin: true,
-          scrub: true,
-          snap: { snapTo: 1 / (N - 1), duration: { min: 0.3, max: 0.8 }, delay: 0.08, ease: 'power2.inOut' },
-          onUpdate: (self) => {
-            s.scroll = self.progress * STEP * (N - 1)
-          },
-        })
-        return () => st.kill()
-      })
-      return () => gsap.ticker.remove(render)
-    },
-    { scope: root },
+  const [filter, setFilter] = useState<Filter>('all')
+  const [hover, setHover] = useState<number | null>(null)
+  const items = websites.items
+  const shown = useMemo(
+    () => items.filter((s) => filter === 'all' || (filter === 'live' ? s.status === 'live' : s.status !== 'live')),
+    [items, filter],
   )
+  const counts = { all: items.length, live: items.filter((s) => s.status === 'live').length, private: items.filter((s) => s.status !== 'live').length }
 
-  // drag (all devices); snap to the nearest panel on release
-  const drag = useRef<{ x: number; start: number; moved: boolean } | null>(null)
-  const moved = useRef(false)
-  const onDown = (e: React.PointerEvent) => {
-    drag.current = { x: e.clientX, start: state.current.drag, moved: false }
-    moved.current = false
-  }
-  const onMove = (e: React.PointerEvent) => {
-    const d = drag.current
-    if (!d) return
-    const dx = e.clientX - d.x
-    if (Math.abs(dx) > 5) d.moved = moved.current = true
-    state.current.drag = d.start - dx * 0.16
-  }
-  const onUp = () => {
-    if (!drag.current) return
-    drag.current = null
-    const total = state.current.scroll + state.current.drag
-    state.current.drag += Math.round(total / STEP) * STEP - total
-  }
-  const goTo = (i: number) => {
-    const total = state.current.scroll + state.current.drag
-    const cur = Math.round(total / STEP)
-    let diff = (i - (((cur % N) + N) % N)) % N
-    if (diff > N / 2) diff -= N
-    if (diff < -N / 2) diff += N
-    state.current.drag += (cur + diff) * STEP - total
+  // cursor-following preview
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const x = useSpring(mx, { stiffness: 260, damping: 28, mass: 0.6 })
+  const y = useSpring(my, { stiffness: 260, damping: 28, mass: 0.6 })
+  const vx = useVelocity(x)
+  const rotate = useTransform(vx, [-2000, 0, 2000], [-9, 0, 9], { clamp: true })
+  const active = hover !== null ? shown[hover] : null
+
+  const toContact = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (window.location.pathname !== '/') navigate('/', '#contact')
+    else scrollTo('#contact')
   }
 
   return (
-    <section ref={root} id="websites" className="wsx">
-      <div className="wsx__pin">
-        <span className="wsx__glow" aria-hidden />
-        <div className="container wsx__inner">
-          <p className="wsx__lead">
-            <span className="label wsx__num">(02) — Websites built</span>
-            <strong className="sr-only">Websites built</strong> {websites.lead}
-          </p>
-
-          <div
-            className="wsx__stage"
-            onPointerDown={onDown}
-            onPointerMove={onMove}
-            onPointerUp={onUp}
-            onPointerLeave={onUp}
-            onPointerCancel={onUp}
-          >
-            <div className="wsx__layer wsx__layer--back" aria-hidden>
-              <div className="wsx__tilt">
-                <div ref={ringBack} className="wsx__ring">
-                  {items.map((s, i) => (
-                    <span key={s.url} className="wsx-panel" data-i={i}>
-                      <Slices s={s} i={i} g={g} />
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="wsx__layer wsx__layer--front">
-              <div className="wsx__tilt">
-                <div ref={ringFront} className="wsx__ring">
-                  {items.map((s, i) => (
-                    <a
-                      key={s.url}
-                      data-i={i}
-                      className={`wsx-panel ${i === active ? 'is-active' : ''}`}
-                      href={s.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      draggable={false}
-                      tabIndex={i === active ? 0 : -1}
-                      onClick={(e) => {
-                        if (moved.current) return e.preventDefault()
-                        if (i !== active) {
-                          e.preventDefault()
-                          goTo(i)
-                        }
-                      }}
-                    >
-                      <span className="sr-only">{s.name}, open {host(s.url)}</span>
-                      <Slices s={s} i={i} g={g} />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="wsx__years">
-            <span className="wsx__years-rule" aria-hidden />
-            <span>Selected stores</span>
-            <span className="wsx__years-dot" aria-hidden />
-            <span>{websites.years}</span>
-          </div>
-          <h2 className="wsx__title">
-            <motion.span className="wsx__l1" initial={{ y: '30%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease }}>
-              {websites.title[0]}
-            </motion.span>
-            <motion.span className="wsx__l2" initial={{ y: '30%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease, delay: 0.12 }}>
-              <Rich text={websites.title[1]} fancy />
-            </motion.span>
+    <section
+      id="websites"
+      className="sx"
+      onPointerMove={(e) => {
+        mx.set(e.clientX)
+        my.set(e.clientY)
+      }}
+    >
+      <div className="container">
+        <div className="sx__head">
+          <p className="label">(02) — Websites built</p>
+          <h2 className="sx__title">
+            <span className="line">
+              <motion.span className="line__inner" initial={{ y: '105%' }} whileInView={{ y: '0%' }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 1.2, ease }}>
+                <Rich text={websites.title} fancy />
+              </motion.span>
+            </span>
           </h2>
-
-          <ol ref={list} className="wsx__list">
-            {items.map((s, i) => {
-              return (
-                <li key={s.url} className={i === active ? 'is-active' : ''}>
-                  <a
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onPointerEnter={(e) => e.pointerType === 'mouse' && goTo(i)}
-                    onFocus={() => goTo(i)}
-                  >
-                    <span className="wsx__tag">{s.tag}</span>
-                    <span className="wsx__name">{s.name}</span>
-                    <span className="wsx__more">
-                      <span className="wsx__note">{s.note}</span>
-                      <span className="wsx__visit">
-                        Visit {host(s.url)} <Arrow />
+          <motion.div className="sx__side" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease, delay: 0.15 }}>
+            <p className="body-lg">{websites.intro}</p>
+            <div className="sx__ctas">
+              <a href="#contact" className="btn btn--shimmer" onClick={toContact}>
+                <span className="btn--shimmer__sweep" aria-hidden />
+                <span className="btn--shimmer__label">Start a store project <Arrow /></span>
+              </a>
+              <LayoutGroup id="sx-filter">
+                <LiquidGlass className="segmented" interactive={false} role="tablist" aria-label="Filter stores">
+                  {(['all', 'live', 'private'] as Filter[]).map((f) => (
+                    <button key={f} role="tab" aria-selected={filter === f} className={`segmented__btn ${filter === f ? 'is-active' : ''}`} onClick={() => { setFilter(f); setHover(null) }}>
+                      {filter === f && <motion.span layoutId="sx-pill" className="segmented__pill" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+                      <span className="segmented__text">
+                        {f === 'all' ? 'All' : f === 'live' ? 'Live' : 'In progress'}
+                        <span className="segmented__count">{counts[f]}</span>
                       </span>
-                    </span>
-                  </a>
-                </li>
-              )
-            })}
-          </ol>
-
+                    </button>
+                  ))}
+                </LiquidGlass>
+              </LayoutGroup>
+            </div>
+          </motion.div>
         </div>
+
+        <div className="sx__cols label" aria-hidden>
+          <span>No.</span>
+          <span>Store</span>
+          <span>Category</span>
+          <span>Status</span>
+          <span />
+        </div>
+
+        <ol className="sx__list" onPointerLeave={() => setHover(null)}>
+          <AnimatePresence initial={false} mode="popLayout">
+            {shown.map((s, i) => (
+              <Row key={s.url} s={s} i={i} dim={hover !== null && hover !== i} onHover={setHover} />
+            ))}
+          </AnimatePresence>
+        </ol>
       </div>
+
+      {/* floating preview (fine pointers only, via CSS) */}
+      <motion.div className="sx__preview" style={{ x, y, rotate }} aria-hidden>
+        <AnimatePresence>
+          {active && (
+            <motion.div
+              key="frame"
+              className="sx__frame"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.45, ease }}
+            >
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.img
+                  key={active.image}
+                  src={active.image}
+                  alt=""
+                  className={active.status === 'protected' ? 'is-locked' : ''}
+                  initial={{ opacity: 0, scale: 1.15, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, scale: 1, filter: active.status === 'protected' ? 'blur(6px)' : 'blur(0px)' }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease }}
+                />
+              </AnimatePresence>
+              {active.status !== 'live' && (
+                <span className="sx__lock">
+                  <LockIcon /> {STATUS[active.status]}
+                </span>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </section>
   )
 }
 
-type Geo = ReturnType<typeof useGeometry>
-
-/** One curved panel: thin strips around the cylinder, sharing one continuous image + grade. */
-function Slices({ s, i, g }: { s: (typeof items)[number]; i: number; g: Geo }) {
-  const w0 = g.sliceW - 1.2
-  const pw = w0 * SLICES
+function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover: (i: number | null) => void }) {
+  const live = s.status === 'live'
+  const href = live ? s.url : `mailto:${site.email}?subject=${encodeURIComponent(`Access to ${s.name} preview`)}`
   return (
-    <>
-      {Array.from({ length: SLICES }).map((_, k) => {
-        const off = -ARC / 2 + g.sliceDeg * (k + 0.5)
-        const x = -k * w0
-        return (
-          <span
-            key={k}
-            className="wsx-slice"
-            style={{
-              width: g.sliceW,
-              height: g.H,
-              marginLeft: -g.sliceW / 2,
-              marginTop: -g.H / 2,
-              transform: `rotateY(${i * STEP + off}deg) translateZ(${g.R}px)`,
-              // fog · grade (sheen + vignette, continuous across strips) · screenshot
-              backgroundImage: `linear-gradient(var(--fog), var(--fog)), linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 28%, rgba(10,24,20,0) 60%, rgba(10,24,20,.32)), radial-gradient(120% 90% at 50% 40%, rgba(0,0,0,0) 55%, rgba(10,24,20,.28)), url(${s.image})`,
-              backgroundSize: `100% 100%, ${pw}px ${g.H}px, ${pw}px ${g.H}px, ${pw}px ${g.H}px`,
-              backgroundPosition: `0 0, ${x}px 0, ${x}px 0, ${x}px 0`,
-              borderRadius: k === 0 ? '20px 0 0 20px' : k === SLICES - 1 ? '0 20px 20px 0' : 0,
-            }}
-          />
-        )
-      })}
-    </>
+    <motion.li
+      layout
+      className={`sx-row ${dim ? 'is-dim' : ''}`}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      viewport={{ once: true, margin: '-6% 0px' }}
+      transition={{ duration: 0.8, ease, delay: Math.min(i, 6) * 0.05 }}
+    >
+      <a
+        href={href}
+        target={live ? '_blank' : undefined}
+        rel={live ? 'noopener noreferrer' : undefined}
+        className="sx-row__link"
+        onPointerEnter={(e) => e.pointerType === 'mouse' && onHover(i)}
+        onFocus={() => onHover(i)}
+        onBlur={() => onHover(null)}
+      >
+        <span className="sx-row__num">{String(i + 1).padStart(2, '0')}</span>
+        <span className="sx-row__thumb" aria-hidden>
+          <img src={s.image} alt="" loading="lazy" className={s.status === 'protected' ? 'is-locked' : ''} />
+          {!live && <span className="sx__lock"><LockIcon /></span>}
+        </span>
+        <span className="sx-row__main">
+          <span className="sx-row__name">{s.name}</span>
+          <span className="sx-row__note">{s.note}</span>
+        </span>
+        <span className="sx-row__meta">
+          {s.tag}
+          <em>{s.market} · {s.year}</em>
+        </span>
+        <span className={`sx-row__status is-${s.status}`}>
+          <i aria-hidden /> {STATUS[s.status]}
+        </span>
+        <span className="sx-row__cta">
+          <span className="sx-row__cta-text">{live ? `Visit ${host(s.url)}` : 'Request access'}</span>
+          <span className="sx-row__arrow"><Arrow /></span>
+        </span>
+        <span className="sx-row__fill" aria-hidden />
+      </a>
+    </motion.li>
+  )
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden>
+      <rect x="3" y="7" width="10" height="7" rx="2" />
+      <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+    </svg>
   )
 }

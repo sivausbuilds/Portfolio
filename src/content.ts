@@ -114,20 +114,24 @@ export const services = {
 }
 
 /*
-  Websites built — the 3D ring. Clicking a site opens it in a new tab.
-  Add `image: '/sites/<name>.jpg'` (a 16:10 screenshot in /public/sites) to replace the generated cover.
+  Websites built — the project index.
+  status: 'live' (opens the site) · 'building' (in development) · 'protected' (password protected; CTA asks for access by email).
+  Never put store passwords here: this file is public.
+  image: a 16:10 banner in /public/sites. Add as many stores as you like; filters and counts update on their own.
 */
-export type Site = { name: string; url: string; tag: string; note: string; tone: [string, string]; image?: string; video?: string }
+export type SiteStatus = 'live' | 'building' | 'protected'
+export type Site = { name: string; url: string; tag: string; market: string; year: string; note: string; status: SiteStatus; image: string }
 export const websites = {
-  years: '2023—26',
-  lead: 'Shopify stores, designed and developed end to end for brands in India, UAE, UK and Australia.',
-  title: ['I build stores', '*that sell.*'],
+  title: 'Stores I *designed & built*',
+  intro: 'Shopify stores designed and developed end to end for brands in India, UAE, UK and Australia. Some are still in development or password protected; ask and I’ll walk you through them.',
   items: [
-    { name: 'Varak', url: 'https://varakedibleluxury.com', tag: 'Gifting · UAE', note: 'Custom cart, upsells and a jar box builder.', tone: ['#123a30', '#c9a77a'], image: '/sites/varak.jpg' },
-    { name: 'OffNorth', url: 'https://offnorth.com', tag: 'Apparel · India', note: 'Supima polos, proof on every page.', tone: ['#2a2622', '#e7d9c3'], image: '/sites/offnorth.jpg' },
-    { name: 'Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Shopify · Design & build', note: 'Designed and built end to end.', tone: ['#3a2430', '#f2c6d4'], image: '/sites/panache.jpg' },
-    { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Denim · India', note: 'Designed and built end to end.', tone: ['#1b2a44', '#9fb7e8'], image: '/sites/tarama.jpg' },
-    { name: 'Cordori', url: 'https://cordori.com.au', tag: 'Shopify · Australia', note: 'Designed and built end to end.', tone: ['#3b3223', '#e8cf9a'], image: '/sites/cordori.jpg' },
-    { name: 'The Staple', url: 'https://thestaple.in', tag: 'Shopify · India', note: 'Designed and built end to end.', tone: ['#1f2b26', '#b9d3c4'], image: '/sites/staple.jpg' },
+    { name: 'Varak Edible Luxury', url: 'https://varakedibleluxury.com', tag: 'Gifting & bakery', market: 'UAE', year: '2026', note: 'Custom cart, upsells and a jar box builder', status: 'live', image: '/sites/varak.jpg' },
+    { name: 'OffNorth', url: 'https://offnorth.com', tag: 'Apparel', market: 'India', year: '2025', note: 'Proof next to every buying decision', status: 'live', image: '/sites/offnorth.jpg' },
+    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Art & lifestyle', market: 'India', year: '2025', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg' },
+    { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Denim', market: 'India', year: '2025', note: 'Designed and built end to end', status: 'live', image: '/sites/tarama.jpg' },
+    { name: 'Cordori', url: 'https://cordori.com.au', tag: 'Lifestyle', market: 'Australia', year: '2024', note: 'Designed and built end to end', status: 'live', image: '/sites/cordori.jpg' },
+    { name: 'The Staple', url: 'https://thestaple.in', tag: 'Fashion', market: 'India', year: '2024', note: 'Designed and built end to end', status: 'live', image: '/sites/staple.jpg' },
+    // Example of a store that is not public yet — copy and fill in:
+    // { name: 'Brand name', url: 'https://brand.myshopify.com', tag: 'Category', market: 'India', year: '2026', note: 'What I built', status: 'protected', image: '/sites/brand.jpg' },
   ] as Site[],
 }
