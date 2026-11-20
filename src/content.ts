@@ -137,6 +137,7 @@ export const websites = {
     { name: 'Superglamourous', url: 'https://superglamourous.ae', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'live', image: '/sites/superglamourous.jpg' },
     { name: 'The Staple', url: 'https://thestaple.in', tag: 'Shopify store', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/staple.jpg' },
     { name: 'Saga', url: 'https://mysaga.co', tag: 'Shopify store', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/saga.jpg' },
+    { name: 'Purewear', url: 'https://purewear.co', tag: 'Apparel', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/purewear.jpg' },
     { name: 'Barqat Elixirs', url: '', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'live', image: '/sites/barqat.jpg' },
     // In development — the preview link and its storefront password are shown on the site
     { name: 'Weavers Town', url: 'https://weaverstown.in', password: 'weaver', tag: 'Shopify store', market: 'India', note: 'Store build in progress', status: 'building', image: '/sites/weaverstown.jpg' },
