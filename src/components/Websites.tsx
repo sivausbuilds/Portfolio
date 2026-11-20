@@ -9,7 +9,7 @@ import { Rich } from './Rich'
 
 const ease = [0.22, 1, 0.36, 1] as const
 const host = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '')
-const STATUS: Record<SiteStatus, string> = { live: 'Live', building: 'In development', protected: 'Password protected' }
+const STATUS: Record<SiteStatus, string> = { live: 'Live', building: 'In development', protected: 'Private preview' }
 type Filter = 'all' | 'live' | 'private'
 
 /**
@@ -19,6 +19,7 @@ type Filter = 'all' | 'live' | 'private'
 export function Websites() {
   const [filter, setFilter] = useState<Filter>('all')
   const [hover, setHover] = useState<number | null>(null)
+  const [expanded, setExpanded] = useState(false)
   const items = websites.items
   const shown = useMemo(
     () => items.filter((s) => filter === 'all' || (filter === 'live' ? s.status === 'live' : s.status !== 'live')),
@@ -33,7 +34,9 @@ export function Websites() {
   const y = useSpring(my, { stiffness: 260, damping: 28, mass: 0.6 })
   const vx = useVelocity(x)
   const rotate = useTransform(vx, [-2000, 0, 2000], [-9, 0, 9], { clamp: true })
-  const active = hover !== null ? shown[hover] : null
+  const LIMIT = 8
+  const visible = expanded ? shown : shown.slice(0, LIMIT)
+  const active = hover !== null ? visible[hover] : null
 
   const toContact = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -94,11 +97,19 @@ export function Websites() {
 
         <ol className="sx__list" onPointerLeave={() => setHover(null)}>
           <AnimatePresence initial={false} mode="popLayout">
-            {shown.map((s, i) => (
-              <Row key={s.url} s={s} i={i} dim={hover !== null && hover !== i} onHover={setHover} />
+            {visible.map((s, i) => (
+              <Row key={s.name} s={s} i={i} dim={hover !== null && hover !== i} onHover={setHover} />
             ))}
           </AnimatePresence>
         </ol>
+        {shown.length > LIMIT && (
+          <div className="sx__more">
+            <button type="button" className="sx__more-btn" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded}>
+              <span>{expanded ? 'Show fewer' : `Show all ${shown.length} stores`}</span>
+              <span className={`sx__more-icon ${expanded ? 'is-open' : ''}`} aria-hidden>+</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* floating preview (fine pointers only, via CSS) */}
@@ -171,7 +182,7 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
         </span>
         <span className="sx-row__meta">
           {s.tag}
-          <em>{s.market} · {s.year}</em>
+          <em>{[s.market, s.year].filter(Boolean).join(' · ')}</em>
         </span>
         <span className={`sx-row__status is-${s.status}`}>
           <i aria-hidden /> {STATUS[s.status]}

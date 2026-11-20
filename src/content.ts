@@ -120,18 +120,31 @@ export const services = {
   image: a 16:10 banner in /public/sites. Add as many stores as you like; filters and counts update on their own.
 */
 export type SiteStatus = 'live' | 'building' | 'protected'
-export type Site = { name: string; url: string; tag: string; market: string; year: string; note: string; status: SiteStatus; image: string }
+export type Site = { name: string; url: string; tag: string; market: string; year?: string; note: string; status: SiteStatus; image: string }
 export const websites = {
   title: 'Stores I *designed & built*',
   intro: 'Shopify stores designed and developed end to end for brands in India, UAE, UK and Australia. Some are still in development or password protected; ask and I’ll walk you through them.',
   items: [
-    { name: 'Varak Edible Luxury', url: 'https://varakedibleluxury.com', tag: 'Gifting & bakery', market: 'UAE', year: '2026', note: 'Custom cart, upsells and a jar box builder', status: 'live', image: '/sites/varak.jpg' },
-    { name: 'OffNorth', url: 'https://offnorth.com', tag: 'Apparel', market: 'India', year: '2025', note: 'Proof next to every buying decision', status: 'live', image: '/sites/offnorth.jpg' },
-    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Art & lifestyle', market: 'India', year: '2025', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg' },
-    { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Denim', market: 'India', year: '2025', note: 'Designed and built end to end', status: 'live', image: '/sites/tarama.jpg' },
-    { name: 'Cordori', url: 'https://cordori.com.au', tag: 'Lifestyle', market: 'Australia', year: '2024', note: 'Designed and built end to end', status: 'live', image: '/sites/cordori.jpg' },
-    { name: 'The Staple', url: 'https://thestaple.in', tag: 'Fashion', market: 'India', year: '2024', note: 'Designed and built end to end', status: 'live', image: '/sites/staple.jpg' },
-    // Example of a store that is not public yet — copy and fill in:
-    // { name: 'Brand name', url: 'https://brand.myshopify.com', tag: 'Category', market: 'India', year: '2026', note: 'What I built', status: 'protected', image: '/sites/brand.jpg' },
+    // Live stores
+    { name: 'Varak Edible Luxury', url: 'https://www.varakedibleluxury.com', tag: 'Gifting & bakery', market: 'UAE', note: 'Custom cart, upsells and a jar box builder', status: 'live', image: '/sites/varak.jpg' },
+    { name: 'OffNorth', url: 'https://offnorth.com', tag: 'Apparel', market: 'India', note: 'Proof next to every buying decision', status: 'live', image: '/sites/offnorth.jpg' },
+    { name: 'Kalbeliya', url: 'https://kalbeliya.in', tag: 'Shopify store', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/kalbeliya.jpg' },
+    { name: 'Superglamourous', url: 'https://superglamourous.ae', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'live', image: '/sites/superglamourous.jpg' },
+    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Shopify store', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg' },
+    { name: 'Cordori', url: 'https://cordori.com.au', tag: 'Shopify store', market: 'Australia', note: 'Designed and built end to end', status: 'live', image: '/sites/cordori.jpg' },
+    { name: 'Saga', url: 'https://mysaga.co', tag: 'Shopify store', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/saga.jpg' },
+    { name: 'Invrd', url: 'https://invrd.world', tag: 'Shopify store', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/invrd.jpg' },
+    { name: 'Drink Spoilt', url: 'https://www.drinkspoilt.com', tag: 'Beverages', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/drinkspoilt.jpg' },
+    { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Denim', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/tarama.jpg' },
+    { name: 'The Staple', url: 'https://thestaple.in', tag: 'Shopify store', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/staple.jpg' },
+    // Not public yet (only reachable on a myshopify.com address) — shown on request
+    { name: 'Barqat Elixirs', url: '', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'protected', image: '/sites/barqat.jpg' },
+    { name: 'Blend & Co', url: 'https://blendandco-uae.myshopify.com', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'protected', image: '/sites/blendandco.jpg' },
+    { name: 'Signature Artistry', url: 'https://signature-artistry-uae.myshopify.com', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'protected', image: '/sites/signature.jpg' },
+    // In development
+    { name: 'Solx Uniform', url: 'https://solxuniform.myshopify.com', tag: 'Uniforms', market: '', note: 'Store build in progress', status: 'building', image: '/sites/solx.jpg' },
+    { name: 'Aurëlle by H', url: 'https://aurelle-uae.myshopify.com', tag: 'Shopify store', market: 'UAE', note: 'Store build in progress', status: 'building', image: '/sites/aurelle.jpg' },
+    { name: 'Bharvanta', url: 'https://bharvanta.myshopify.com', tag: 'Shopify store', market: '', note: 'Store build in progress', status: 'building', image: '/sites/bharvanta.jpg' },
+    { name: 'Origen', url: 'https://origennew.myshopify.com', tag: 'Shopify store', market: '', note: 'Store build in progress', status: 'building', image: '/sites/origen.jpg' },
   ] as Site[],
 }
