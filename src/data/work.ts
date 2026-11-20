@@ -254,152 +254,6 @@ export const work: CaseStudy[] = [
   },
 
   {
-    slug: 'offnorth',
-    name: 'OffNorth',
-    title: 'OffNorth *Fashions*',
-    kicker: 'Shopify · India',
-    category: 'E-commerce',
-    status: 'Complete',
-    year: '2024–25',
-    summary: 'A redesign that puts proof next to every buying decision.',
-    intro:
-      'A Supima cotton polo and t-shirt brand from Tirupur. The store sells a premium product in a crowded category, so the redesign focused on proof: why this cotton, why this brand, and what happens if the shopper is not happy.',
-    tags: ['Shopify', 'Redesign', 'Mobile-first', 'CRO'],
-    meta: [
-      { label: 'Role', value: 'Product and build' },
-      { label: 'Stack', value: 'Shopify theme, Liquid, JavaScript' },
-      { label: 'Market', value: 'India' },
-      { label: 'Scope', value: 'Home, collection, product page, footer' },
-    ],
-    cover: { kind: 'video', src: `${OFFNORTH}/after.mp4` },
-    tone: ['#e9e6df', '#5b4a32'],
-    facts: {
-      problem: 'A good product in a crowded category, on a store that left the buying questions unanswered near the buy button.',
-      built: 'A redesign of the home, collection and product pages and the footer that answers one shopper question at each step.',
-      outcome: '9,347 orders over 18 months. About 85% of sessions are on mobile, so every change was judged on a phone first.',
-      highlights: [
-        { value: '9,347', label: 'orders' },
-        { value: '85%', label: 'mobile sessions' },
-        { value: '35.84%', label: 'returning customers' },
-      ],
-      primary: { label: 'Visit store', href: 'https://offnorth.com' },
-    },
-    chapters: [
-      {
-        id: 'problem',
-        kicker: 'The problem',
-        title: 'A good product, a store that *did not say so.*',
-        blocks: [
-          {
-            type: 'p',
-            text: 'The old store showed the product well but left the buying questions unanswered. A shopper met a hero image, a grid of polos and a long list of colours. ==Nothing near the buy button== said why the cotton is better, who else had bought, how fast it ships or what happens if it does not fit.',
-          },
-          { type: 'goal', text: 'Make the store carry the proof, so a first-time shopper from an ad has the answers **before they have to ask**.' },
-        ],
-      },
-      {
-        id: 'before-after',
-        kicker: 'Before and after',
-        title: 'Same store, *two experiences.*',
-        blocks: [
-          { type: 'p', text: 'Screen recordings of the live store, scrolling the home page, a collection and a product page.' },
-          {
-            type: 'compare',
-            url: 'offnorth.com',
-            before: { src: `${OFFNORTH}/before.mp4`, caption: 'One hero, a product grid, a plain product page' },
-            after: { src: `${OFFNORTH}/after.mp4`, caption: 'Proof on every page' },
-          },
-        ],
-      },
-      {
-        id: 'changes',
-        kicker: 'What changed',
-        title: 'Page by *page.*',
-        blocks: [
-          {
-            type: 'tabs',
-            tabs: [
-              {
-                label: 'Home',
-                before: ['One hero image and a Shop Now button', 'Announcement bar with a generic line', 'No proof on the page'],
-                after: [
-                  'Hero that leads with the Exclusive Interlock Supima Polo and the 20% launch offer',
-                  'Trust bar: 48-hour delivery, 200% refund guarantee, rated 4.8 by 35,000+ customers',
-                  'Counters: 35,000+ happy customers, 2,00,000+ products delivered, 48-hour metro delivery, 4.8 average rating',
-                  'Category tiles for Polo, Winter wear and All products',
-                ],
-              },
-              {
-                label: 'Collection',
-                before: ['Illustrated banner and a filter bar', 'Product cards with price and swatches'],
-                after: [
-                  'Filters for sleeve type, pattern, size, colour and recommendation',
-                  'Cards carry the rating and review count, a discount badge and a wishlist heart',
-                  'Green badges: 200% refund guarantee, 14-day return and exchange, same-day dispatch, 48-hour metro delivery',
-                ],
-              },
-              {
-                label: 'Product page',
-                before: ['Gallery, price, a long list of colours, size, add to cart and buy it now', 'A Why choose Supima block below'],
-                after: [
-                  'Named colours, in-stock signal, wishlist and a size guide',
-                  'Trust strip next to the buy button: 200% refund, world’s finest cotton, rated 4.8',
-                  'Spec chips: 220 GSM, 100% Supima cotton, regular fit, single jersey, no colour fade',
-                  'Accordions for product details, care, return and exchange, help',
-                  'FAQ and related items',
-                  'Sticky add-to-cart bar with size, colour and quantity',
-                ],
-              },
-              {
-                label: 'Reviews & story',
-                before: ['Review list with pagination', 'A story block about the brand'],
-                after: ['Review cards with Verified Purchase and a Load more button', 'A short Who are we? story: made in Tirupur, the knit capital of India'],
-              },
-              {
-                label: 'Footer',
-                before: ['Company, orders, policies, address and phone'],
-                after: ['The same links, plus the 200% refund guarantee stated in full above the phone number'],
-              },
-            ],
-          },
-          {
-            type: 'why',
-            text: 'Each change answers one question a shopper has at that point: Is it good? Is it safe to buy? How fast will it arrive? Can I return it? The answer sits ==next to the decision==, not on a separate page.',
-          },
-        ],
-      },
-      {
-        id: 'results',
-        kicker: 'Results',
-        title: 'Store performance, *Apr 2024 to Oct 2025.*',
-        blocks: [
-          { type: 'p', text: 'Shopify Analytics for the whole store over 18 months. This is lifetime store data. It does not isolate the redesign.' },
-          {
-            type: 'kpis',
-            items: [
-              { value: '$183.1K', label: 'Total sales' },
-              { value: '9,347', label: 'Orders' },
-              { value: '583.9K', label: 'Sessions' },
-              { value: '35.84%', label: 'Returning customers' },
-            ],
-          },
-          {
-            type: 'image',
-            src: `${OFFNORTH}/kpis.jpg`,
-            alt: 'Shopify analytics for OffNorth Fashions, 15 Apr 2024 to 31 Oct 2025: gross sales 247,924.49, 9,347 orders, 35.84% returning customer rate',
-            caption: 'Shopify Analytics · 15 Apr 2024 – 31 Oct 2025',
-          },
-          { type: 'image', src: `${OFFNORTH}/sales.jpg`, alt: 'OffNorth sales by channel, average order value 21.26 and top products by sales' },
-          {
-            type: 'p',
-            text: 'Two things stand out. About ==85% of sessions are on mobile== (498.1K of 583.9K), so every change was judged on a phone first. And the best-selling product, the Exclusive Interlock Supima Polo, is the one the new home page and product page lead with.',
-          },
-        ],
-      },
-    ],
-  },
-
-  {
     slug: 'solxi',
     name: 'SolXi',
     title: 'SolXi: school uniforms, *built not bought*',
@@ -658,6 +512,152 @@ export const work: CaseStudy[] = [
       },
     ],
   },
+  {
+    slug: 'offnorth',
+    name: 'OffNorth',
+    title: 'OffNorth *Fashions*',
+    kicker: 'Shopify · India',
+    category: 'E-commerce',
+    status: 'Complete',
+    year: '2024–25',
+    summary: 'A redesign that puts proof next to every buying decision.',
+    intro:
+      'A Supima cotton polo and t-shirt brand from Tirupur. The store sells a premium product in a crowded category, so the redesign focused on proof: why this cotton, why this brand, and what happens if the shopper is not happy.',
+    tags: ['Shopify', 'Redesign', 'Mobile-first', 'CRO'],
+    meta: [
+      { label: 'Role', value: 'Product and build' },
+      { label: 'Stack', value: 'Shopify theme, Liquid, JavaScript' },
+      { label: 'Market', value: 'India' },
+      { label: 'Scope', value: 'Home, collection, product page, footer' },
+    ],
+    cover: { kind: 'video', src: `${OFFNORTH}/after.mp4` },
+    tone: ['#e9e6df', '#5b4a32'],
+    facts: {
+      problem: 'A good product in a crowded category, on a store that left the buying questions unanswered near the buy button.',
+      built: 'A redesign of the home, collection and product pages and the footer that answers one shopper question at each step.',
+      outcome: '9,347 orders over 18 months. About 85% of sessions are on mobile, so every change was judged on a phone first.',
+      highlights: [
+        { value: '9,347', label: 'orders' },
+        { value: '85%', label: 'mobile sessions' },
+        { value: '35.84%', label: 'returning customers' },
+      ],
+      primary: { label: 'Visit store', href: 'https://offnorth.com' },
+    },
+    chapters: [
+      {
+        id: 'problem',
+        kicker: 'The problem',
+        title: 'A good product, a store that *did not say so.*',
+        blocks: [
+          {
+            type: 'p',
+            text: 'The old store showed the product well but left the buying questions unanswered. A shopper met a hero image, a grid of polos and a long list of colours. ==Nothing near the buy button== said why the cotton is better, who else had bought, how fast it ships or what happens if it does not fit.',
+          },
+          { type: 'goal', text: 'Make the store carry the proof, so a first-time shopper from an ad has the answers **before they have to ask**.' },
+        ],
+      },
+      {
+        id: 'before-after',
+        kicker: 'Before and after',
+        title: 'Same store, *two experiences.*',
+        blocks: [
+          { type: 'p', text: 'Screen recordings of the live store, scrolling the home page, a collection and a product page.' },
+          {
+            type: 'compare',
+            url: 'offnorth.com',
+            before: { src: `${OFFNORTH}/before.mp4`, caption: 'One hero, a product grid, a plain product page' },
+            after: { src: `${OFFNORTH}/after.mp4`, caption: 'Proof on every page' },
+          },
+        ],
+      },
+      {
+        id: 'changes',
+        kicker: 'What changed',
+        title: 'Page by *page.*',
+        blocks: [
+          {
+            type: 'tabs',
+            tabs: [
+              {
+                label: 'Home',
+                before: ['One hero image and a Shop Now button', 'Announcement bar with a generic line', 'No proof on the page'],
+                after: [
+                  'Hero that leads with the Exclusive Interlock Supima Polo and the 20% launch offer',
+                  'Trust bar: 48-hour delivery, 200% refund guarantee, rated 4.8 by 35,000+ customers',
+                  'Counters: 35,000+ happy customers, 2,00,000+ products delivered, 48-hour metro delivery, 4.8 average rating',
+                  'Category tiles for Polo, Winter wear and All products',
+                ],
+              },
+              {
+                label: 'Collection',
+                before: ['Illustrated banner and a filter bar', 'Product cards with price and swatches'],
+                after: [
+                  'Filters for sleeve type, pattern, size, colour and recommendation',
+                  'Cards carry the rating and review count, a discount badge and a wishlist heart',
+                  'Green badges: 200% refund guarantee, 14-day return and exchange, same-day dispatch, 48-hour metro delivery',
+                ],
+              },
+              {
+                label: 'Product page',
+                before: ['Gallery, price, a long list of colours, size, add to cart and buy it now', 'A Why choose Supima block below'],
+                after: [
+                  'Named colours, in-stock signal, wishlist and a size guide',
+                  'Trust strip next to the buy button: 200% refund, world’s finest cotton, rated 4.8',
+                  'Spec chips: 220 GSM, 100% Supima cotton, regular fit, single jersey, no colour fade',
+                  'Accordions for product details, care, return and exchange, help',
+                  'FAQ and related items',
+                  'Sticky add-to-cart bar with size, colour and quantity',
+                ],
+              },
+              {
+                label: 'Reviews & story',
+                before: ['Review list with pagination', 'A story block about the brand'],
+                after: ['Review cards with Verified Purchase and a Load more button', 'A short Who are we? story: made in Tirupur, the knit capital of India'],
+              },
+              {
+                label: 'Footer',
+                before: ['Company, orders, policies, address and phone'],
+                after: ['The same links, plus the 200% refund guarantee stated in full above the phone number'],
+              },
+            ],
+          },
+          {
+            type: 'why',
+            text: 'Each change answers one question a shopper has at that point: Is it good? Is it safe to buy? How fast will it arrive? Can I return it? The answer sits ==next to the decision==, not on a separate page.',
+          },
+        ],
+      },
+      {
+        id: 'results',
+        kicker: 'Results',
+        title: 'Store performance, *Apr 2024 to Oct 2025.*',
+        blocks: [
+          { type: 'p', text: 'Shopify Analytics for the whole store over 18 months. This is lifetime store data. It does not isolate the redesign.' },
+          {
+            type: 'kpis',
+            items: [
+              { value: '$183.1K', label: 'Total sales' },
+              { value: '9,347', label: 'Orders' },
+              { value: '583.9K', label: 'Sessions' },
+              { value: '35.84%', label: 'Returning customers' },
+            ],
+          },
+          {
+            type: 'image',
+            src: `${OFFNORTH}/kpis.jpg`,
+            alt: 'Shopify analytics for OffNorth Fashions, 15 Apr 2024 to 31 Oct 2025: gross sales 247,924.49, 9,347 orders, 35.84% returning customer rate',
+            caption: 'Shopify Analytics · 15 Apr 2024 – 31 Oct 2025',
+          },
+          { type: 'image', src: `${OFFNORTH}/sales.jpg`, alt: 'OffNorth sales by channel, average order value 21.26 and top products by sales' },
+          {
+            type: 'p',
+            text: 'Two things stand out. About ==85% of sessions are on mobile== (498.1K of 583.9K), so every change was judged on a phone first. And the best-selling product, the Exclusive Interlock Supima Polo, is the one the new home page and product page lead with.',
+          },
+        ],
+      },
+    ],
+  },
+
   {
     slug: 'theliv',
     name: 'Theliv',
