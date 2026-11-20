@@ -186,7 +186,24 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
         <span className={`sx-row__status is-${s.status}`}>
           <i aria-hidden /> {STATUS[s.status]}
         </span>
-        {href ? (
+        {href && s.password ? (
+          // Submits the store's own password form (POST /password) in a new tab, so Shopify
+          // unlocks the storefront and redirects to the home page. The password is also copied as a fallback.
+          <form className="sx-row__form" method="post" action={`${href.replace(/\/$/, '')}/password`} target="_blank">
+            <input type="hidden" name="form_type" value="storefront_password" />
+            <input type="hidden" name="utf8" value="✓" />
+            <input type="hidden" name="password" value={s.password} />
+            <button
+              type="submit"
+              className="sx-row__cta sx-row__hit"
+              aria-label={`Open ${s.name} preview, password filled in`}
+              onClick={() => navigator.clipboard?.writeText(s.password!).catch(() => {})}
+            >
+              <span className="sx-row__cta-text">{cta}</span>
+              <span className="sx-row__arrow"><Arrow /></span>
+            </button>
+          </form>
+        ) : href ? (
           <a className="sx-row__cta sx-row__hit" href={href} target="_blank" rel="noopener noreferrer" aria-label={`${cta} (${s.name})`}>
             <span className="sx-row__cta-text">{cta}</span>
             <span className="sx-row__arrow"><Arrow /></span>

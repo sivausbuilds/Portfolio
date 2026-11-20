@@ -3074,3 +3074,5 @@ h1 .line, h2 .line, .cs-hero__title .line, .work__title .line, .svc__title .line
   .docs { grid-template-columns: 1fr; }
   .doc__preview { height: 220px; }
 }
+.sx-row__form { display: contents; }
+button.sx-row__cta { font: inherit; font-size: 13.5px; font-weight: 500; color: var(--ink); cursor: pointer; }
