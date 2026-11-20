@@ -95,13 +95,6 @@ export function About() {
         </div>
       </div>
 
-      <div className="container about__more">
-        <div className="about__stats">
-          <p className="label">In numbers</p>
-          <Stats />
-        </div>
-        <Principles />
-      </div>
     </section>
   )
 }
@@ -203,75 +196,3 @@ function Words({ text }: { text: string }) {
   )
 }
 
-function Stats() {
-  return (
-    <dl className="stats">
-      {about.stats.map((s, i) => (
-        <Stat key={s.label} {...s} delay={i * 0.12} />
-      ))}
-    </dl>
-  )
-}
-
-function Stat({ value, suffix, label, delay }: { value: number; suffix: string; label: string; delay: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-15% 0px' })
-  const [n, setN] = useState(0)
-  useEffect(() => {
-    if (!inView) return
-    const c = animate(0, value, { duration: 1.6, delay, ease, onUpdate: (v) => setN(Math.round(v)) })
-    return () => c.stop()
-  }, [inView, value, delay])
-
-  return (
-    <motion.div
-      ref={ref}
-      className="stat"
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1, ease, delay }}
-    >
-      <dd className="stat__value">
-        {n}
-        <span>{suffix}</span>
-      </dd>
-      <dt className="label">{label}</dt>
-    </motion.div>
-  )
-}
-
-function Principles() {
-  const [active, setActive] = useState(0)
-  return (
-    <div className="principles" id="process">
-      <p className="label">How I work</p>
-      <ol>
-        {about.principles.map((p, i) => (
-          <motion.li
-            key={p.title}
-            className={`principle ${active === i ? 'is-active' : ''}`}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{ duration: 0.9, ease, delay: i * 0.08 }}
-            onPointerEnter={(e) => e.pointerType === 'mouse' && setActive(i)}
-          >
-            <button type="button" className="principle__head" aria-expanded={active === i} onClick={() => setActive(i)}>
-              <span className="principle__num label">0{i + 1}</span>
-              <span className="principle__title">{p.title}</span>
-              <span className="principle__plus" aria-hidden />
-            </button>
-            <motion.div
-              className="principle__body"
-              initial={false}
-              animate={{ height: active === i ? 'auto' : 0, opacity: active === i ? 1 : 0 }}
-              transition={{ duration: 0.6, ease }}
-            >
-              <p>{p.body}</p>
-            </motion.div>
-          </motion.li>
-        ))}
-      </ol>
-    </div>
-  )
-}

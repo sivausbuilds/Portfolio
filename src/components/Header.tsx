@@ -30,6 +30,7 @@ export function Header() {
   const go = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault()
     setOpen(false)
+    if (href.startsWith('/')) return navigate(href)
     if (window.location.pathname !== '/') return navigate('/', href === '#top' ? undefined : href)
     if (!document.querySelector(href)) {
       if (href === '#contact') window.location.href = `mailto:${site.email}`

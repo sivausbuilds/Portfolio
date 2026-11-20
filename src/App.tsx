@@ -10,6 +10,8 @@ import { Bento } from './components/Bento'
 import { Websites } from './components/Websites'
 import { Services } from './components/Services'
 import { Work } from './components/Work'
+import { Footer } from './components/Footer'
+import { Resume } from './components/Resume'
 import { work } from './content'
 import { takePendingHash, usePath } from './lib/router'
 import { initSmoothScroll, resetScroll, scrollTo } from './lib/smooth'
@@ -19,7 +21,8 @@ export default function App() {
   const path = usePath()
   const slug = path.match(/^\/work\/([^/]+)\/?$/)?.[1]
   const item = slug ? work.find((w) => w.slug === slug) : undefined
-  const key = item ? item.slug : 'home'
+  const isResume = /^\/resume\/?$/.test(path)
+  const key = isResume ? 'resume' : item ? item.slug : 'home'
 
   return (
     <>
@@ -32,7 +35,8 @@ export default function App() {
           animate={{ opacity: 1, transition: { duration: 0.6 } }}
           exit={{ opacity: 0, y: -24, transition: { duration: 0.45, ease: [0.65, 0, 0.35, 1] } }}
         >
-          <Page>{item ? <CaseStudyPage item={item} /> : <Home />}</Page>
+          <Page>{isResume ? <Resume /> : item ? <CaseStudyPage item={item} /> : <Home />}</Page>
+          <Footer />
         </motion.main>
       </AnimatePresence>
     </>
