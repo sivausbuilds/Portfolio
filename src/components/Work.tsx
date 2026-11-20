@@ -8,7 +8,7 @@ import { navigate } from '../lib/router'
 import { prefersReducedMotion } from '../lib/smooth'
 import { Cover } from './Cover'
 import { AutoVideo } from './Media'
-import { plain } from './Rich'
+import { plain, Rich } from './Rich'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 
@@ -58,7 +58,7 @@ export function Work() {
             transition={{ duration: 1, ease, delay: 0.15 }}
           >
             <p className="body-lg">
-              Shopify builds that sell and products I defined myself — each one told as problem, insight, build and outcome.
+              <Rich text="Shopify builds that sell and products I defined myself, each told as ==problem, decision, build and outcome==." />
             </p>
             <LayoutGroup id="work-filter">
               <LiquidGlass className="segmented" interactive={false} role="tablist" aria-label="Filter case studies">

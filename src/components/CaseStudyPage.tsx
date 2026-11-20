@@ -7,6 +7,7 @@ import { work, type CaseStudy } from '../data/work'
 import { navigate } from '../lib/router'
 import { scrollTo } from '../lib/smooth'
 import { CaseBar } from './CaseBar'
+import { Contact } from './Contact'
 import { BlockView } from './CaseBlocks'
 import { Cover } from './Cover'
 import { Arrow } from './Header'
@@ -59,7 +60,7 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
       ScrollTrigger.create({
         trigger: '.cs-glance',
         start: 'bottom 85%',
-        endTrigger: '.cs-next',
+        endTrigger: '.ct',
         end: 'top 85%',
         onToggle: (self) => setBarVisible(self.isActive),
       })
@@ -259,6 +260,10 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
             </section>
           ))}
         </div>
+      </div>
+
+      <div className="cs-contact">
+        <Contact variant={item.category === 'E-commerce' ? 'shopify' : 'product'} label={`Like what you see in ${item.name}?`} />
       </div>
 
       <div className="container cs-next">

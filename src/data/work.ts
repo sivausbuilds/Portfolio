@@ -36,6 +36,7 @@ export type Block =
   | { type: 'flow'; without: FlowNode[]; with: FlowNode[]; withoutResult: string; withResult: string; labels?: [string, string] }
   | { type: 'versus'; options: { name: string; verdict: string; chosen?: boolean; points: string[] }[] }
   | { type: 'metrics'; items: { metric: string; why: string }[] }
+  | { type: 'docs'; items: { title: string; kind: string; pages: number; body: string; covers: string[]; points: string[]; file: string }[] }
   | { type: 'stats'; items: { value: string; label: string }[] }
   | { type: 'table'; rows: [string, string][] }
   | { type: 'links'; items: LinkItem[] }
@@ -599,6 +600,40 @@ export const work: CaseStudy[] = [
               { value: '35', label: 'automated checks (search, sizes, totals, cart payload, sign-in lock) run during the build' },
               { value: '2', label: 'admin setup guides so the founder can run schools, slots and bundles without a developer' },
               { value: '0', label: 'external servers or build steps; everything ships inside the Shopify theme' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'docs',
+        kicker: 'Documentation',
+        title: 'Handover docs, *written for the founder.*',
+        blocks: [
+          {
+            type: 'p',
+            text: 'A feature is only finished when the client can run it without me. I wrote ==two setup guides==: one for the founder’s everyday tasks, one with the developer detail, so ==adding a school or opening new slots never needs a developer==.',
+          },
+          {
+            type: 'docs',
+            items: [
+              {
+                title: 'Pre-Book Fitting: Founder Setup Guide',
+                kind: 'Founder guide',
+                pages: 5,
+                body: 'How the booking system works, adding a school in 15 minutes, multi-location centres and everyday tasks.',
+                covers: ['/work/solxi/docs/solxi-pre-book-fitting-setup-guide-p1.jpg', '/work/solxi/docs/solxi-pre-book-fitting-setup-guide-p2.jpg'],
+                points: ['Add a school in 6 steps', 'Everyday tasks table', 'Naming rules and limits', 'Troubleshooting'],
+                file: '/work/solxi/docs/solxi-pre-book-fitting-setup-guide.pdf',
+              },
+              {
+                title: 'Find Your School: Admin & Developer Guide',
+                kind: 'Admin + developer guide',
+                pages: 12,
+                body: 'Products, bundle collections and schools for admins; data flow, files, data model and cart payload for developers.',
+                covers: ['/work/solxi/docs/solxi-find-your-school-setup-guide-p1.jpg', '/work/solxi/docs/solxi-find-your-school-setup-guide-p2.jpg'],
+                points: ['3 admin setup guides', 'Publishing checklist', 'Data model and cart payload', 'Testing and gotchas'],
+                file: '/work/solxi/docs/solxi-find-your-school-setup-guide.pdf',
+              },
             ],
           },
         ],

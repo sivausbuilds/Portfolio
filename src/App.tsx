@@ -49,11 +49,24 @@ function Page({ children }: { children: React.ReactNode }) {
   useLayoutEffect(() => {
     const hash = takePendingHash()
     resetScroll()
+    // key-phrase underlines draw in when they scroll into view
+    const io = new IntersectionObserver(
+      (es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add('is-drawn'), io.unobserve(e.target))),
+      { rootMargin: '0px 0px -12% 0px' },
+    )
+    const scan = () => document.querySelectorAll('.hl:not(.is-drawn)').forEach((el) => io.observe(el))
+    const mo = new MutationObserver(scan)
+    mo.observe(document.body, { childList: true, subtree: true })
+    scan()
     const id = requestAnimationFrame(() => {
       ScrollTrigger.refresh()
       if (hash) setTimeout(() => scrollTo(hash), 120)
     })
-    return () => cancelAnimationFrame(id)
+    return () => {
+      cancelAnimationFrame(id)
+      io.disconnect()
+      mo.disconnect()
+    }
   }, [])
   return <>{children}</>
 }

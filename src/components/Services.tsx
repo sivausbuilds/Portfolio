@@ -23,7 +23,7 @@ export function Services() {
             </span>
           </h2>
           <motion.p className="svc__intro" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-10% 0px' }} transition={{ duration: 1, ease, delay: 0.15 }}>
-            {services.intro}
+            <Rich text={services.intro} />
           </motion.p>
         </div>
 

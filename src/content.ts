@@ -72,7 +72,7 @@ export const about = {
 */
 export const services = {
   title: 'What I bring to *the table*',
-  intro: 'Design and product thinking in one person — and the code to ship it. Each skill links to the work that proves it.',
+  intro: 'Design and product thinking in ==one person==, and the code to ship it. Each skill links to ==the work that proves it==.',
   items: [
     {
       icon: 'interface',
@@ -123,7 +123,7 @@ export type SiteStatus = 'live' | 'building' | 'protected'
 export type Site = { name: string; url: string; password?: string; tag: string; market: string; year?: string; note: string; status: SiteStatus; image: string }
 export const websites = {
   title: 'Stores I *designed & built*',
-  intro: 'Shopify stores designed and developed end to end for brands in India, UAE, UK and Australia. Some are still in development or password protected; ask and I’ll walk you through them.',
+  intro: 'Shopify stores ==designed and developed end to end== for brands in India, UAE, UK and Australia. Stores in development show their ==preview link and password==.',
   items: [
     // Live
     { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Shopify store', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg' },

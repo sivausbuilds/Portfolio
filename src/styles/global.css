@@ -2995,3 +2995,82 @@ h1, h2, h3,
   .mx li { grid-template-columns: 36px 1fr; }
   .mx__why { grid-column: 2; }
 }
+
+
+/* ═════════════ Design language: one type scale, no clipped glyphs ═════════════ */
+:root {
+  --accent: #3f7a63; /* fallback; case studies set their own */
+  --t-section: clamp(44px, 6.2vw, 104px);
+  --t-sub: clamp(30px, 3.4vw, 52px);
+  --t-body-lg: clamp(16.5px, 1.3vw, 19.5px);
+}
+.work__title, .sx__title, .svc__title, .bento__title, .ct__title { font-size: var(--t-section); line-height: 1.02; letter-spacing: -0.035em; font-weight: 300; font-style: italic; }
+.cs-chapter__title { font-size: var(--t-sub); }
+.body-lg, .svc__intro, .ct__lead, .cs-hero__intro, .cs-p, .hx-lead__text { font-size: var(--t-body-lg); line-height: 1.62; color: var(--ink-2); }
+.body-lg, .svc__intro, .ct__lead { max-width: 44ch; }
+
+/* Every reveal clip gets room for italic overhang, ascenders and descenders */
+h1 .line, h2 .line, .cs-hero__title .line, .work__title .line, .svc__title .line, .sx__title .line {
+  padding: 0.12em 0.18em 0.18em 0.08em;
+  margin: -0.12em -0.18em -0.18em -0.08em;
+}
+/* Gradient text only paints inside its own box: pad it so tails of f, g, y are never shaved */
+.gtext { margin: 0 -0.02em; }
+.gtext__fill, .hx-gt {
+  padding: 0.1em 0.16em 0.22em 0.1em !important;
+  margin: -0.1em -0.16em -0.22em -0.1em !important;
+}
+.gtext__shine, .hx-shine {
+  left: -0.1em !important;
+  top: -0.1em !important;
+  padding: 0.1em 0.16em 0.22em 0.1em !important;
+}
+.work__title sup { font-style: normal; }
+
+/* Key phrases everywhere use the same drawn gradient underline */
+.hl { font-weight: 500; color: var(--ink); }
+.ft .hl { color: #eef4f0; }
+
+/* tabs on small screens: hint that the row scrolls */
+@media (max-width: 760px) {
+  .tabs__list { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 32px; }
+}
+
+/* case study contact */
+.cs-contact { margin-top: clamp(96px, 11vw, 160px); }
+.cs-contact .ct { padding-bottom: 0; }
+.cs-contact .ct__title { font-size: clamp(40px, 5vw, 84px); }
+
+/* documentation cards */
+.docs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+.doc { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border-radius: 24px; background: rgba(255, 255, 255, 0.7); box-shadow: inset 0 0 0 1px rgba(15, 43, 37, 0.08); }
+.doc__preview {
+  position: relative;
+  display: block;
+  height: 260px;
+  overflow: hidden;
+  background: radial-gradient(70% 90% at 70% 10%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%), var(--tone);
+}
+.doc__page {
+  position: absolute;
+  width: 46%;
+  border-radius: 6px;
+  box-shadow: 0 24px 40px -20px rgba(20, 10, 14, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.8s var(--ease);
+}
+.doc__page--back { left: 44%; top: 34px; transform: rotate(6deg); }
+.doc__page--front { left: 14%; top: 22px; transform: rotate(-4deg); }
+.doc__preview:hover .doc__page--front { transform: rotate(-6deg) translate(-8px, -10px); }
+.doc__preview:hover .doc__page--back { transform: rotate(9deg) translate(10px, -4px); }
+.doc__badge { position: absolute; right: 14px; bottom: 14px; padding: 6px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 500; color: #fff; background: rgba(20, 12, 16, 0.65); backdrop-filter: blur(8px); }
+.doc__body { display: grid; align-content: start; gap: 10px; padding: 22px 24px 24px; }
+.doc__title { margin: 0; font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(22px, 2vw, 28px); line-height: 1.15; letter-spacing: -0.02em; }
+.doc__text { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+.doc__points { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.doc__points li { padding: 5px 10px; border-radius: 999px; font-size: 12px; color: var(--ink-2); box-shadow: inset 0 0 0 1px rgba(15, 43, 37, 0.12); }
+.doc__actions { display: flex; align-items: center; gap: 16px; margin-top: 10px; }
+.doc__dl { font-size: 13.5px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 760px) {
+  .docs { grid-template-columns: 1fr; }
+  .doc__preview { height: 220px; }
+}

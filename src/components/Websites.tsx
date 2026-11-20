@@ -64,7 +64,7 @@ export function Websites() {
             </span>
           </h2>
           <motion.div className="sx__side" initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease, delay: 0.15 }}>
-            <p className="body-lg">{websites.intro}</p>
+            <p className="body-lg"><Rich text={websites.intro} /></p>
             <div className="sx__ctas">
               <a href="#contact" className="btn btn--shimmer" onClick={toContact}>
                 <span className="btn--shimmer__sweep" aria-hidden />

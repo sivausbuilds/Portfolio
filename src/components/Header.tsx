@@ -32,6 +32,7 @@ export function Header() {
     e.preventDefault()
     setOpen(false)
     if (href.startsWith('/')) return navigate(href)
+    if (href !== '#top' && document.querySelector(href)) return void setTimeout(() => scrollTo(href), open ? 350 : 0)
     if (window.location.pathname !== '/') return navigate('/', href === '#top' ? undefined : href)
     if (!document.querySelector(href)) {
       if (href === '#contact') window.location.href = `mailto:${site.email}`

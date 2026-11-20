@@ -122,6 +122,38 @@ export function BlockView({ block, item }: { block: Block; item: CaseStudy }) {
           ))}
         </motion.ol>
       )
+    case 'docs':
+      return (
+        <div className="docs cs-wide">
+          {block.items.map((d, k) => (
+            <motion.article key={d.file} className="doc" {...reveal} transition={{ ...reveal.transition, delay: k * 0.1 }}>
+              <a className="doc__preview" href={d.file} target="_blank" rel="noopener noreferrer" aria-label={`Open ${d.title} (PDF)`}>
+                <img className="doc__page doc__page--back" src={d.covers[1]} alt="" loading="lazy" />
+                <img className="doc__page doc__page--front" src={d.covers[0]} alt={`First page of ${d.title}`} loading="lazy" />
+                <span className="doc__badge">PDF · {d.pages} pages</span>
+              </a>
+              <div className="doc__body">
+                <span className="label">{d.kind}</span>
+                <h3 className="doc__title">{d.title}</h3>
+                <p className="doc__text">{d.body}</p>
+                <ul className="doc__points">
+                  {d.points.map((pt) => (
+                    <li key={pt}>{pt}</li>
+                  ))}
+                </ul>
+                <div className="doc__actions">
+                  <a className="btn btn--ink btn--sm" href={d.file} target="_blank" rel="noopener noreferrer">
+                    Read the guide <Arrow />
+                  </a>
+                  <a className="doc__dl" href={d.file} download>
+                    Download
+                  </a>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      )
     case 'pending':
       return (
         <motion.div className="cs-pending" {...reveal} style={{ ['--accent' as string]: item.tone[1] }}>

@@ -14,13 +14,39 @@ const SERVICES = [
   { id: 'Shopify consulting', note: 'CRO audit, UX review, roadmap' },
   { id: 'Something else', note: 'Product design or anything around Shopify' },
 ]
+const PRODUCT_SERVICES = [
+  { id: 'Product design', note: 'Research, flows and UI for a digital product' },
+  { id: 'MVP / 0-to-1 build', note: 'From problem framing and PRD to a working MVP' },
+  { id: 'UX audit', note: 'Find where users hesitate, with a prioritised fix list' },
+  { id: 'Shopify build', note: 'A store or custom feature in and around Shopify' },
+  { id: 'Something else', note: 'Tell me what you have in mind' },
+]
 const BUDGETS = ['Under $1k', '$1k–3k', '$3k–7k', '$7k+', 'Not sure yet']
 const TIMELINES = ['ASAP', '1–2 months', '3+ months', 'Flexible']
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
-export function Contact() {
-  const [service, setService] = useState(SERVICES[0].id)
+type Copy = { label: string; title: string; lead: string; service: string }
+const COPY: Record<'shopify' | 'product', Copy & { services: typeof SERVICES }> = {
+  shopify: {
+    label: '(06) — Work with me',
+    title: 'Need a Shopify store *that sells?*',
+    lead: 'New builds, revamps, custom sections and consulting in and around Shopify. Tell me about the project and I’ll ==reply within two working days==.',
+    service: 'Shopify website build',
+    services: SERVICES,
+  },
+  product: {
+    label: 'Work with me',
+    title: 'Have a product *to shape?*',
+    lead: 'Product design, 0-to-1 MVPs and UX for digital products, or a custom build in and around Shopify. Tell me about it and I’ll ==reply within two working days==.',
+    service: 'Product design',
+    services: PRODUCT_SERVICES,
+  },
+}
+
+export function Contact({ variant = 'shopify', label }: { variant?: 'shopify' | 'product'; label?: string }) {
+  const copy = COPY[variant]
+  const [service, setService] = useState(copy.service)
   const [budget, setBudget] = useState('')
   const [timeline, setTimeline] = useState('')
   const [status, setStatus] = useState<Status>('idle')
@@ -54,17 +80,17 @@ export function Contact() {
     <section id="contact" className="ct">
       <div className="container ct__wrap">
         <div className="ct__intro">
-          <p className="label">(06) — Work with me</p>
+          <p className="label">{label ?? copy.label}</p>
           <h2 className="ct__title">
             <motion.span initial={{ y: '40%', opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease }}>
-              <Rich text="Need a Shopify store *that sells?*" fancy />
+              <Rich text={copy.title} fancy />
             </motion.span>
           </h2>
           <p className="ct__lead">
-            New builds, revamps, custom sections and consulting in and around Shopify. Tell me about the project and I’ll reply within two working days.
+            <Rich text={copy.lead} />
           </p>
           <ul className="ct__services">
-            {SERVICES.slice(0, 4).map((s) => (
+            {copy.services.slice(0, 4).map((s) => (
               <li key={s.id}>
                 <span className="ct__tick" aria-hidden />
                 <span><strong>{s.id}</strong> · {s.note}</span>
@@ -104,7 +130,7 @@ export function Contact() {
                   <legend className="label">What do you need?</legend>
                   <LayoutGroup id="svc">
                     <div className="ct__chips" role="radiogroup">
-                      {SERVICES.map((s) => (
+                      {copy.services.map((s) => (
                         <button key={s.id} type="button" role="radio" aria-checked={service === s.id} className={`ct__chip ${service === s.id ? 'is-on' : ''}`} onClick={() => setService(s.id)}>
                           {service === s.id && <motion.span layoutId="svc-pill" className="ct__chip-pill" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
                           <span>{s.id}</span>
