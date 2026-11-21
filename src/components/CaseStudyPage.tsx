@@ -8,7 +8,7 @@ import { navigate } from '../lib/router'
 import { scrollTo } from '../lib/smooth'
 import { CaseBar } from './CaseBar'
 import { Contact } from './Contact'
-import { Unlock } from './Unlock'
+import { PasswordChip, Unlock } from './Unlock'
 import { BlockView } from './CaseBlocks'
 import { Cover } from './Cover'
 import { Arrow } from './Header'
@@ -142,6 +142,12 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
                 </LiquidGlass>
               )}
             </div>
+            {item.previews?.[0]?.password && (
+              <div className="cs-pvpw">
+                <PasswordChip value={item.previews[0].password} />
+                <span>Live store preview password</span>
+              </div>
+            )}
           </motion.div>
           <dl className="meta">
             {item.meta.map((m, i) => (

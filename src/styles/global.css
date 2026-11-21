@@ -3190,3 +3190,8 @@ button.btn { font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; 
   .cs-glance__row { gap: 28px; }
   .cs-content { gap: 104px; }
 }
+
+.live__pw { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; }
+.live__hint { font-size: 12.5px; color: var(--ink-3); }
+.cs-pvpw { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--ink-3); }
+.pw-chip { cursor: pointer; }

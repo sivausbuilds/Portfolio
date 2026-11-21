@@ -5,7 +5,7 @@ import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 import { AutoVideo, BrowserFrame, PhoneFrame } from './Media'
 import { Rich } from './Rich'
-import { Unlock } from './Unlock'
+import { PasswordChip, Unlock } from './Unlock'
 import { GradientText } from './GradientText'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -164,7 +164,8 @@ export function BlockView({ block, item }: { block: Block; item: CaseStudy }) {
               <div className="live__text">
                 <span className="label">Live preview</span>
                 <span className="live__title">{l.title}</span>
-                <span className="live__body">{l.body}{l.password ? ' Opens unlocked.' : ''}</span>
+                <span className="live__body">{l.body}</span>
+                {l.password && <span className="live__pw"><PasswordChip value={l.password} /><span className="live__hint">If the password page appears, paste it.</span></span>}
               </div>
               <Unlock url={l.url} password={l.password} className="btn btn--shimmer live__btn" label={`Open ${l.title} live`}>
                 <span className="btn--shimmer__sweep" aria-hidden />
