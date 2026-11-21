@@ -36,6 +36,7 @@ export type Block =
   | { type: 'flow'; without: FlowNode[]; with: FlowNode[]; withoutResult: string; withResult: string; labels?: [string, string] }
   | { type: 'versus'; options: { name: string; verdict: string; chosen?: boolean; points: string[] }[] }
   | { type: 'metrics'; items: { metric: string; why: string }[] }
+  | { type: 'live'; items: { title: string; body: string; url: string; password?: string }[] }
   | { type: 'docs'; items: { title: string; kind: string; pages: number; body: string; covers: string[]; points: string[]; file: string }[] }
   | { type: 'stats'; items: { value: string; label: string }[] }
   | { type: 'table'; rows: [string, string][] }
@@ -72,6 +73,8 @@ export type CaseStudy = {
     highlights: { value: string; label: string }[]
     primary?: { label: string; href: string }
   }
+  /** live pages a reviewer can open; password-protected stores open unlocked */
+  previews?: { label: string; url: string; password?: string }[]
   chapters: Chapter[]
 }
 
@@ -100,9 +103,9 @@ export const work: CaseStudy[] = [
     cover: { kind: 'video', src: `${VARAK}/upsell.mp4` },
     tone: ['#e4ebe5', '#2f5a48'],
     facts: {
-      problem: 'Gifting orders are personal, but a standard Shopify cart gives one note per order, no pickup choice and no prompt to add extras.',
-      built: 'Four custom features: a variant picker with an upsell popup, a jar box builder, per-item notes with delivery or pickup, and a 3D testimonial slider.',
-      outcome: '5,322 orders and a 37.71% returning customer rate, 1 Jan to 3 Nov 2026 (whole store).',
+      problem: 'Gift orders need notes, pickup and extras; a standard Shopify cart offers none of them.',
+      built: 'Four custom features: upsell popup, jar box builder, gift notes with pickup, testimonial slider.',
+      outcome: '5,322 orders and 37.71% returning customers in 2026.',
       highlights: [
         { value: '4', label: 'custom features' },
         { value: '5,322', label: 'orders in 2026' },
@@ -261,24 +264,27 @@ export const work: CaseStudy[] = [
     category: 'E-commerce',
     status: 'Complete',
     year: '2026',
-    summary: 'A build-vs-buy call that replaced two paid apps with custom Shopify features: a fitting booking system and a school uniform finder.',
-    intro:
-      'SolXi sells school uniforms and accessories. Parents shop by school, gender and grade, and many want an in-person fitting first. Shopify handles neither out of the box, so I compared the apps against a custom build, then designed and built both features inside Shopify.',
+    summary: 'A build-vs-buy call that replaced two paid apps with custom Shopify features: fitting booking and a school uniform finder.',
+    intro: 'A school uniform brand needed fitting bookings and school-first shopping. I chose to build both inside Shopify instead of renting apps.',
     tags: ['Build vs buy', 'Shopify Flow', 'Liquid', 'Metaobjects', 'AI-assisted build'],
     meta: [
       { label: 'Role', value: 'Product, design and build' },
-      { label: 'Stack', value: 'Shopify theme, Liquid, JavaScript, Shopify Flow, Metaobjects' },
-      { label: 'Market', value: 'India (INR)' },
+      { label: 'Stack', value: 'Shopify, Liquid, JS, Flow' },
+      { label: 'Market', value: 'India' },
       { label: 'Status', value: 'Built, pre-launch' },
     ],
     cover: { kind: 'video', src: '/work/solxi/find-your-school.mp4' },
     tone: ['#f1e8ea', '#6b1f30'],
+    previews: [
+      { label: 'Try fitting booking', url: 'https://solxuniform.myshopify.com/pages/pre-book-fitting', password: 'fds1' },
+      { label: 'Try Find Your School', url: 'https://solxuniform.myshopify.com/pages/find-your-school', password: 'fds1' },
+    ],
     facts: {
-      problem: 'Parents need school-specific uniform bundles and in-person fittings; booking and bundle apps cost a monthly fee and could not handle multi-child bookings or school-level search.',
-      built: 'Two custom Shopify features with no third-party apps: a multi-child, multi-location fitting booking system and a 4-step Find Your School bundle flow, plus Flow automation that routes bookings and product orders.',
-      outcome: 'About $30–40 a month saved in app fees, zero apps to maintain, and a school added in about 15 minutes without a developer. Launch metrics are defined; the store is not live yet.',
+      problem: 'Apps charged monthly and couldn’t do multi-child bookings or school-first search.',
+      built: 'Fitting booking and a school bundle finder, built natively in Shopify.',
+      outcome: '$30–40 a month saved, zero apps, a school added in 15 minutes.',
       highlights: [
-        { value: '$30–40', label: 'saved per month vs apps' },
+        { value: '$30–40', label: 'saved per month' },
         { value: '0', label: 'third-party apps' },
         { value: '15 min', label: 'to add a school' },
       ],
@@ -289,15 +295,8 @@ export const work: CaseStudy[] = [
         kicker: 'The problem',
         title: 'Uniforms are bought by school, *not by product.*',
         blocks: [
-          {
-            type: 'p',
-            text: 'A parent does not search for “navy shorts, size 28”. They search for their child’s school, then need the exact items for that gender and grade. Many also want to try sizes in person before they buy. SolXi needed both: ==a school-first shopping flow== and ==a fitting booking system==, in the same store and the same checkout.',
-          },
-          {
-            type: 'p',
-            text: 'Shopify has no native appointment booking, and its order confirmation is the same email for every order. A booking and a box of uniforms would look identical to the parent and to the team packing orders.',
-          },
-          { type: 'goal', text: 'Let a parent go from **school** to **booked fitting** or **checked-out bundle** in a few taps, and let the founder run it all from Shopify admin **without a developer**.' },
+          { type: 'p', text: 'Parents shop by ==school, gender and grade==, and many want ==a fitting before they buy==. Shopify has no booking, and sends the same email for every order.' },
+          { type: 'goal', text: 'School to **booked fitting** or **checked-out bundle** in a few taps, run by the founder **without a developer**.' },
         ],
       },
       {
@@ -305,36 +304,14 @@ export const work: CaseStudy[] = [
         kicker: 'Build vs buy',
         title: 'Apps were faster to install, *slower to live with.*',
         blocks: [
-          { type: 'p', text: 'Before writing code I tested the app route against the requirements. The deciding factors were not features on a pricing page but the edge cases SolXi would hit every day.' },
           {
             type: 'versus',
             options: [
-              {
-                name: 'Third-party apps',
-                verdict: 'Rejected',
-                points: [
-                  'Recurring cost of about $30–40 a month across booking and bundle apps',
-                  'Capacity counted per child, not per family, so a parent with 3 children took 3 places',
-                  'No school-level search, gender and grade filtering for bundles',
-                  'Extra scripts, a second admin to learn, and booking data outside Shopify',
-                  'Generic widgets that did not match the theme',
-                ],
-              },
-              {
-                name: 'Custom build in Shopify',
-                verdict: 'Chosen',
-                chosen: true,
-                points: [
-                  'No monthly app fees; runs on Shopify features SolXi already pays for',
-                  'Multi-child bookings: one family uses one place, however many children',
-                  'Schools, venues and bundles managed as Metaobjects in Shopify admin',
-                  'Every booking is a ₹0 Shopify order, so reports, exports and customer data stay in one place',
-                  'Designed to match the store, desktop and mobile',
-                ],
-              },
+              { name: 'Third-party apps', verdict: 'Rejected', points: ['$30–40 a month, forever', 'Counts children, not families', 'No school, gender or grade search'] },
+              { name: 'Custom in Shopify', verdict: 'Chosen', chosen: true, points: ['No app fees', 'One family, one slot', 'Schools managed in Shopify admin'] },
             ],
           },
-          { type: 'why', text: 'The custom route cost more effort up front, but it removed a monthly fee, a vendor dependency and ==two limitations the apps could not solve==: multi-child bookings and school-first search.' },
+          { type: 'why', text: 'More effort up front, but it removed a monthly fee, a vendor, and ==two limits no app could solve==.' },
         ],
       },
       {
@@ -342,39 +319,29 @@ export const work: CaseStudy[] = [
         kicker: 'Feature 1',
         title: 'Pre-book fitting: *one family, one place.*',
         blocks: [
-          { type: 'p', text: 'Parents book a 15 or 30 minute private fitting. The core product decision was the capacity rule: ==each slot holds a number of families, not children==, because a parent arrives with all of their children at once.' },
-          {
-            type: 'journey',
-            steps: [
-              { stage: 'School', question: 'Where do I go?', fix: 'Search the school, see its fitting centre' },
-              { stage: 'Children', question: 'Can I bring all my kids?', fix: 'Grades and each child’s name in one booking' },
-              { stage: 'Slot', question: 'When is free?', fix: 'Date and slot with “X of Y places left”' },
-              { stage: 'Confirm', question: 'Is it really booked?', fix: '₹0 checkout and a branded booking email' },
-            ],
-            extra: 'Plus multiple fitting centres per school, with “Find nearest” sorting centres by distance.',
-          },
+          { type: 'p', text: 'The key rule: ==a slot holds families, not children==, because a parent arrives with every child at once.' },
           {
             type: 'feature',
             frame: 'browser',
             url: 'solxuniform.myshopify.com/pages/pre-book-fitting',
             src: '/work/solxi/fitting-booking.mp4',
             steps: [
-              { title: 'Find the school', body: 'Search the school, then pick one of its fitting centres.', at: 0 },
-              { title: 'Add the children', body: 'Tap each grade, set how many children and add their names. One booking covers the family.', at: 5 },
-              { title: 'Pick a date and slot', body: 'Slots show places left; full slots are greyed out.', at: 12 },
-              { title: 'Review and book', body: 'One summary to check, then a ₹0 checkout and the booking email.', at: 16.5 },
+              { title: 'Find the school', body: 'Search, then pick a fitting centre.', at: 0 },
+              { title: 'Add the children', body: 'Grades and names, all in one booking.', at: 5 },
+              { title: 'Pick a slot', body: 'Places left shown live; full slots greyed out.', at: 12 },
+              { title: 'Book', body: '₹0 checkout and a branded email.', at: 16.5 },
             ],
           },
           {
             type: 'table',
             rows: [
-              ['Slots', 'One product variant per date and time; stock equals family places left'],
-              ['Bookings', 'Each booking is a ₹0 order; the order number is the booking reference'],
-              ['Schools and venues', 'Metaobjects in Shopify admin; a new school takes about 15 minutes'],
-              ['Slot generator', 'A tool that creates a whole fitting programme as a CSV, skipping Sundays and closed dates'],
-              ['Rules', 'A 2-hour booking cut-off, closed days, full slots shown as Full, cancellations restock the place'],
+              ['Slots', 'Product variants, stock = places left'],
+              ['Bookings', '₹0 orders, order no. = reference'],
+              ['Centres', 'Multi-location with “Find nearest”'],
+              ['Admin', 'New school in about 15 minutes'],
             ],
           },
+          { type: 'live', items: [{ title: 'Pre-book fitting', body: 'Book a test slot on the real store.', url: 'https://solxuniform.myshopify.com/pages/pre-book-fitting', password: 'fds1' }] },
         ],
       },
       {
@@ -382,23 +349,17 @@ export const work: CaseStudy[] = [
         kicker: 'Automation',
         title: 'One checkout, *two kinds of orders.*',
         blocks: [
-          { type: 'p', text: 'SolXi sells physical products and fitting bookings through the same checkout. Shopify sends one confirmation email for every order, so I built the logic that ==tells them apart automatically==.' },
+          { type: 'p', text: 'Bookings and uniforms share a checkout, so Shopify Flow ==tells them apart== and sends the right email.' },
           {
             type: 'flow',
             labels: ['Without automation', 'With automation'],
-            without: [
-              { t: 'Order placed' }, { t: 'Same confirmation email', kind: 'bad' }, { t: 'Parent unsure it is a booking', kind: 'bad' },
-              { t: 'Team opens each order', kind: 'break' }, { t: 'Manual sorting', kind: 'bad' },
-            ],
-            with: [
-              { t: 'Order placed' }, { t: 'Flow checks product type', kind: 'ai' }, { t: 'Booking: tag “Fitting Booking”', kind: 'ok' },
-              { t: 'Booking email with date, venue, calendar', kind: 'ok' }, { t: 'Product order: standard email' }, { t: 'Filter bookings in Orders', kind: 'ok' },
-            ],
-            withoutResult: 'Bookings and uniform orders look the same, so parents are unsure and the team sorts orders by hand.',
-            withResult: 'Each order gets the right email and a tag, so bookings filter out of the order list in one click.',
+            without: [{ t: 'Order placed' }, { t: 'Same email for all', kind: 'bad' }, { t: 'Manual sorting', kind: 'bad' }],
+            with: [{ t: 'Order placed' }, { t: 'Flow checks type', kind: 'ai' }, { t: 'Tag + booking email', kind: 'ok' }, { t: 'One-click filter', kind: 'ok' }],
+            withoutResult: 'Parents unsure, team sorting by hand.',
+            withResult: 'Right email, tagged order, bookings filtered in one click.',
           },
-          { type: 'image', src: '/work/solxi/flow.jpg', alt: 'Shopify Flow workflow: order created, condition product type is Fitting Appointment, add order tag Fitting Booking', caption: 'Shopify Flow · Fitting Appointment tagging' },
-          { type: 'image', src: '/work/solxi/booking-email.jpg', alt: 'SolXi booking confirmation email with date, venue, add to calendar and booking reference', caption: 'Booking email (test booking, personal details blurred)' },
+          { type: 'image', src: '/work/solxi/flow.jpg', alt: 'Shopify Flow: order created, product type is Fitting Appointment, add tag Fitting Booking', caption: 'Shopify Flow workflow' },
+          { type: 'image', src: '/work/solxi/booking-email.jpg', alt: 'SolXi booking confirmation email', caption: 'Booking email (details blurred)' },
         ],
       },
       {
@@ -406,40 +367,30 @@ export const work: CaseStudy[] = [
         kicker: 'Feature 2',
         title: 'Find Your School: *the bundle in four steps.*',
         blocks: [
-          { type: 'p', text: 'A school-first bundle flow that runs entirely on Shopify, ==with no bundle app and no external server==. Each bundle is an ordinary Shopify collection, so the team edits it like any other.' },
-          {
-            type: 'journey',
-            steps: [
-              { stage: 'School & group', question: 'Which items does my school need?', fix: 'Search school, pick Boys or Girls and grade range' },
-              { stage: 'Uniforms', question: 'What size, and do I need all of it?', fix: 'Every item pre-ticked, untick what you don’t need' },
-              { stage: 'Add-ons', question: 'Anything else?', fix: 'Bags, bottles, stationery with filter tabs' },
-              { stage: 'Checkout', question: 'Can I order for two children?', fix: 'Each child’s bundle stays its own cart line' },
-            ],
-          },
+          { type: 'p', text: 'A school-first bundle flow with ==no bundle app and no server==. Each bundle is a normal Shopify collection.' },
           {
             type: 'feature',
             frame: 'browser',
             url: 'solxuniform.myshopify.com/pages/find-your-school',
             src: '/work/solxi/find-your-school.mp4',
             steps: [
-              { title: 'School and group', body: 'Search the school, choose Boys or Girls and the grade range.', at: 0 },
-              { title: 'Uniform items', body: 'Every item in the bundle is ticked; pick sizes and untick what you don’t need.', at: 5 },
-              { title: 'Quick view', body: 'Tap any item for photos, details and the size chart.', at: 14 },
-              { title: 'Prices after sign-in', body: 'Prices appear once the parent signs in, with choices kept.', at: 20 },
-              { title: 'Add-ons and checkout', body: 'Bags, bottles and stationery with filter tabs, then one tap to checkout.', at: 32 },
+              { title: 'School and group', body: 'School, Boys or Girls, grade range.', at: 0 },
+              { title: 'Uniform items', body: 'All ticked; pick sizes, untick extras.', at: 5 },
+              { title: 'Quick view', body: 'Photos, details and size chart.', at: 14 },
+              { title: 'Sign in for prices', body: 'Choices kept through sign-in.', at: 20 },
+              { title: 'Add-ons, checkout', body: 'Bags and bottles, then one tap.', at: 32 },
             ],
           },
           {
             type: 'table',
             rows: [
-              ['Data model', 'One Metaobject per school with up to six bundle slots (KG, Primary, Secondary × Boys, Girls)'],
-              ['Search and filtering', 'School search, gender and grade-range filters; bundles a school does not offer are greyed out'],
-              ['Sizes', 'Variants become a size dropdown; sold-out sizes are disabled and unavailable items drop out'],
-              ['Multi-child orders', 'A hidden bundle ID per checkout keeps two children’s bundles as separate lines'],
-              ['Price lock', 'Prices hidden until sign-in; choices are kept through the sign-in round trip'],
-              ['Size help', 'Per-school size note, size chart drawer and a quick view for every item'],
+              ['Data', 'One record per school, six bundles'],
+              ['Filtering', 'Unavailable bundles greyed out'],
+              ['Multi-child', 'Each child’s bundle its own line'],
+              ['Price lock', 'Prices only after sign-in'],
             ],
           },
+          { type: 'live', items: [{ title: 'Find Your School', body: 'Pick a school and build a bundle.', url: 'https://solxuniform.myshopify.com/pages/find-your-school', password: 'fds1' }] },
         ],
       },
       {
@@ -447,13 +398,13 @@ export const work: CaseStudy[] = [
         kicker: 'How I built it',
         title: 'AI-assisted, *with a workflow I tuned.*',
         blocks: [
-          { type: 'p', text: 'I built both features with **Claude Code** using my own optimized workflow: a written spec first, small reviewable changes, and tests before anything reaches the store. It let one person cover product, design and front-end build in a fraction of the usual time.' },
+          { type: 'p', text: 'Built with **Claude Code** and my own workflow: spec first, small changes, tests before release.' },
           {
             type: 'stats',
             items: [
-              { value: '35', label: 'automated checks (search, sizes, totals, cart payload, sign-in lock) run during the build' },
-              { value: '2', label: 'admin setup guides so the founder can run schools, slots and bundles without a developer' },
-              { value: '0', label: 'external servers or build steps; everything ships inside the Shopify theme' },
+              { value: '35', label: 'automated checks during the build' },
+              { value: '2', label: 'setup guides for the founder' },
+              { value: '0', label: 'servers or build steps' },
             ],
           },
         ],
@@ -463,29 +414,26 @@ export const work: CaseStudy[] = [
         kicker: 'Documentation',
         title: 'Handover docs, *written for the founder.*',
         blocks: [
-          {
-            type: 'p',
-            text: 'A feature is only finished when the client can run it without me. I wrote ==two setup guides==: one for the founder’s everyday tasks, one with the developer detail, so ==adding a school or opening new slots never needs a developer==.',
-          },
+          { type: 'p', text: 'Finished means the client can run it alone, so ==no new school ever needs a developer==.' },
           {
             type: 'docs',
             items: [
               {
-                title: 'Pre-Book Fitting: Founder Setup Guide',
+                title: 'Pre-Book Fitting: Founder Guide',
                 kind: 'Founder guide',
                 pages: 5,
-                body: 'How the booking system works, adding a school in 15 minutes, multi-location centres and everyday tasks.',
+                body: 'Adding schools, slots, centres and daily tasks.',
                 covers: ['/work/solxi/docs/solxi-pre-book-fitting-setup-guide-p1.jpg', '/work/solxi/docs/solxi-pre-book-fitting-setup-guide-p2.jpg'],
-                points: ['Add a school in 6 steps', 'Everyday tasks table', 'Naming rules and limits', 'Troubleshooting'],
+                points: ['Setup in 6 steps', 'Everyday tasks', 'Troubleshooting'],
                 file: '/work/solxi/docs/solxi-pre-book-fitting-setup-guide.pdf',
               },
               {
-                title: 'Find Your School: Admin & Developer Guide',
-                kind: 'Admin + developer guide',
+                title: 'Find Your School: Admin & Dev Guide',
+                kind: 'Admin + developer',
                 pages: 12,
-                body: 'Products, bundle collections and schools for admins; data flow, files, data model and cart payload for developers.',
+                body: 'Bundles and schools for admins; data model for developers.',
                 covers: ['/work/solxi/docs/solxi-find-your-school-setup-guide-p1.jpg', '/work/solxi/docs/solxi-find-your-school-setup-guide-p2.jpg'],
-                points: ['3 admin setup guides', 'Publishing checklist', 'Data model and cart payload', 'Testing and gotchas'],
+                points: ['Admin setup', 'Launch checklist', 'Data model'],
                 file: '/work/solxi/docs/solxi-find-your-school-setup-guide.pdf',
               },
             ],
@@ -497,15 +445,14 @@ export const work: CaseStudy[] = [
         kicker: 'The outcome',
         title: 'Ready to launch, *with metrics defined.*',
         blocks: [
-          { type: 'p', text: 'Both features are built and tested; the store is ==not launched yet==, so there are no live conversion numbers. What is already true: about **$30–40 a month** saved against the app route, zero apps to maintain, and booking data that lives in Shopify orders.' },
+          { type: 'kpis', items: [{ value: '$30–40', label: 'Saved per month' }, { value: '0', label: 'Apps to maintain' }, { value: '15 min', label: 'To add a school' }, { value: '2', label: 'Features shipped' }] },
           {
             type: 'metrics',
             items: [
-              { metric: 'Booking completion rate', why: 'Share of parents who start the fitting flow and receive a booking email' },
-              { metric: 'Fitting no-show rate', why: 'Tests whether the reminder email and calendar link are enough' },
-              { metric: 'Orders through Find Your School', why: 'Share of uniform orders that start from the school flow' },
-              { metric: 'Size-related returns and queries', why: 'Checks whether size charts and fittings reduce wrong sizes' },
-              { metric: 'Time to add a school', why: 'Target under 15 minutes, done by the founder without a developer' },
+              { metric: 'Booking completion', why: 'Start to confirmed booking' },
+              { metric: 'No-show rate', why: 'Is the email reminder enough?' },
+              { metric: 'Orders via school flow', why: 'Share of uniform orders' },
+              { metric: 'Size-related returns', why: 'Do fittings cut wrong sizes?' },
             ],
           },
         ],
@@ -533,9 +480,9 @@ export const work: CaseStudy[] = [
     cover: { kind: 'video', src: `${OFFNORTH}/after.mp4` },
     tone: ['#e9e6df', '#5b4a32'],
     facts: {
-      problem: 'A good product in a crowded category, on a store that left the buying questions unanswered near the buy button.',
-      built: 'A redesign of the home, collection and product pages and the footer that answers one shopper question at each step.',
-      outcome: '9,347 orders over 18 months. About 85% of sessions are on mobile, so every change was judged on a phone first.',
+      problem: 'A premium product whose store never answered the buying questions.',
+      built: 'A redesign that puts proof next to every buying decision.',
+      outcome: '9,347 orders in 18 months, designed mobile-first for 85% mobile traffic.',
       highlights: [
         { value: '9,347', label: 'orders' },
         { value: '85%', label: 'mobile sessions' },
@@ -678,9 +625,9 @@ export const work: CaseStudy[] = [
     ],
     tone: ['#e5e7ee', '#34406a'],
     facts: {
-      problem: 'Designers start client work from incomplete, contradictory inputs, which leads to 3 to 5 revision cycles per project.',
-      built: 'A RAG-powered design context assistant that captures client input, asks clarifying questions and generates a brief the client signs off.',
-      outcome: 'PRD v1.0 and a working MVP. The goal is 20–40% fewer revision cycles. These are targets, not measured results yet.',
+      problem: 'Vague client inputs cause 3 to 5 revision cycles per project.',
+      built: 'An AI assistant that turns a discovery call into a signed-off brief.',
+      outcome: 'PRD and live MVP, targeting 20–40% fewer revisions.',
       highlights: [
         { value: '3–5', label: 'revision cycles today' },
         { value: '20–40%', label: 'fewer revisions (goal)' },

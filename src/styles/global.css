@@ -3076,3 +3076,117 @@ h1 .line, h2 .line, .cs-hero__title .line, .work__title .line, .svc__title .line
 }
 .sx-row__form { display: contents; }
 button.sx-row__cta { font: inherit; font-size: 13.5px; font-weight: 500; color: var(--ink); cursor: pointer; }
+
+
+/* ═════════════ Case study: quiet luxury pass ═════════════
+   Serif italic only for headings and big numbers; everything you read is clean sans. */
+.cs { --read: clamp(17px, 1.25vw, 19px); }
+.cs-p { font-family: var(--sans); font-size: var(--read); line-height: 1.7; color: #3a4a45; max-width: 58ch; }
+.cs-chapter { gap: 32px; }
+.cs-content { gap: clamp(120px, 13vw, 200px); }
+.cs-chapter__head { margin-bottom: 4px; }
+.cs-chapter__idx { font-size: clamp(36px, 3.4vw, 52px); opacity: 0.9; }
+
+/* the short version: no boxes, three calm columns */
+.cs-glance__row { gap: clamp(24px, 4vw, 64px); }
+.cs-glance__card, .cs-glance__card.is-key {
+  padding: 22px 0 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+}
+.cs-glance__card.is-key { border-top: 2px solid var(--accent); }
+.cs-glance__card .cs-glance__num { display: none; }
+.cs-glance__card .label, .cs-glance__card.is-key .label { color: var(--ink-3); }
+.cs-glance__card.is-key .label { color: var(--accent); }
+.cs-glance__card p, .cs-glance__card.is-key p {
+  font-family: var(--sans);
+  font-size: clamp(17px, 1.35vw, 20px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.cs-glance__card.is-key p { font-weight: 500; }
+.cs-glance__arrow { display: none; }
+
+/* callouts: an accent rule and readable sans, no frosted box */
+.cs-callout, .cs-callout--goal { box-shadow: none !important; background: none !important; }
+.cs-callout > .glass__refract, .cs-callout > .glass__tint, .cs-callout > .glass__shine { display: none; }
+.cs-callout > .glass__content, .cs-callout--goal > .glass__content { padding: 4px 0 4px 26px !important; border-left: 2px solid var(--accent); }
+.cs-callout--goal > .glass__content::before { display: none; }
+.cs-callout__text, .cs-callout--goal .cs-callout__text {
+  font-family: var(--sans);
+  font-size: clamp(19px, 1.6vw, 24px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  max-width: 40ch;
+}
+.cs-callout__text .hl, .cs-callout__text strong, .cs-glance__card .hl {
+  font-style: normal !important;
+  font-weight: 500 !important;
+  -webkit-text-fill-color: currentColor !important;
+  background: linear-gradient(90deg, var(--accent), #9cc2ad) 0 100% / 100% 2px no-repeat !important;
+  color: var(--accent) !important;
+  animation: none !important;
+  padding-bottom: 2px;
+}
+
+/* journey: lighter cards, short and scannable */
+.journey li { background: transparent; box-shadow: inset 0 0 0 1px var(--line); padding: 22px 20px 24px; gap: 12px; }
+.journey li:not(:last-child)::after { background: var(--bg); }
+.journey__q { font-size: clamp(18px, 1.45vw, 21px); }
+.journey__fix { font-weight: 400; font-size: 14.5px; color: var(--ink-2); border-top: 0; padding-top: 0; }
+.journey__fix-dot { width: 5px; height: 5px; }
+
+/* specs: a calm two-column grid instead of a dense table */
+.cs-table { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; border-top: 0; }
+.cs-table__row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; border-bottom: 0; border-top: 1px solid var(--line); }
+.cs-table dd { font-size: 16px; color: var(--ink); }
+
+/* build vs buy: lighter */
+.vs li { font-size: 15.5px; }
+.vs__col { padding: 26px 26px 28px; }
+
+/* feature steps: more air */
+.feature__title { font-size: clamp(18px, 1.5vw, 22px); }
+.feature__body { font-size: 14.5px; }
+
+/* metrics */
+.mx__metric { font-size: clamp(18px, 1.6vw, 22px); }
+.mx__why { font-size: 14.5px; }
+
+/* live preview */
+.live { margin-top: 4px; }
+.live__card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
+  border-radius: 22px;
+  background: radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%), rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 0 0 1px rgba(15, 43, 37, 0.08);
+}
+.live__dot { width: 10px; height: 10px; border-radius: 50%; background: #2f9e6e; box-shadow: 0 0 0 0 rgba(47, 158, 110, 0.5); animation: ft-pulse 2s infinite; }
+.live__text { display: grid; gap: 4px; }
+.live__title { font-family: var(--serif); font-style: italic; font-size: clamp(22px, 2vw, 28px); letter-spacing: -0.02em; line-height: 1.1; }
+.live__body { font-size: 14.5px; color: var(--ink-2); }
+.unlock { display: contents; }
+button.btn { font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+.cs-pv { display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 20px; border-radius: 999px; background: rgba(255, 255, 255, 0.7); }
+.cs-pv:hover { background: #fff; }
+.cs-pv__dot { width: 7px; height: 7px; border-radius: 50%; background: #2f9e6e; }
+
+@media (max-width: 760px) {
+  .cs-table { grid-template-columns: 1fr; }
+  .live__card { grid-template-columns: auto 1fr; }
+  .live__btn { grid-column: 1 / -1; width: 100%; }
+  .cs-pv { width: 100%; justify-content: center; }
+  .cs-glance__row { gap: 28px; }
+  .cs-content { gap: 104px; }
+}

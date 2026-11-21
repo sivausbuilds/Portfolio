@@ -5,6 +5,7 @@ import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 import { AutoVideo, BrowserFrame, PhoneFrame } from './Media'
 import { Rich } from './Rich'
+import { Unlock } from './Unlock'
 import { GradientText } from './GradientText'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -151,6 +152,25 @@ export function BlockView({ block, item }: { block: Block; item: CaseStudy }) {
                 </div>
               </div>
             </motion.article>
+          ))}
+        </div>
+      )
+    case 'live':
+      return (
+        <div className="live cs-wide">
+          {block.items.map((l) => (
+            <motion.div key={l.url} className="live__card" {...reveal}>
+              <span className="live__dot" aria-hidden />
+              <div className="live__text">
+                <span className="label">Live preview</span>
+                <span className="live__title">{l.title}</span>
+                <span className="live__body">{l.body}{l.password ? ' Opens unlocked.' : ''}</span>
+              </div>
+              <Unlock url={l.url} password={l.password} className="btn btn--shimmer live__btn" label={`Open ${l.title} live`}>
+                <span className="btn--shimmer__sweep" aria-hidden />
+                <span className="btn--shimmer__label">Try it live <Arrow /></span>
+              </Unlock>
+            </motion.div>
           ))}
         </div>
       )

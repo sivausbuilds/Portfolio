@@ -8,6 +8,7 @@ import { navigate } from '../lib/router'
 import { scrollTo } from '../lib/smooth'
 import { CaseBar } from './CaseBar'
 import { Contact } from './Contact'
+import { Unlock } from './Unlock'
 import { BlockView } from './CaseBlocks'
 import { Cover } from './Cover'
 import { Arrow } from './Header'
@@ -129,6 +130,12 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
                   </span>
                 </a>
               )}
+              {item.previews?.map((pv) => (
+                <Unlock key={pv.url} url={pv.url} password={pv.password} className="btn btn--glass-dark cs-pv" label={`${pv.label} (opens the live store)`}>
+                  <span className="cs-pv__dot" aria-hidden />
+                  {pv.label} <Arrow />
+                </Unlock>
+              ))}
               {item.facts.primary && (
                 <LiquidGlass as="a" href={item.facts.primary.href} target="_blank" rel="noopener noreferrer" className="btn btn--glass">
                   {item.facts.primary.label} <Arrow />
