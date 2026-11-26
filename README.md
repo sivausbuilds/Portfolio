@@ -7,6 +7,7 @@ npm install
 npm run dev
 ```
 
+- **Resume:** the download is `public/Sivadarshan_US_APM_E-Commerce.pdf`; the `/resume` page mirrors it from `src/data/resume.ts`. Replace both when the resume changes.
 - **Copy:** `src/content.ts` holds the hero and About section; `src/data/work.ts` holds every case study (chapters, blocks, key facts for the sticky bar). Open items still to fill in are listed at the top of that file.
 - **Media:** case study videos and images live in `public/work/<project>/`.
 - **Case studies:** each entry gets its own page at `/work/<slug>`. The `public/_redirects` (Netlify) and `vercel.json` files make those URLs work after deploy.

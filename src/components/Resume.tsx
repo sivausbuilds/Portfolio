@@ -11,7 +11,7 @@ export function Resume() {
       document.title = 'Sivadarshan — Product Designer, CRO Strategist & Product Manager'
     }
   }, [])
-  const contact = [r.location, r.email, r.portfolio, r.linkedin].filter(Boolean)
+  const contact = [r.location, r.phone, r.email, r.linkedin, `Portfolio: ${r.portfolio}`].filter(Boolean)
 
   return (
     <div className="rs-page">
@@ -31,7 +31,7 @@ export function Resume() {
           <p className="rs-contact">
             {contact.map((c, i) => (
               <span key={c}>
-                {c.includes('@') ? <a href={`mailto:${c}`}>{c}</a> : c.includes('.') && !c.includes(' ') ? <a href={`https://${c}`}>{c}</a> : c}
+                {c.includes('@') ? <a href={`mailto:${c}`}>{c}</a> : c.startsWith('+') ? <a href={`tel:${c.replace(/\s/g, '')}`}>{c}</a> : c.includes('.') && !c.includes(' ') ? <a href={`https://${c}`}>{c}</a> : c}
                 {i < contact.length - 1 && ' | '}
               </span>
             ))}
@@ -44,14 +44,14 @@ export function Resume() {
         </section>
 
         <section>
-          <h2>Skills</h2>
+          <h2>Core Skills</h2>
           {r.skills.map((s) => (
             <p key={s.group}><strong>{s.group}: </strong>{s.items}</p>
           ))}
         </section>
 
         <section>
-          <h2>Experience</h2>
+          <h2>Professional Experience</h2>
           {r.experience.map((e) => (
             <div key={e.role} className="rs-item">
               <h3>{e.role}</h3>
@@ -62,7 +62,7 @@ export function Resume() {
         </section>
 
         <section>
-          <h2>Projects</h2>
+          <h2>Product Projects</h2>
           {r.projects.map((p) => (
             <div key={p.name} className="rs-item">
               <h3>{p.name}</h3>
@@ -73,18 +73,20 @@ export function Resume() {
         </section>
 
         <section>
-          <h2>Certifications</h2>
-          <ul>{r.certifications.map((c) => <li key={c}>{c}</li>)}</ul>
+          <h2>E-commerce Products Built End to End (Design to Delivery)</h2>
+          <p>{r.stores.join(', ')}.</p>
         </section>
 
-        {r.education.length > 0 && (
-          <section>
-            <h2>Education</h2>
-            {r.education.map((e) => (
-              <p key={e.degree}><strong>{e.degree}</strong>, {e.school} | {e.dates}</p>
-            ))}
-          </section>
-        )}
+        <section>
+          <h2>Education and Certifications</h2>
+          {r.education.map((e) => (
+            <div key={e.name} className="rs-item">
+              <h3>{e.name} | {e.org}</h3>
+              <p className="rs-meta">{e.dates}</p>
+              <p>{e.detail}</p>
+            </div>
+          ))}
+        </section>
       </article>
     </div>
   )
