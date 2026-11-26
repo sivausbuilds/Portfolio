@@ -3220,3 +3220,10 @@ button.btn { font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; 
 .cs-press { margin-top: 16px; }
 @media (max-width: 760px) { .press--radio .press__label { flex-basis: auto; } }
 .cs-press { margin: 18px 0 8px; }
+
+/* rotating role in the hero */
+.hx-role { position: relative; display: inline-grid; vertical-align: bottom; }
+.hx-role > * { grid-area: 1 / 1; }
+.hx-role__sizer { visibility: hidden; padding-right: 0.08em; }
+.hx-role__word { display: inline-block; white-space: nowrap; }
+.hx-line--0 { overflow: hidden; }

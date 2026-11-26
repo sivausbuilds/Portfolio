@@ -5,13 +5,13 @@
 */
 export const resume = {
   name: 'Sivadarshan U S',
-  title: 'Product Designer',
+  title: 'Product Designer | CRO Strategist | Product Manager',
   location: 'Bengaluru, India',
   email: 'sivadarshanus@gmail.com',
   portfolio: 'sivadarshanus.vercel.app',
   linkedin: 'linkedin.com/in/sivadarshanus',
   summary:
-    'Product Designer with a PM mindset and 3 years of end-to-end experience across e-commerce and digital products. Shipped 20+ Shopify stores and custom features for brands in India, UAE, UK and Australia, owning research, UX and UI design, front-end build in Liquid and JavaScript, and post-launch measurement. Defined and built two 0-to-1 products (Theliv, Finly) from PRD to working MVP.',
+    'Product Designer, CRO strategist and aspiring Product Manager with 3 years of end-to-end experience across e-commerce and digital products. Shipped 20+ Shopify stores and custom features for brands in India, UAE, UK and Australia, owning research, UX and UI design, front-end build in Liquid and JavaScript, and post-launch measurement. Defined and built two 0-to-1 products (Theliv, Finly) from PRD to working MVP.',
   skills: [
     { group: 'Product design', items: 'User research, friction analysis, journey mapping, interaction design, UI design, prototyping, usability testing, design systems, mobile-first design' },
     { group: 'Product management', items: 'Problem framing, PRDs, MVP scoping, success metrics, RICE prioritization, growth loops, competitor analysis, conversion rate optimization (CRO)' },

@@ -8,7 +8,7 @@ export function Resume() {
   useEffect(() => {
     document.title = `${r.name} — ${r.title} Resume`
     return () => {
-      document.title = 'Sivadarshan — Product Designer'
+      document.title = 'Sivadarshan — Product Designer, CRO Strategist & Product Manager'
     }
   }, [])
   const contact = [r.location, r.email, r.portfolio, r.linkedin].filter(Boolean)

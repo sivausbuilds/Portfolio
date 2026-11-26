@@ -4,9 +4,10 @@ export type { Category, CaseStudy } from './data/work'
 
 export const site = {
   name: 'Sivadarshan',
-  role: 'Product Designer',
+  role: 'Design · CRO · Product',
+  roles: ['Product Designer', 'CRO Strategist', 'Product Manager'],
   year: '2026',
-  status: 'Open to APM roles',
+  status: 'Open to Product, CRO & PM roles',
   email: 'sivadarshanus@gmail.com',
   linkedin: 'https://www.linkedin.com/in/sivadarshanus/',
   nav: [

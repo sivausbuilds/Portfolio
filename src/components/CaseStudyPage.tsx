@@ -38,7 +38,7 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
   useEffect(() => {
     document.title = `${plain(item.title)} — Sivadarshan`
     return () => {
-      document.title = 'Sivadarshan — Product Designer'
+      document.title = 'Sivadarshan — Product Designer, CRO Strategist & Product Manager'
     }
   }, [item])
 

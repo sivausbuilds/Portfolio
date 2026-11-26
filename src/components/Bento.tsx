@@ -47,7 +47,7 @@ export function Bento() {
             <span className="b-id__mono" aria-hidden>S</span>
             <div className="b-id__foot">
               <span className="b-id__name">{site.name}</span>
-              <span className="b-id__role">Product Designer · PM mindset</span>
+              <span className="b-id__role">Product Designer · CRO · Product Manager</span>
               <span className="b-id__row">
                 <span className="b-id__status">
                   <span className="status__dot" aria-hidden /> {site.status}

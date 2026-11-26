@@ -3,7 +3,7 @@ import { MeshGradient } from '@paper-design/shaders-react'
 import { animate, stagger } from 'animejs'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { site, work } from '../content'
 import { navigate } from '../lib/router'
@@ -108,25 +108,28 @@ export function Hero() {
           <Clock />
         </motion.div>
 
-        <h1 className="hx-title" aria-label="Product Designer with a PM mindset.">
-          {['Product Designer', 'with a PM mindset.'].map((line, i) => (
-            <span className={`hx-line hx-line--${i}`} key={line} aria-hidden>
-              <span className="hx-line__inner">
-                <span className="hx-gt">{line}</span>
-                <ShinyText
-                  className="hx-shine"
-                  text={line}
-                  color="rgba(255, 255, 255, 0)"
-                  shineColor="rgba(222, 240, 229, 0.95)"
-                  speed={3.4}
-                  delay={3.2}
-                  shineWidth={18}
-                  softness={0.95}
-                  angle={112}
-                />
-              </span>
+        <h1 className="hx-title" aria-label={`${site.roles.join(', ')} who ships outcomes.`}>
+          <span className="hx-line hx-line--0" aria-hidden>
+            <span className="hx-line__inner">
+              <RoleCycle roles={site.roles} />
             </span>
-          ))}
+          </span>
+          <span className="hx-line hx-line--1" aria-hidden>
+            <span className="hx-line__inner">
+              <span className="hx-gt">who ships outcomes.</span>
+              <ShinyText
+                className="hx-shine"
+                text="who ships outcomes."
+                color="rgba(255, 255, 255, 0)"
+                shineColor="rgba(222, 240, 229, 0.95)"
+                speed={3.4}
+                delay={3.2}
+                shineWidth={18}
+                softness={0.95}
+                angle={112}
+              />
+            </span>
+          </span>
         </h1>
 
         <Featured />
@@ -253,6 +256,34 @@ function Clock() {
   return (
     <span className="hx-clock label">
       Bengaluru <span className="hx-clock__time">{t}</span> IST
+    </span>
+  )
+}
+
+/** Cycles the target roles in the headline; each role slides up out of a mask. */
+function RoleCycle({ roles }: { roles: string[] }) {
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    if (prefersReducedMotion()) return
+    const id = setInterval(() => setI((v) => (v + 1) % roles.length), 2800)
+    return () => clearInterval(id)
+  }, [roles.length])
+  return (
+    <span className="hx-role">
+      {/* invisible longest role reserves the width so the line never jumps */}
+      <span className="hx-role__sizer" aria-hidden>{[...roles].sort((a, b) => b.length - a.length)[0]}</span>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={roles[i]}
+          className="hx-role__word hx-gt"
+          initial={{ y: '100%', opacity: 0, filter: 'blur(8px)' }}
+          animate={{ y: '0%', opacity: 1, filter: 'blur(0px)' }}
+          exit={{ y: '-90%', opacity: 0, filter: 'blur(8px)' }}
+          transition={{ duration: 0.9, ease }}
+        >
+          {roles[i]}
+        </motion.span>
+      </AnimatePresence>
     </span>
   )
 }
