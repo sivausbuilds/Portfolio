@@ -3195,3 +3195,17 @@ button.btn { font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; 
 .live__hint { font-size: 12.5px; color: var(--ink-3); }
 .cs-pvpw { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; color: var(--ink-3); }
 .pw-chip { cursor: pointer; }
+
+/* featured store */
+.sx-row.is-featured .sx-row__link { background: linear-gradient(90deg, rgba(212, 230, 220, 0.55), rgba(255, 255, 255, 0.4) 70%); border-radius: 18px; }
+.press { position: relative; z-index: 2; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 10px; padding: 8px 14px; border-radius: 999px; background: #0d1412; color: #f4f1ea; justify-self: start; width: fit-content; box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.5); }
+.press__label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(244, 241, 234, 0.6); }
+.press__mark--vogue { display: inline-flex; align-items: baseline; gap: 5px; font-family: 'Didot', 'Bodoni 72', 'Bodoni MT', var(--serif); font-size: 17px; font-weight: 700; font-style: normal; letter-spacing: 0.06em; line-height: 1; }
+.press__mark--vogue small { font-family: var(--sans); font-size: 8.5px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+.press__sep { width: 1px; height: 14px; background: rgba(244, 241, 234, 0.3); }
+.press__mark--cn { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.22em; line-height: 1; }
+@media (max-width: 760px) {
+  .press { border-radius: 14px; padding: 10px 14px; gap: 8px 12px; }
+  .press__label { flex-basis: 100%; }
+}
+@media (max-width: 760px) { .press__sep { display: none; } .press__mark--cn { flex-basis: 100%; } }

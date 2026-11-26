@@ -20,7 +20,7 @@ export function Websites() {
   const [filter, setFilter] = useState<Filter>('all')
   const [hover, setHover] = useState<number | null>(null)
   const [expanded, setExpanded] = useState(false)
-  const items = websites.items
+  const items = [...websites.items].sort((a, b) => Number(!!b.featured) - Number(!!a.featured))
   const shown = useMemo(
     () => items.filter((s) => filter === 'all' || (filter === 'live' ? s.status === 'live' : s.status !== 'live')),
     [items, filter],
@@ -155,7 +155,7 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
   return (
     <motion.li
       layout
-      className={`sx-row ${dim ? 'is-dim' : ''}`}
+      className={`sx-row ${dim ? 'is-dim' : ''} ${s.featured ? 'is-featured' : ''}`}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
@@ -170,6 +170,7 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
         </span>
         <span className="sx-row__main">
           <span className="sx-row__name">{s.name}</span>
+          {s.featured && <Featured />}
           {dev ? (
             <span className="sx-row__access">
               <span className="sx-row__url">{host(s.url)}</span>
@@ -250,5 +251,19 @@ function LockIcon() {
       <rect x="3" y="7" width="10" height="7" rx="2" />
       <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
     </svg>
+  )
+}
+
+/** "As featured in" press line, set as type rather than the publishers' logos. */
+function Featured() {
+  return (
+    <span className="press" aria-label="Featured in British Vogue and Condé Nast">
+      <span className="press__label">As featured in</span>
+      <span className="press__mark press__mark--vogue">
+        <small>British</small>VOGUE
+      </span>
+      <span className="press__sep" aria-hidden />
+      <span className="press__mark press__mark--cn">CONDÉ NAST</span>
+    </span>
   )
 }
