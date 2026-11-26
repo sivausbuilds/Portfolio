@@ -169,8 +169,8 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
           {dev && <span className="sx__lock"><LockIcon /></span>}
         </span>
         <span className="sx-row__main">
-          <span className="sx-row__name">{s.name}</span>
           {s.press && <Press kind={s.press} />}
+          <span className="sx-row__name">{s.name}</span>
           {dev ? (
             <span className="sx-row__access">
               <span className="sx-row__url">{host(s.url)}</span>

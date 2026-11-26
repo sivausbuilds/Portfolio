@@ -9,6 +9,7 @@ import { prefersReducedMotion } from '../lib/smooth'
 import { Cover } from './Cover'
 import { AutoVideo } from './Media'
 import { plain, Rich } from './Rich'
+import { Press } from './Websites'
 import { Arrow } from './Header'
 import { LiquidGlass } from './LiquidGlass'
 
@@ -257,6 +258,7 @@ function Stack({ items }: { items: CaseStudy[] }) {
                       </span>
                     </div>
                     <div className="card__main">
+                      {it.press && <Press kind={it.press} />}
                       <h3 className="card__title">{plain(it.title)}</h3>
                       <p className="card__summary">{it.summary}</p>
                       <ul className="card__tags">

@@ -3227,3 +3227,35 @@ button.btn { font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; 
 .hx-role__sizer { visibility: hidden; padding-right: 0.08em; }
 .hx-role__word { display: inline-block; white-space: nowrap; }
 .hx-line--0 { overflow: hidden; }
+
+/* press badge, quiet version: one slim outline pill that sits above the name */
+.press, .press--radio {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 8px !important;
+  width: fit-content;
+  height: 26px;
+  margin: 0 0 8px !important;
+  padding: 0 11px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  color: var(--ink) !important;
+  box-shadow: inset 0 0 0 1px rgba(15, 43, 37, 0.14) !important;
+  white-space: nowrap;
+}
+.press__label { flex-basis: auto !important; font-size: 9px !important; letter-spacing: 0.14em !important; color: var(--ink-3) !important; }
+.press__mark--vogue { font-size: 13px !important; letter-spacing: 0.08em !important; }
+.press__mark--vogue small { font-size: 7px !important; letter-spacing: 0.14em !important; }
+.press__sep { display: inline-block !important; height: 10px !important; background: rgba(15, 43, 37, 0.2) !important; }
+.press__mark--cn { flex-basis: auto !important; font-size: 9.5px !important; letter-spacing: 0.18em !important; }
+.press__mark--radio { font-size: 10px !important; letter-spacing: 0.14em !important; }
+.press__mark--radio b { color: #c0392b !important; }
+.press__onair { width: 7px !important; height: 7px !important; }
+.cs-press { margin: 18px 0 0 !important; }
+.cs-press .press { margin-bottom: 0 !important; }
+.card__main .press { margin-bottom: 2px !important; }
+@media (max-width: 760px) {
+  .press { height: 24px; padding: 0 9px !important; gap: 6px !important; }
+  .press__label { font-size: 8px !important; }
+}
