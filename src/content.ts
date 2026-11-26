@@ -120,14 +120,14 @@ export const services = {
   image: a 16:10 banner in /public/sites. Add as many stores as you like; filters and counts update on their own.
 */
 export type SiteStatus = 'live' | 'building' | 'protected'
-export type Site = { name: string; url: string; password?: string; tag: string; market: string; year?: string; note: string; status: SiteStatus; image: string; featured?: boolean }
+export type Site = { name: string; url: string; password?: string; tag: string; market: string; year?: string; note: string; status: SiteStatus; image: string; featured?: boolean; press?: 'vogue' | 'radio' }
 export const websites = {
   title: 'Stores I *designed & built*',
   intro: 'Shopify stores ==designed and developed end to end== for brands in India, UAE, UK and Australia. Stores in development show their ==preview link and password==.',
   items: [
     // Live
-    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Art & lifestyle', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg', featured: true },
-    { name: 'Varak Edible Luxury', url: 'https://www.varakedibleluxury.com', tag: 'Gifting & bakery', market: 'UAE', note: 'Custom cart, upsells and a jar box builder', status: 'live', image: '/sites/varak.jpg' },
+    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Art & lifestyle', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg', featured: true, press: 'vogue' },
+    { name: 'Varak Edible Luxury', url: 'https://www.varakedibleluxury.com', tag: 'Gifting & bakery', market: 'UAE', note: 'Custom cart, upsells and a jar box builder', status: 'live', image: '/sites/varak.jpg', featured: true, press: 'radio' },
     { name: 'Drink Spoilt', url: 'https://www.drinkspoilt.com', tag: 'Beverages', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/drinkspoilt.jpg' },
     { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Denim', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/tarama.jpg' },
     { name: 'OffNorth', url: 'https://offnorth.com', tag: 'Apparel', market: 'India', note: 'Proof next to every buying decision', status: 'live', image: '/sites/offnorth.jpg' },
@@ -137,7 +137,7 @@ export const websites = {
     { name: 'Superglamourous', url: 'https://superglamourous.ae', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'live', image: '/sites/superglamourous.jpg' },
     { name: 'The Staple', url: 'https://thestaple.in', tag: 'Shopify store', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/staple.jpg' },
     { name: 'Saga', url: 'https://mysaga.co', tag: 'Shopify store', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/saga.jpg' },
-    { name: 'Purewear', url: 'https://purewear.co', tag: 'Apparel', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/purewear.jpg' },
+    { name: 'Purewear', url: 'https://purewear.co', tag: 'Teamwear', market: 'UAE', note: 'Redesign and custom club stores', status: 'live', image: '/sites/purewear.jpg' },
     { name: 'Barqat Elixirs', url: '', tag: 'Shopify store', market: 'UAE', note: 'Designed and built end to end', status: 'live', image: '/sites/barqat.jpg' },
     // In development — the preview link and its storefront password are shown on the site
     { name: 'Weavers Town', url: 'https://weaverstown.in', password: 'weaver', tag: 'Shopify store', market: 'India', note: 'Store build in progress', status: 'building', image: '/sites/weaverstown.jpg' },

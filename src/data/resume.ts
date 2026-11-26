@@ -27,6 +27,7 @@ export const resume = {
         'Designed and developed 20+ Shopify stores and custom sections end to end for D2C brands in India, UAE, UK and Australia, from discovery calls to launch and post-launch analytics.',
         'Varak Edible Luxury (UAE): mapped shopper friction from product card to checkout and designed and coded 4 custom features (on-card variant picker with upsell popup, build-your-own jar box, per-item gift notes with delivery or pickup, 3D testimonial slider); the store recorded 5,322 orders and a 37.71% returning customer rate, Jan–Nov 2026.',
         'OffNorth Fashions (India): redesigned home, collection and product pages around trust signals placed next to each buying decision (refund guarantee, delivery promise, ratings, spec chips, sticky add-to-cart), mobile-first since about 85% of 583.9K sessions were mobile; 9,347 orders over 18 months.',
+        'Purewear (UAE): redesigned a teamwear store and built a searchable club-store directory on Shopify metaobjects, extendable without code.',
         'SolXi (India, pre-launch): led a build-vs-buy analysis and replaced two paid apps with custom Shopify features (a multi-child, multi-location fitting booking system and a school uniform bundle finder), saving an estimated $30–40 per month; automated booking vs product order routing with Shopify Flow and Liquid.',
       ],
     },
@@ -54,9 +55,7 @@ export const resume = {
       name: 'Product improvement case studies',
       meta: 'Google Forms, WhatsApp, OutX',
       bullets: [
-        'Google Forms: designed guidance for better open-ended survey answers and prioritized features with RICE.',
-        'WhatsApp: proposed "Reply Later" after finding that reading a message removes the unread reminder.',
-        'OutX: redesigned a B2B SaaS growth model into a product-led growth loop.',
+        'Google Forms: guided open-ended answers, prioritised with RICE; WhatsApp: “Reply Later” to keep the unread reminder; OutX: redesigned a B2B SaaS growth model into a product-led loop.',
       ],
     },
   ],

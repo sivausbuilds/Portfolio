@@ -8,6 +8,7 @@ import { navigate } from '../lib/router'
 import { scrollTo } from '../lib/smooth'
 import { CaseBar } from './CaseBar'
 import { Contact } from './Contact'
+import { Press } from './Websites'
 import { PasswordChip, Unlock } from './Unlock'
 import { BlockView } from './CaseBlocks'
 import { Cover } from './Cover'
@@ -97,6 +98,11 @@ export function CaseStudyPage({ item }: { item: CaseStudy }) {
         <motion.p className="label cs-hero__eyebrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35, duration: 0.8 }}>
           {item.kicker} · {item.year} · {readMins} min read
         </motion.p>
+        {item.press && (
+          <motion.div className="cs-press" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
+            <Press kind={item.press} />
+          </motion.div>
+        )}
 
         <h1 className="cs-hero__title">
           <span className="line">

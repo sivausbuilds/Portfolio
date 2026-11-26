@@ -170,7 +170,7 @@ function Row({ s, i, dim, onHover }: { s: Site; i: number; dim: boolean; onHover
         </span>
         <span className="sx-row__main">
           <span className="sx-row__name">{s.name}</span>
-          {s.featured && <Featured />}
+          {s.press && <Press kind={s.press} />}
           {dev ? (
             <span className="sx-row__access">
               <span className="sx-row__url">{host(s.url)}</span>
@@ -254,8 +254,16 @@ function LockIcon() {
   )
 }
 
-/** "As featured in" press line, set as type rather than the publishers' logos. */
-function Featured() {
+/** Press credit, set as type rather than the publishers' logos. */
+export function Press({ kind }: { kind: 'vogue' | 'radio' }) {
+  if (kind === 'radio')
+    return (
+      <span className="press press--radio" aria-label="As heard on Dubai Eye 103.8">
+        <span className="press__label">As heard on</span>
+        <span className="press__onair" aria-hidden><i /></span>
+        <span className="press__mark press__mark--radio">DUBAI EYE <b>103.8</b></span>
+      </span>
+    )
   return (
     <span className="press" aria-label="Featured in British Vogue and Condé Nast">
       <span className="press__label">As featured in</span>
