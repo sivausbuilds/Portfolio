@@ -98,7 +98,7 @@ export const work: CaseStudy[] = [
       'A gifting and bakery brand where one order often includes a cake, a balloon and a handwritten message. I wrote four custom features so the store handles that in one cart.',
     tags: ['Shopify', 'Liquid', 'JavaScript', 'CRO'],
     meta: [
-      { label: 'Role', value: 'Product and build' },
+      { label: 'Role', value: 'Product and build · CRO Strategist' },
       { label: 'Stack', value: 'Shopify theme, Liquid, JavaScript' },
       { label: 'Market', value: 'United Arab Emirates (AED)' },
       { label: 'Period', value: '2026' },
@@ -271,7 +271,7 @@ export const work: CaseStudy[] = [
     intro: 'A school uniform brand needed fitting bookings and school-first shopping. I chose to build both inside Shopify instead of renting apps.',
     tags: ['Build vs buy', 'Shopify Flow', 'Liquid', 'Metaobjects', 'AI-assisted build'],
     meta: [
-      { label: 'Role', value: 'Product, design and build' },
+      { label: 'Role', value: 'Product, design and build · CRO Strategist' },
       { label: 'Stack', value: 'Shopify, Liquid, JS, Flow' },
       { label: 'Market', value: 'India' },
       { label: 'Status', value: 'Built, pre-launch' },
@@ -463,134 +463,6 @@ export const work: CaseStudy[] = [
     ],
   },
   {
-    slug: 'purewear',
-    name: 'Purewear',
-    title: 'Purewear: teamwear that *looks race-ready*',
-    kicker: 'Shopify · UAE',
-    category: 'E-commerce',
-    status: 'Complete',
-    year: '2026',
-    summary: 'A redesign for a custom teamwear brand, plus club stores built on Shopify metaobjects.',
-    intro: 'Purewear makes custom racewear and teamwear for motorsport and football clubs. I redesigned the store to feel as premium as the kit, and built club stores teams can find in seconds.',
-    tags: ['Redesign', 'Metaobjects', 'Liquid', 'Teamwear'],
-    meta: [
-      { label: 'Role', value: 'Product, design and build' },
-      { label: 'Stack', value: 'Shopify, Liquid, Metaobjects' },
-      { label: 'Market', value: 'UAE (AED)' },
-      { label: 'Scope', value: 'Redesign + club stores' },
-    ],
-    cover: { kind: 'video', src: '/work/purewear/after.mp4' },
-    tone: ['#ebebea', '#b4221b'],
-    facts: {
-      problem: 'A premium teamwear brand on a loud, unfinished store that hid the kit.',
-      built: 'A dark, photo-led redesign and searchable club stores on metaobjects.',
-      outcome: 'Live, with clear category paths and a club added from admin, no code.',
-      highlights: [
-        { value: '3', label: 'clear category paths' },
-        { value: 'A–Z', label: 'club store search' },
-        { value: '0', label: 'code to add a club' },
-      ],
-      primary: { label: 'Visit store', href: 'https://purewear.co' },
-    },
-    chapters: [
-      {
-        id: 'problem',
-        kicker: 'The problem',
-        title: 'Premium kit, *a store that shouted.*',
-        blocks: [
-          { type: 'p', text: 'The old store led with ==saturated red and a wall of logos==. Product pages had empty image slots, and there was ==no clear way to start a custom order==.' },
-          { type: 'goal', text: 'Make the store feel **as premium as the kit**, and let a club **find its own store** in seconds.' },
-        ],
-      },
-      {
-        id: 'before-after',
-        kicker: 'Before and after',
-        title: 'Same brand, *a different league.*',
-        blocks: [
-          {
-            type: 'compare',
-            url: 'purewear.co',
-            before: { src: '/work/purewear/before.mp4', caption: 'Loud red, logo wall, bare product pages' },
-            after: { src: '/work/purewear/after.mp4', caption: 'Dark, photo-led, built around the kit' },
-          },
-        ],
-      },
-      {
-        id: 'changes',
-        kicker: 'What changed',
-        title: 'Page by *page.*',
-        blocks: [
-          {
-            type: 'tabs',
-            tabs: [
-              {
-                label: 'Home',
-                before: ['Red hero with an oversized team logo', 'A wall of client logos', 'Small category tiles'],
-                after: ['Full-bleed race photography', 'Racewear, Teamwear, Essentials as clear paths', 'Team testimonials and a contact form'],
-              },
-              {
-                label: 'Product page',
-                before: ['Empty image slots', 'Size and quantity only'],
-                after: ['Full gallery and AED pricing', 'Trust badges: delivery, quality, returns', '“Customise this product” straight to WhatsApp', 'Specs, shipping, FAQs, related products'],
-              },
-              {
-                label: 'Trust & footer',
-                before: ['Plain FAQ list', 'Small text footer'],
-                after: ['Service strip: delivery, shipping, support, secure pay', 'Bold brand footer with every policy one tap away'],
-              },
-            ],
-          },
-          { type: 'why', text: 'Teams buy on ==trust and identity==. Real race imagery and clear paths do more selling than a bright colour ever could.' },
-        ],
-      },
-      {
-        id: 'club-stores',
-        kicker: 'Custom build',
-        title: 'Club stores, *found in seconds.*',
-        blocks: [
-          { type: 'p', text: 'Each club gets its own store. I built the directory on ==Shopify metaobjects==, so the team adds a club from admin ==without touching code==.' },
-          {
-            type: 'feature',
-            frame: 'browser',
-            url: 'purewear.co · club stores',
-            src: '/work/purewear/team-stores.mp4',
-            steps: [
-              { title: 'Browse clubs', body: 'Every club as a logo card.', at: 0 },
-              { title: 'Search or A–Z', body: 'Type a name or tap a letter.', at: 3 },
-              { title: 'Go to store', body: 'Straight into that club’s kit.', at: 6.5 },
-            ],
-          },
-          {
-            type: 'table',
-            rows: [
-              ['Data', 'One metaobject per club'],
-              ['Fields', 'Name, logo, link to its collection'],
-              ['Filtering', 'Live search and A–Z index'],
-              ['Admin', 'New club in minutes, no developer'],
-            ],
-          },
-        ],
-      },
-      {
-        id: 'outcome',
-        kicker: 'The outcome',
-        title: 'Live, and *ready to scale.*',
-        blocks: [
-          { type: 'p', text: 'The redesign is live at ==purewear.co==. The next step is measuring it against the old store.' },
-          {
-            type: 'metrics',
-            items: [
-              { metric: 'Conversion rate', why: 'Before vs after the redesign' },
-              { metric: 'Custom enquiries', why: 'WhatsApp “Customise” taps' },
-              { metric: 'Club store visits', why: 'Share of traffic via the directory' },
-              { metric: 'Time to add a club', why: 'Target: minutes, from admin' },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
     slug: 'offnorth',
     name: 'OffNorth',
     title: 'OffNorth *Fashions*',
@@ -603,7 +475,7 @@ export const work: CaseStudy[] = [
       'A Supima cotton polo and t-shirt brand from Tirupur. The store sells a premium product in a crowded category, so the redesign focused on proof: why this cotton, why this brand, and what happens if the shopper is not happy.',
     tags: ['Shopify', 'Redesign', 'Mobile-first', 'CRO'],
     meta: [
-      { label: 'Role', value: 'Product and build' },
+      { label: 'Role', value: 'Product and build · CRO Strategist' },
       { label: 'Stack', value: 'Shopify theme, Liquid, JavaScript' },
       { label: 'Market', value: 'India' },
       { label: 'Scope', value: 'Home, collection, product page, footer' },
@@ -749,7 +621,7 @@ export const work: CaseStudy[] = [
       'Designers work with scattered inputs like notes, references and client feedback across different tools. Theliv turns a discovery call into a brief the client signs off.',
     tags: ['Product Discovery', 'Friction Analysis', 'MVP', 'RAG'],
     meta: [
-      { label: 'Role', value: 'Product definition, design and build' },
+      { label: 'Role', value: 'Product definition, design and build · CRO Strategist' },
       { label: 'Type', value: 'Own product · 0 to 1' },
       { label: 'Status', value: 'PRD v1.0 · working MVP' },
       { label: 'Period', value: 'March 2026' },
@@ -879,7 +751,7 @@ export const work: CaseStudy[] = [
       'A decision clarity tool that helps professionals understand the short and long term impact of a financial choice before they commit, so they can spend with more confidence.',
     tags: ['Product Discovery', 'Friction Analysis', 'MVP', 'User research'],
     meta: [
-      { label: 'Role', value: 'Product definition, design and build' },
+      { label: 'Role', value: 'Product definition, design and build · CRO Strategist' },
       { label: 'Type', value: 'Own product · 0 to 1' },
       { label: 'Status', value: 'Working MVP' },
       { label: 'Period', value: '2026' },
@@ -924,6 +796,7 @@ export const work: CaseStudy[] = [
     intro: 'Users give short answers without guidance. That leads to poor data and weak product decisions.',
     tags: ['User research', 'Friction Analysis', 'Behavioral Insights', 'Prioritization (RICE)'],
     meta: [
+      { label: 'Role', value: 'Product designer · CRO Strategist' },
       { label: 'Type', value: 'Product improvement' },
       { label: 'Product', value: 'Google Forms' },
       { label: 'Methods', value: 'User research, RICE' },
@@ -964,6 +837,7 @@ export const work: CaseStudy[] = [
     intro: 'OutX does not have a signal problem. It has a growth system problem.',
     tags: ['Market Research', 'Growth Loop', 'Competitor analysis', 'Network Effects'],
     meta: [
+      { label: 'Role', value: 'Product designer · CRO Strategist' },
       { label: 'Type', value: 'Growth strategy' },
       { label: 'Product', value: 'OutX · B2B SaaS' },
       { label: 'Methods', value: 'Failure workflow analysis, growth loops' },
@@ -1004,6 +878,7 @@ export const work: CaseStudy[] = [
     intro: 'Users forget to reply after reading messages. Unread acts as a trigger. Reading removes it.',
     tags: ['User research', 'Failure Workflow Analysis', 'Behavioral Design', 'Prioritization'],
     meta: [
+      { label: 'Role', value: 'Product designer · CRO Strategist' },
       { label: 'Type', value: 'Product improvement' },
       { label: 'Product', value: 'WhatsApp' },
       { label: 'Methods', value: 'User research, behavioural design' },
@@ -1027,6 +902,134 @@ export const work: CaseStudy[] = [
             text: 'The unread badge works as a reminder. The second you open the chat, ==the trigger is gone== and the reply depends on memory. A feature called **Reply Later** is my answer.',
           },
           { type: 'pending', text: 'The research findings, the feature design and how I would measure it are being written up.' },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'purewear',
+    name: 'Purewear',
+    title: 'Purewear: teamwear that *looks race-ready*',
+    kicker: 'Shopify · UAE',
+    category: 'E-commerce',
+    status: 'Complete',
+    year: '2026',
+    summary: 'A redesign for a custom teamwear brand, plus club stores built on Shopify metaobjects.',
+    intro: 'Purewear makes custom racewear and teamwear for motorsport and football clubs. I redesigned the store to feel as premium as the kit, and built club stores teams can find in seconds.',
+    tags: ['Redesign', 'Metaobjects', 'Liquid', 'Teamwear'],
+    meta: [
+      { label: 'Role', value: 'Product, design and build · CRO Strategist' },
+      { label: 'Stack', value: 'Shopify, Liquid, Metaobjects' },
+      { label: 'Market', value: 'UAE (AED)' },
+      { label: 'Scope', value: 'Redesign + club stores' },
+    ],
+    cover: { kind: 'video', src: '/work/purewear/after.mp4' },
+    tone: ['#ebebea', '#b4221b'],
+    facts: {
+      problem: 'A premium teamwear brand on a loud, unfinished store that hid the kit.',
+      built: 'A dark, photo-led redesign and searchable club stores on metaobjects.',
+      outcome: 'Live, with clear category paths and a club added from admin, no code.',
+      highlights: [
+        { value: '3', label: 'clear category paths' },
+        { value: 'A–Z', label: 'club store search' },
+        { value: '0', label: 'code to add a club' },
+      ],
+      primary: { label: 'Visit store', href: 'https://purewear.co' },
+    },
+    chapters: [
+      {
+        id: 'problem',
+        kicker: 'The problem',
+        title: 'Premium kit, *a store that shouted.*',
+        blocks: [
+          { type: 'p', text: 'The old store led with ==saturated red and a wall of logos==. Product pages had empty image slots, and there was ==no clear way to start a custom order==.' },
+          { type: 'goal', text: 'Make the store feel **as premium as the kit**, and let a club **find its own store** in seconds.' },
+        ],
+      },
+      {
+        id: 'before-after',
+        kicker: 'Before and after',
+        title: 'Same brand, *a different league.*',
+        blocks: [
+          {
+            type: 'compare',
+            url: 'purewear.co',
+            before: { src: '/work/purewear/before.mp4', caption: 'Loud red, logo wall, bare product pages' },
+            after: { src: '/work/purewear/after.mp4', caption: 'Dark, photo-led, built around the kit' },
+          },
+        ],
+      },
+      {
+        id: 'changes',
+        kicker: 'What changed',
+        title: 'Page by *page.*',
+        blocks: [
+          {
+            type: 'tabs',
+            tabs: [
+              {
+                label: 'Home',
+                before: ['Red hero with an oversized team logo', 'A wall of client logos', 'Small category tiles'],
+                after: ['Full-bleed race photography', 'Racewear, Teamwear, Essentials as clear paths', 'Team testimonials and a contact form'],
+              },
+              {
+                label: 'Product page',
+                before: ['Empty image slots', 'Size and quantity only'],
+                after: ['Full gallery and AED pricing', 'Trust badges: delivery, quality, returns', '“Customise this product” straight to WhatsApp', 'Specs, shipping, FAQs, related products'],
+              },
+              {
+                label: 'Trust & footer',
+                before: ['Plain FAQ list', 'Small text footer'],
+                after: ['Service strip: delivery, shipping, support, secure pay', 'Bold brand footer with every policy one tap away'],
+              },
+            ],
+          },
+          { type: 'why', text: 'Teams buy on ==trust and identity==. Real race imagery and clear paths do more selling than a bright colour ever could.' },
+        ],
+      },
+      {
+        id: 'club-stores',
+        kicker: 'Custom build',
+        title: 'Club stores, *found in seconds.*',
+        blocks: [
+          { type: 'p', text: 'Each club gets its own store. I built the directory on ==Shopify metaobjects==, so the team adds a club from admin ==without touching code==.' },
+          {
+            type: 'feature',
+            frame: 'browser',
+            url: 'purewear.co · club stores',
+            src: '/work/purewear/team-stores.mp4',
+            steps: [
+              { title: 'Browse clubs', body: 'Every club as a logo card.', at: 0 },
+              { title: 'Search or A–Z', body: 'Type a name or tap a letter.', at: 3 },
+              { title: 'Go to store', body: 'Straight into that club’s kit.', at: 6.5 },
+            ],
+          },
+          {
+            type: 'table',
+            rows: [
+              ['Data', 'One metaobject per club'],
+              ['Fields', 'Name, logo, link to its collection'],
+              ['Filtering', 'Live search and A–Z index'],
+              ['Admin', 'New club in minutes, no developer'],
+            ],
+          },
+        ],
+      },
+      {
+        id: 'outcome',
+        kicker: 'The outcome',
+        title: 'Live, and *ready to scale.*',
+        blocks: [
+          { type: 'p', text: 'The redesign is live at ==purewear.co==. The next step is measuring it against the old store.' },
+          {
+            type: 'metrics',
+            items: [
+              { metric: 'Conversion rate', why: 'Before vs after the redesign' },
+              { metric: 'Custom enquiries', why: 'WhatsApp “Customise” taps' },
+              { metric: 'Club store visits', why: 'Share of traffic via the directory' },
+              { metric: 'Time to add a club', why: 'Target: minutes, from admin' },
+            ],
+          },
         ],
       },
     ],
