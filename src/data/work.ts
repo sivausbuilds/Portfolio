@@ -609,6 +609,150 @@ export const work: CaseStudy[] = [
   },
 
   {
+    slug: 'panache',
+    name: 'Panache Artistry',
+    press: 'vogue',
+    title: 'Panache Artistry: selling *the experience, not the discount*',
+    kicker: 'Shopify · UK & UAE · Luxury interiors',
+    category: 'E-commerce',
+    status: 'Complete',
+    year: '2026',
+    summary: 'An end-to-end rebuild for a British Vogue featured interiors brand: story-led, conversion-focused, with a trade programme for B2B.',
+    intro: 'Handcrafted furniture and lighting from Rajasthan, featured in British Vogue and Condé Nast. The brand wanted to stop looking like a discount store and sell the craft instead. I owned the whole e-commerce experience.',
+    tags: ['CRO', 'Brand & category', 'Metafields', 'B2B trade', 'Liquid'],
+    meta: [
+      { label: 'Role', value: 'E-commerce lead · CRO Strategist' },
+      { label: 'Also', value: 'Brand and category manager' },
+      { label: 'Stack', value: 'Shopify, Liquid, Metafields' },
+      { label: 'Market', value: 'UK & UAE (GBP)' },
+    ],
+    cover: { kind: 'video', src: '/work/panache/after.mp4' },
+    tone: ['#efe8dc', '#7a5a3a'],
+    facts: {
+      problem: 'A Vogue-featured craft brand whose store sold on discounts, not on craft.',
+      built: 'A story-led rebuild, a dynamic PDP on metafields, and The Karavan Edit for trade buyers.',
+      outcome: 'Conversion up from 1.8% to 3.0%, with 5+ wholesale enquiries a month.',
+      highlights: [
+        { value: '1.8→3.0%', label: 'conversion rate' },
+        { value: '5+', label: 'wholesale enquiries / month' },
+        { value: '~$140K', label: 'annual revenue' },
+      ],
+      primary: { label: 'Visit store', href: 'https://thepanacheartistry.com' },
+    },
+    chapters: [
+      {
+        id: 'problem',
+        kicker: 'The problem',
+        title: 'Luxury craft, *sold like a sale.*',
+        blocks: [
+          { type: 'p', text: 'The old store led with ==“Save £1,000” badges== on a plain white grid. Nothing told the story of the ==Rajasthan workshops== behind each piece, and trade buyers had no clear way in.' },
+          { type: 'goal', text: 'Sell **the experience, not the discount**, convert better, and open a **B2B channel** for designers and hospitality buyers.' },
+        ],
+      },
+      {
+        id: 'before-after',
+        kicker: 'Before and after',
+        title: 'From a catalogue *to a story.*',
+        blocks: [
+          {
+            type: 'compare',
+            url: 'thepanacheartistry.com',
+            before: { src: '/work/panache/before.mp4', caption: 'White grid, discount badges, generic PDP' },
+            after: { src: '/work/panache/after.mp4', caption: 'Brand palette, craft stories, trade-ready' },
+          },
+        ],
+      },
+      {
+        id: 'experience',
+        kicker: 'The new experience',
+        title: 'Every page *sells the craft.*',
+        blocks: [
+          {
+            type: 'feature',
+            frame: 'browser',
+            url: 'thepanacheartistry.com',
+            src: '/work/panache/after.mp4',
+            steps: [
+              { title: 'Story-led home', body: 'Craft, mastery and The Karavan Edit up front.', at: 0 },
+              { title: 'Proof that sells', body: 'Real testimonials from architects and buyers.', at: 8 },
+              { title: 'Smarter collections', body: 'Sub-category shortcuts, filters and sorting.', at: 16 },
+              { title: 'A PDP that reassures', body: 'Lead time, delivery, trade quote, WhatsApp.', at: 24 },
+              { title: 'The Karavan Edit', body: 'A trade programme for designers and hotels.', at: 47 },
+            ],
+          },
+          {
+            type: 'tabs',
+            tabs: [
+              {
+                label: 'Home',
+                before: ['White grid of products', 'Client logo strip', 'Discount-led banners'],
+                after: ['Brand palette from the guidelines', 'Craft stories: “Mastery”, “Thirty years in every detail”', 'The Karavan Edit introduced on the home page'],
+              },
+              {
+                label: 'Collections',
+                before: ['Flat product grid', '“Save £…” on every card'],
+                after: ['Sub-category shortcuts (pendants, floor, wall, table)', 'Filters and sorting that match how buyers shop', 'Calmer cards that lead with the photo'],
+              },
+              {
+                label: 'Product page',
+                before: ['Price, discount pill, delivery line', 'Little about the piece'],
+                after: ['Size options, lead time and delivery per region', '“As featured in British Vogue & Condé Nast” next to the decision', 'Trade quote and WhatsApp alongside add to cart', 'Sticky add to cart and related pieces'],
+              },
+              {
+                label: 'Trade',
+                before: ['A “Trade with us” link'],
+                after: ['The Karavan Edit: private trade access to the Rajasthan workshops', 'Built for interior designers, architects and hospitality buyers'],
+              },
+            ],
+          },
+          { type: 'why', text: 'Luxury buyers pay for ==provenance and certainty==. Moving proof, lead times and the maker’s story next to the buy button does more than a bigger discount.' },
+        ],
+      },
+      {
+        id: 'dynamic',
+        kicker: 'Under the hood',
+        title: 'One template, *every product its own.*',
+        blocks: [
+          { type: 'p', text: 'I designed a ==structured metafield model== so every product page fills itself: specs, lead times, delivery, care, and ==a craft video chosen for that product==.' },
+          {
+            type: 'table',
+            rows: [
+              ['Product video', 'Plays on each PDP, picked per product'],
+              ['Specs and sizes', 'Dimensions and materials from metafields'],
+              ['Lead time and delivery', 'Per product and per region'],
+              ['Press and trust', 'Featured badge and guarantees, set once'],
+            ],
+          },
+          { type: 'p', text: 'New products launch by ==filling fields, not editing code==, so the team adds pieces without a developer.' },
+        ],
+      },
+      {
+        id: 'roles',
+        kicker: 'My role',
+        title: 'Beyond the build, *brand and category.*',
+        blocks: [
+          {
+            type: 'stats',
+            items: [
+              { value: '3', label: 'roles: e-commerce lead, brand manager and category manager' },
+              { value: '1', label: 'brand guideline applied across every page' },
+              { value: 'B2B', label: 'trade channel launched as The Karavan Edit' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'results',
+        kicker: 'Results',
+        title: 'More buyers, *no discount needed.*',
+        blocks: [
+          { type: 'kpis', items: [{ value: '3.0%', label: 'Conversion (from 1.8%)' }, { value: '5+', label: 'Wholesale enquiries / month' }, { value: '$140K', label: 'Annual revenue (approx.)' }, { value: '0', label: 'Code to add a product' }] },
+          { type: 'p', text: 'Conversion rose from ==1.8% to 3.0%== after rebuilding the discovery, evaluation and checkout journey, and the trade programme now brings ==5+ wholesale enquiries a month==.' },
+        ],
+      },
+    ],
+  },
+  {
     slug: 'theliv',
     name: 'Theliv',
     title: 'Theliv: from messy client inputs to *clear design briefs*',

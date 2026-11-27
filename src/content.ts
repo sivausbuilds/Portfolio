@@ -127,7 +127,7 @@ export const websites = {
   intro: 'Shopify stores ==designed and developed end to end== for brands in India, UAE, UK and Australia. Stores in development show their ==preview link and password==.',
   items: [
     // Live
-    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Art & lifestyle', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/panache.jpg', featured: true, press: 'vogue' },
+    { name: 'The Panache Artistry', url: 'https://thepanacheartistry.com', tag: 'Luxury interiors', market: 'UK & UAE', note: 'Story-led rebuild and a B2B trade programme', status: 'live', image: '/sites/panache.jpg', featured: true, press: 'vogue' },
     { name: 'Varak Edible Luxury', url: 'https://www.varakedibleluxury.com', tag: 'Gifting & bakery', market: 'UAE', note: 'Custom cart, upsells and a jar box builder', status: 'live', image: '/sites/varak.jpg', featured: true, press: 'radio' },
     { name: 'Drink Spoilt', url: 'https://www.drinkspoilt.com', tag: 'Beverages', market: 'Global', note: 'Designed and built end to end', status: 'live', image: '/sites/drinkspoilt.jpg' },
     { name: 'Tarama Jeans', url: 'https://taramajeans.com', tag: 'Denim', market: 'India', note: 'Designed and built end to end', status: 'live', image: '/sites/tarama.jpg' },
